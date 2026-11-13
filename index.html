@@ -1,347 +1,164 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azoity bio</title>
-    <style>
-        :root {
-            --bg: #000; --text: #fff; --card-bg: rgba(15,15,15,0.75);
-            --accent: #ff4757; --border: rgba(255,71,87,0.15);
-            --glow: rgba(255,71,87,0.1); --snow-color: rgba(255,255,255,0.8);
-        }
-        [data-theme="light"] {
-            --bg: #f0f0f0; --text: #1a1a1a; --card-bg: rgba(255,255,255,0.85);
-            --accent: #d63031; --border: rgba(214,48,49,0.15);
-            --glow: rgba(214,48,49,0.1); --snow-color: rgba(0,0,0,0.15);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-        
-        .cursor { width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s; mix-blend-mode: difference; }
-        .ripple { position: fixed; border-radius: 50%; background: var(--accent); opacity: 0.4; pointer-events: none; animation: rippleAnim 0.6s ease-out forwards; z-index: 9998; }
-        @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
-
-        body { font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; color: var(--text); background: var(--bg); overflow-x: hidden; transition: background 0.5s, color 0.5s; }
-        
-        .parallax-bg { position: fixed; top: -10%; left: 0; width: 100%; height: 120%; background-image: url('https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycHU4cXBjMHJldWtjM3J1a3B4dGJqZzQwbzhpZzQ4Ymcxc25jNGprOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4ilFRqgbzbx4c/giphy.gif'); background-size: cover; background-position: center; z-index: -2; transition: transform 0.1s linear; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: -1; transition: background 0.5s; }
-        [data-theme="light"] .overlay { background: rgba(255,255,255,0.4); }
-
-        .snowflake { position: fixed; top: -10px; background: var(--snow-color); border-radius: 50%; pointer-events: none; z-index: -1; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(110vh); } }
-
-        nav { position: fixed; top: 0; left: 0; right: 0; padding: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px); background: rgba(0,0,0,0.3); }
-        [data-theme="light"] nav { background: rgba(255,255,255,0.3); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text); text-decoration: none; font-weight: bold; transition: color 0.3s; }
-        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-        .burger span { width: 25px; height: 3px; background: var(--text); transition: 0.3s; }
-        @media (max-width: 768px) {
-            .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: var(--card-bg); flex-direction: column; justify-content: center; align-items: center; transition: 0.4s; backdrop-filter: blur(20px); }
-            .nav-links.active { right: 0; }
-            .burger { display: flex; }
-        }
-
-        .container-wrapper { perspective: 1000px; padding: 100px 20px 40px; display: flex; justify-content: center; }
-        .container { 
-            padding: 45px 40px; background: var(--card-bg); border-radius: 20px; 
-            border: 1px solid var(--border); backdrop-filter: blur(15px); 
-            max-width: 600px; width: 100%; text-align: center;
-            box-shadow: 0 0 40px var(--glow), 0 8px 32px rgba(0,0,0,0.6);
-            transform-style: preserve-3d; transition: transform 0.1s ease-out;
-            animation: fadeInUp 1s ease-out forwards;
-        }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); margin-bottom: 25px; box-shadow: 0 0 30px var(--glow); }
-        
-        .typewriter h1 { overflow: hidden; border-right: 2px solid var(--accent); white-space: nowrap; margin: 0 auto 20px; animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite; font-size: 2.5em; }
-        .glitch:hover { animation: glitch 0.3s infinite; color: var(--accent); }
-        @keyframes typing { from { width: 0; } to { width: 100%; } }
-        @keyframes blink { 50% { border-color: transparent; } }
-        @keyframes glitch { 0%,100% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(2px, -2px); } 60% { transform: translate(-2px, -2px); } 80% { transform: translate(2px, 2px); } }
-
-        p { font-size: 1.1em; line-height: 1.7; color: var(--text); opacity: 0.8; margin-bottom: 25px; }
-        
-        .clock { font-family: monospace; font-size: 1.2em; color: var(--accent); margin-bottom: 20px; text-shadow: 0 0 10px var(--glow); letter-spacing: 2px; }
-
-        .btn { display: inline-block; padding: 14px 35px; background: linear-gradient(135deg, var(--accent), #ff6b81); color: white; text-decoration: none; border-radius: 30px; font-weight: bold; transition: all 0.3s; margin: 10px 5px; border: none; }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--glow); }
-        
-        .socials { margin-top: 30px; display: flex; justify-content: center; gap: 25px; }
-        .socials a { color: var(--text); opacity: 0.7; text-decoration: none; transition: 0.3s; }
-        .socials a:hover { opacity: 1; color: var(--accent); }
-
-        /* === ПЛЕЕР === */
-        .player { margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px; border: 1px solid var(--border); }
-        .track-name { font-size: 1.1em; font-weight: bold; margin-bottom: 10px; color: var(--accent); min-height: 1.5em; }
-        .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin: 15px 0; cursor: pointer; position: relative; }
-        .progress-bar { height: 100%; background: var(--accent); border-radius: 3px; width: 0%; transition: width 0.1s; }
-        .time-display { display: flex; justify-content: space-between; font-size: 0.8em; opacity: 0.6; margin-top: 5px; }
-        .controls-row { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 15px; }
-        .ctrl-btn { background: none; border: none; color: var(--text); font-size: 1.5em; cursor: pointer; transition: 0.3s; opacity: 0.7; }
-        .ctrl-btn:hover { opacity: 1; color: var(--accent); transform: scale(1.2); }
-        .play-btn { font-size: 2.2em; opacity: 1; }
-        
-        .visualizer { display: flex; justify-content: center; gap: 3px; height: 30px; align-items: flex-end; margin-top: 15px; }
-        .viz-bar { width: 4px; background: var(--accent); border-radius: 2px; height: 5px; transition: height 0.15s ease; }
-
-        .timeline { margin-top: 40px; text-align: left; border-left: 2px solid var(--accent); padding-left: 20px; }
-        .timeline-item { margin-bottom: 20px; position: relative; }
-        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
-        .timeline-date { font-size: 0.8em; color: var(--accent); font-weight: bold; }
-        .timeline-text { font-size: 0.95em; opacity: 0.8; }
-
-        .achievements { margin-top: 40px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .achievement { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; text-align: center; min-width: 100px; opacity: 0.3; transition: 0.5s; border: 1px solid transparent; }
-        .achievement.unlocked { opacity: 1; border-color: var(--accent); box-shadow: 0 0 15px var(--glow); transform: scale(1.05); }
-        .achievement-icon { font-size: 2em; margin-bottom: 5px; }
-        .achievement-name { font-size: 0.75em; }
-
-        .controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 100; }
-        .control-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; font-size: 1.2em; backdrop-filter: blur(10px); transition: 0.3s; }
-        .control-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--glow); }
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Azoity bio</title>
+<style>
+:root{--bg:#000;--text:#fff;--card:rgba(15,15,15,.75);--acc:#ff4757;--brd:rgba(255,71,87,.15);--glw:rgba(255,71,87,.1);--snow:rgba(255,255,255,.8);--com:#95a5a6;--rar:#3498db;--epi:#9b59b6;--leg:#f39c12}
+[data-theme="light"]{--bg:#f0f0f0;--text:#1a1a1a;--card:rgba(255,255,255,.85);--acc:#d63031;--brd:rgba(214,48,49,.15);--glw:rgba(214,48,49,.1);--snow:rgba(0,0,0,.15)}
+*{margin:0;padding:0;box-sizing:border-box;cursor:none!important}
+.cursor{width:20px;height:20px;border:2px solid var(--acc);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:.1s;mix-blend-mode:difference}
+.ripple{position:fixed;border-radius:50%;background:var(--acc);opacity:.4;pointer-events:none;animation:rA .6s forwards;z-index:9998}
+@keyframes rA{to{transform:scale(4);opacity:0}}
+body{font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;color:var(--text);background:var(--bg);overflow-x:hidden;transition:.5s}
+.parallax-bg{position:fixed;top:-10%;left:0;width:100%;height:120%;background:url('https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycHU4cXBjMHJldWtjM3J1a3B4dGJqZzQwbzhpZzQ4Ymcxc25jNGprOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4ilFRqgbzbx4c/giphy.gif') center/cover no-repeat;z-index:-2;transition:.1s linear}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:-1;transition:.5s}
+[data-theme="light"] .overlay{background:rgba(255,255,255,.4)}
+.snowflake{position:fixed;top:-10px;background:var(--snow);border-radius:50%;pointer-events:none;z-index:-1;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(110vh)}}
+nav{position:fixed;top:0;left:0;right:0;padding:20px;display:flex;justify-content:space-between;align-items:center;z-index:100;backdrop-filter:blur(10px);background:rgba(0,0,0,.3)}
+[data-theme="light"] nav{background:rgba(255,255,255,.3)}
+.nav-links{display:flex;gap:20px}.nav-links a{color:var(--text);text-decoration:none;font-weight:bold;transition:.3s}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer}.burger span{width:25px;height:3px;background:var(--text);transition:.3s}
+@media(max-width:768px){.nav-links{position:fixed;top:0;right:-100%;width:70%;height:100vh;background:var(--card);flex-direction:column;justify-content:center;align-items:center;transition:.4s;backdrop-filter:blur(20px)}.nav-links.active{right:0}.burger{display:flex}}
+.container-wrapper{perspective:1000px;padding:100px 20px 40px;display:flex;justify-content:center}
+.container{padding:45px 40px;background:var(--card);border-radius:20px;border:1px solid var(--brd);backdrop-filter:blur(15px);max-width:600px;width:100%;text-align:center;box-shadow:0 0 40px var(--glw),0 8px 32px rgba(0,0,0,.6);transform-style:preserve-3d;transition:.1s ease-out;animation:fIU 1s forwards}
+@keyframes fIU{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--acc);margin-bottom:25px;box-shadow:0 0 30px var(--glw)}
+.typewriter h1{overflow:hidden;border-right:2px solid var(--acc);white-space:nowrap;margin:0 auto 20px;animation:typing 3s steps(30) forwards,blink .7s step-end infinite;font-size:2.5em}
+.glitch:hover{animation:glitch .3s infinite;color:var(--acc)}
+@keyframes typing{from{width:0}to{width:100%}}@keyframes blink{50%{border-color:transparent}}
+@keyframes glitch{0%,100%{transform:translate(0)}20%{transform:translate(-2px,2px)}40%{transform:translate(2px,-2px)}60%{transform:translate(-2px,-2px)}80%{transform:translate(2px,2px)}}
+p{font-size:1.1em;line-height:1.7;color:var(--text);opacity:.8;margin-bottom:25px}
+.clock{font-family:monospace;font-size:1.2em;color:var(--acc);margin-bottom:20px;text-shadow:0 0 10px var(--glw);letter-spacing:2px}
+.btn{display:inline-block;padding:14px 35px;background:linear-gradient(135deg,var(--acc),#ff6b81);color:#fff;text-decoration:none;border-radius:30px;font-weight:bold;transition:.3s;margin:10px 5px;border:none}
+.btn:hover{transform:scale(1.05);box-shadow:0 0 30px var(--glw)}
+.socials{margin-top:30px;display:flex;justify-content:center;gap:25px}.socials a{color:var(--text);opacity:.7;text-decoration:none;transition:.3s}.socials a:hover{opacity:1;color:var(--acc)}
+.player{margin-top:30px;padding:20px;background:rgba(255,255,255,.05);border-radius:15px;border:1px solid var(--brd)}
+.track-name{font-size:1.1em;font-weight:bold;margin-bottom:10px;color:var(--acc);min-height:1.5em}
+.progress-container{width:100%;height:6px;background:rgba(255,255,255,.1);border-radius:3px;margin:15px 0;cursor:pointer;position:relative}
+.progress-bar{height:100%;background:var(--acc);border-radius:3px;width:0%;transition:.1s}
+.time-display{display:flex;justify-content:space-between;font-size:.8em;opacity:.6;margin-top:5px}
+.controls-row{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:15px}
+.ctrl-btn{background:none;border:none;color:var(--text);font-size:1.5em;cursor:pointer;transition:.3s;opacity:.7}.ctrl-btn:hover{opacity:1;color:var(--acc);transform:scale(1.2)}.play-btn{font-size:2.2em;opacity:1}
+.visualizer{display:flex;justify-content:center;gap:3px;height:30px;align-items:flex-end;margin-top:15px}
+.viz-bar{width:4px;background:var(--acc);border-radius:2px;height:5px;transition:.15s ease}
+.timeline{margin-top:40px;text-align:left;border-left:2px solid var(--acc);padding-left:20px}
+.timeline-item{margin-bottom:20px;position:relative}.timeline-item::before{content:'';position:absolute;left:-26px;top:5px;width:10px;height:10px;background:var(--acc);border-radius:50%;box-shadow:0 0 10px var(--acc)}
+.timeline-date{font-size:.8em;color:var(--acc);font-weight:bold}.timeline-text{font-size:.95em;opacity:.8}
+.ach-section{margin-top:40px}.ach-title{color:var(--acc);margin-bottom:15px;font-size:1.3em}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
+.ach{background:rgba(255,255,255,.03);padding:10px 5px;border-radius:12px;text-align:center;opacity:.2;transition:.5s;border:2px solid transparent;filter:grayscale(100%) blur(1px);position:relative}
+.ach.unlocked{opacity:1;filter:none;transform:scale(1.05)}
+.ach.common{border-color:var(--com)}.ach.rare{border-color:var(--rar)}.ach.epic{border-color:var(--epi)}.ach.legendary{border-color:var(--leg)}
+.ach-icon{font-size:1.5em;margin-bottom:3px}.ach-name{font-size:.65em;line-height:1.1}
+.ach-rank{position:absolute;top:-4px;right:-4px;font-size:.5em;padding:1px 4px;border-radius:6px;font-weight:bold}
+.ach.common .ach-rank{background:var(--com);color:#000}.ach.rare .ach-rank{background:var(--rar);color:#fff}
+.ach.epic .ach-rank{background:var(--epi);color:#fff}.ach.legendary .ach-rank{background:var(--leg);color:#000}
+.controls{position:fixed;bottom:20px;right:20px;display:flex;gap:10px;z-index:100}
+.control-btn{width:45px;height:45px;border-radius:50%;background:var(--card);border:1px solid var(--brd);color:var(--text);display:flex;align-items:center;justify-content:center;font-size:1.2em;backdrop-filter:blur(10px);transition:.3s}
+.control-btn:hover{transform:scale(1.1);box-shadow:0 0 15px var(--glw)}
+.popup{position:fixed;top:80px;right:20px;background:var(--card);border:2px solid var(--acc);border-radius:15px;padding:12px 15px;z-index:1000;animation:sI .5s,fO .5s 2.5s forwards;backdrop-filter:blur(10px);display:flex;align-items:center;gap:8px}
+@keyframes sI{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fO{to{opacity:0;transform:translateY(-20px)}}
+</style>
 </head>
 <body>
-    <div class="cursor" id="cursor"></div>
-    <div class="parallax-bg" id="parallaxBg"></div>
-    <div class="overlay"></div>
-    
-    <nav>
-        <div style="font-weight:bold; color:var(--accent)">Azoity</div>
-        <div class="nav-links" id="navLinks">
-            <a href="#bio">Био</a>
-            <a href="#path">Путь</a>
-            <a href="#achievements">Достижения</a>
-        </div>
-        <div class="burger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-    </nav>
-
-    <div class="container-wrapper">
-        <div class="container" id="tiltCard">
-            <img src="images/avatar.jpg" alt="Azoity" class="avatar">
-            <div class="typewriter"><h1 class="glitch">Azoity bio</h1></div>
-            <div class="clock" id="clock">00:00:00</div>
-            <p>Добро пожаловать в моё цифровое пространство.</p>
-            
-            <button class="btn" onclick="copyTg()">📋 Связаться со мной</button>
-            
-            <!-- ПЛЕЕР -->
-            <div class="player">
-                <div class="track-name" id="trackName">Выбери трек ▶️</div>
-                <div class="progress-container" id="progressContainer">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-                <div class="time-display">
-                    <span id="currentTime">0:00</span>
-                    <span id="duration">0:00</span>
-                </div>
-                <div class="controls-row">
-                    <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
-                    <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()">▶️</button>
-                    <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
-                </div>
-                <div class="visualizer" id="visualizer"></div>
-            </div>
-            
-            <div class="socials">
-                <a href="https://github.com/Azoity-code">GitHub</a>
-                <a href="https://t.me/Azoity">Telegram</a>
-            </div>
-
-            <div class="timeline" id="path">
-                <h3 style="margin-bottom:15px; color:var(--accent)">📜 Мой путь</h3>
-                <div class="timeline-item"><div class="timeline-date">2024</div><div class="timeline-text">Начало пути в программировании</div></div>
-                <div class="timeline-item"><div class="timeline-date">2025</div><div class="timeline-text">Создание первых Telegram ботов</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026</div><div class="timeline-text">Запуск личного сайта с телефона</div></div>
-                <div class="timeline-item"><div class="timeline-date">Цель 🎯</div><div class="timeline-text" style="color:var(--accent); font-weight:bold;">Выучить C++ наизусть</div></div>
-            </div>
-
-            <div class="achievements" id="achievements">
-                <div class="achievement" data-id="1"><div class="achievement-icon">🚀</div><div class="achievement-name">Первый сайт</div></div>
-                <div class="achievement" data-id="2"><div class="achievement-icon">🐍</div><div class="achievement-name">Python мастер</div></div>
-                <div class="achievement" data-id="3"><div class="achievement-icon">❄️</div><div class="achievement-name">Snow Effect</div></div>
-                <div class="achievement" data-id="4"><div class="achievement-icon">⚡</div><div class="achievement-name">C++ Goal</div></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="controls">
-        <button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-    </div>
-
-    <script>
-        // === ПЛЕЕР ===
-        const playlist = [
-            { file: "music/5-minyt.mp3", name: "5 МИНУТ" },
-            { file: "music/aprel.mp3", name: "Апрель" },
-            { file: "music/Cloud.mp3", name: "Mosquit - Cloud" },
-            { file: "music/ego.mp3", name: "Эго" },
-            { file: "music/lonelly.mp3", name: "Lonelly" },
-            { file: "music/mir-prikolov.mp3", name: "Мир приколов" },
-            { file: "music/molchy.mp3", name: "Молчу" },
-            { file: "music/oblaka.mp3", name: "Облака" },
-            { file: "music/pain.mp3", name: "Pain" },
-            { file: "music/shut-up.mp3", name: "Shut Up" }
-        ];
-
-        let currentTrack = 0;
-        let isPlaying = false;
-        const audio = new Audio();
-        const trackNameEl = document.getElementById('trackName');
-        const progressBar = document.getElementById('progressBar');
-        const progressContainer = document.getElementById('progressContainer');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationEl = document.getElementById('duration');
-        const playBtn = document.getElementById('playBtn');
-        const visualizer = document.getElementById('visualizer');
-
-        // Создаём полоски визуализатора
-        for(let i = 0; i < 20; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'viz-bar';
-            visualizer.appendChild(bar);
-        }
-        const vizBars = document.querySelectorAll('.viz-bar');
-
-        function loadTrack(index) {
-            currentTrack = index;
-            audio.src = playlist[currentTrack].file;
-            trackNameEl.innerText = playlist[currentTrack].name;
-            if(isPlaying) audio.play();
-        }
-
-        function togglePlay() {
-            if(!audio.src) loadTrack(0);
-            if(isPlaying) {
-                audio.pause();
-                playBtn.innerText = '▶️';
-            } else {
-                audio.play().catch(() => {});
-                playBtn.innerText = '⏸';
-            }
-            isPlaying = !isPlaying;
-        }
-
-        function nextTrack() {
-            currentTrack = (currentTrack + 1) % playlist.length;
-            loadTrack(currentTrack);
-            if(!isPlaying) togglePlay();
-        }
-
-        function prevTrack() {
-            currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
-            loadTrack(currentTrack);
-            if(!isPlaying) togglePlay();
-        }
-
-        audio.addEventListener('timeupdate', () => {
-            const pct = (audio.currentTime / audio.duration) * 100;
-            progressBar.style.width = pct + '%';
-            currentTimeEl.innerText = formatTime(audio.currentTime);
-            durationEl.innerText = formatTime(audio.duration || 0);
-        });
-
-        audio.addEventListener('ended', nextTrack);
-
-        progressContainer.addEventListener('click', (e) => {
-            const rect = progressContainer.getBoundingClientRect();
-            const pct = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = pct * audio.duration;
-        });
-
-        function formatTime(s) {
-            const m = Math.floor(s / 60);
-            const sec = Math.floor(s % 60);
-            return `${m}:${sec.toString().padStart(2, '0')}`;
-        }
-
-        // Анимация визуализатора
-        setInterval(() => {
-            if(isPlaying && !audio.paused) {
-                vizBars.forEach(bar => {
-                    bar.style.height = (Math.random() * 25 + 5) + 'px';
-                });
-            } else {
-                vizBars.forEach(bar => bar.style.height = '5px');
-            }
-        }, 150);
-
-        // Загружаем первый трек при старте (без автовоспроизведения)
-        loadTrack(0);
-        isPlaying = false;
-        playBtn.innerText = '▶️';
-
-        // === ОСТАЛЬНОЙ КОД ===
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX - 10 + 'px'; cursor.style.top = e.clientY - 10 + 'px'; });
-        document.addEventListener('click', e => {
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            ripple.style.width = ripple.style.height = '30px';
-            ripple.style.left = e.clientX - 15 + 'px';
-            ripple.style.top = e.clientY - 15 + 'px';
-            document.body.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-        });
-
-        const card = document.getElementById('tiltCard');
-        document.addEventListener('mousemove', e => {
-            if(window.innerWidth < 768) return;
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-        });
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('ru-RU');
-        }
-        setInterval(updateClock, 1000); updateClock();
-
-        function createSnow() {
-            const flake = document.createElement('div');
-            flake.className = 'snowflake';
-            flake.style.left = Math.random() * 100 + 'vw';
-            flake.style.width = flake.style.height = Math.random() * 4 + 2 + 'px';
-            flake.style.animationDuration = Math.random() * 3 + 3 + 's';
-            flake.style.opacity = Math.random();
-            document.body.appendChild(flake);
-            setTimeout(() => flake.remove(), 6000);
-        }
-        setInterval(createSnow, 150);
-
-        window.addEventListener('scroll', () => {
-            document.getElementById('parallaxBg').style.transform = `translateY(${window.scrollY * 0.3}px)`;
-        });
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const isDark = html.getAttribute('data-theme') === 'dark';
-            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
-        }
-
-        function copyTg() {
-            navigator.clipboard.writeText('@Azoity');
-            const btn = event.target;
-            const old = btn.innerText;
-            btn.innerText = '✅ Скопировано!';
-            setTimeout(() => btn.innerText = old, 2000);
-        }
-
-        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
-
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) entry.target.classList.add('unlocked');
-            });
-        }, { threshold: 0.5 });
-        document.querySelectorAll('.achievement').forEach(el => observer.observe(el));
-    </script>
+<div class="cursor" id="cursor"></div><div class="parallax-bg" id="parallaxBg"></div><div class="overlay"></div>
+<nav><div style="font-weight:bold;color:var(--acc)">Azoity</div><div class="nav-links" id="navLinks"><a href="#bio">Био</a><a href="#path">Путь</a><a href="#achievements">Достижения</a></div><div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div></nav>
+<div class="container-wrapper"><div class="container" id="tiltCard">
+<img src="images/avatar.jpg" alt="Azoity" class="avatar">
+<div class="typewriter"><h1 class="glitch">Azoity bio</h1></div>
+<div class="clock" id="clock">00:00:00</div>
+<p>Добро пожаловать в моё цифровое пространство.</p>
+<button class="btn" onclick="copyTg()">📋 Связаться со мной</button>
+<div class="player">
+<div class="track-name" id="trackName">Выбери трек ▶️</div>
+<div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
+<div class="time-display"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+<div class="controls-row">
+<button class="ctrl-btn" onclick="prevTrack()">⏮</button>
+<button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()">▶️</button>
+<button class="ctrl-btn" onclick="nextTrack()">⏭</button>
+<button class="ctrl-btn" onclick="toggleMusic()" id="musicToggleBtn">🔇</button>
+</div>
+<div class="visualizer" id="visualizer"></div>
+</div>
+<div class="socials">
+<a href="https://github.com/Azoity-code">GitHub</a>
+<a href="https://t.me/Azoity" id="tgLink">Telegram</a>
+</div>
+<div class="timeline" id="path"><h3 style="margin-bottom:15px;color:var(--acc)">📜 Мой путь</h3><div class="timeline-item"><div class="timeline-date">2024</div><div class="timeline-text">Начало пути в программировании</div></div><div class="timeline-item"><div class="timeline-date">2025</div><div class="timeline-text">Создание первых Telegram ботов</div></div><div class="timeline-item"><div class="timeline-date">2026</div><div class="timeline-text">Запуск личного сайта с телефона</div></div><div class="timeline-item"><div class="timeline-date">Цель 🎯</div><div class="timeline-text" style="color:var(--acc);font-weight:bold">Выучить C++ наизусть</div></div></div>
+<div class="ach-section" id="achievements"><h3 class="ach-title">🏆 Достижения</h3><div class="ach-grid" id="achGrid"></div></div>
+</div></div>
+<div class="controls"><button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
+<script>const achData=[
+{id:'first_visit',name:'Первый визит',icon:'👋',rank:'common'},
+{id:'meloman',name:'Меломан',icon:'🎵',rank:'common'},
+{id:'estet',name:'Эстет',icon:'🎨',rank:'common'},
+{id:'collector',name:'Коллекционер',icon:'🎧',rank:'rare'},
+{id:'social',name:'Социальный',icon:'📋',rank:'rare'},
+{id:'night_owl',name:'Ночная сова',icon:'🌙',rank:'rare'},
+{id:'tg_user',name:'Telegram-юзер',icon:'📱',rank:'epic'},
+{id:'control',name:'Контроль',icon:'⏸️',rank:'epic'},
+{id:'explorer',name:'Исследователь',icon:'⏱️',rank:'epic'},
+{id:'marathoner',name:'Марафонец',icon:'🎶',rank:'legendary'},
+{id:'fan',name:'Фанат',icon:'❤️',rank:'legendary'},
+{id:'vibe_check',name:'Vibe Check',icon:'🔥',rank:'epic'},
+{id:'scroller',name:'Скроллер',icon:'📜',rank:'rare'},
+{id:'click_master',name:'Клик-мастер',icon:'🖱️',rank:'common'}
+];
+let unlocked=JSON.parse(localStorage.getItem('azoity_ach'))||[];
+let playedTracks=new Set(),siteStart=Date.now(),clicks=0,musicEnabled=false;
+function renderAch(){
+const g=document.getElementById('achGrid');g.innerHTML='';
+achData.forEach(a=>{
+const u=unlocked.includes(a.id),d=document.createElement('div');
+d.className=`ach ${a.rank} ${u?'unlocked':''}`;
+d.innerHTML=`<div class="ach-rank">${{common:'Обыч.',rare:'Редк.',epic:'Эпик',legendary:'Лег.'}[a.rank]}</div><div class="ach-icon">${a.icon}</div><div class="ach-name">${a.name}</div>`;
+g.appendChild(d)})}
+function unlock(id){if(!unlocked.includes(id)){unlocked.push(id);localStorage.setItem('azoity_ach',JSON.stringify(unlocked));renderAch();showPopup(id)}}
+function showPopup(id){
+const a=achData.find(x=>x.id===id),p=document.createElement('div');
+p.className='popup';p.innerHTML=`<div style="font-size:1.3em">${a.icon}</div><div style="font-size:.85em;font-weight:bold">Разблокировано: ${a.name}</div>`;
+document.body.appendChild(p);setTimeout(()=>p.remove(),3000)}
+renderAch();unlock('first_visit');
+if(new Date().getHours()>=20||new Date().getHours()<6)unlock('night_owl');
+setInterval(()=>{const e=(Date.now()-siteStart)/1e3;if(e>60)unlock('explorer');if(e>180)unlock('fan')},1e3);
+const playlist=[
+{file:"music/aprel.mp3",name:"Апрель"},{file:"music/Cloud.mp3",name:"Mosquit - Cloud"},
+{file:"music/ego.mp3",name:"Эго"},{file:"music/lonelly.mp3",name:"Lonelly"},
+{file:"music/mir-prikolov.mp3",name:"Мир приколов"},{file:"music/molchy.mp3",name:"Молчу"},
+{file:"music/oblaka.mp3",name:"Облака"},{file:"music/pain.mp3",name:"Pain"},
+{file:"music/shut-up.mp3",name:"Shut Up"}];
+let cur=0,isPlaying=false,audio=new Audio();
+const tn=document.getElementById('trackName'),pb=document.getElementById('progressBar'),pc=document.getElementById('progressContainer'),ct=document.getElementById('currentTime'),du=document.getElementById('duration'),plb=document.getElementById('playBtn'),viz=document.getElementById('visualizer'),mtb=document.getElementById('musicToggleBtn');
+for(let i=0;i<20;i++){const b=document.createElement('div');b.className='viz-bar';viz.appendChild(b)}
+const vb=document.querySelectorAll('.viz-bar');
+function load(i){cur=i;audio.src=playlist[cur].file;tn.innerText=playlist[cur].name;playedTracks.add(cur);if(playedTracks.size>=5)unlock('collector');if(playedTracks.size===playlist.length)unlock('marathoner');if(isPlaying&&musicEnabled)audio.play()}
+function togglePlay(){if(!audio.src)load(0);if(isPlaying){audio.pause();plb.innerText='▶️';unlock('control')}else{if(musicEnabled){audio.play().catch(()=>{});plb.innerText='⏸';unlock('meloman');unlock('vibe_check')}}isPlaying=!isPlaying}
+function next(){cur=(cur+1)%playlist.length;load(cur);if(!isPlaying)togglePlay()}
+function prev(){cur=(cur-1+playlist.length)%playlist.length;load(cur);if(!isPlaying)togglePlay()}
+function toggleMusic(){musicEnabled=!musicEnabled;mtb.innerText=musicEnabled?'🔊':'🔇';if(musicEnabled&&isPlaying){audio.play().catch(()=>{});plb.innerText='⏸'}else{audio.pause();plb.innerText='▶️'}}
+audio.addEventListener('timeupdate',()=>{pb.style.width=((audio.currentTime/audio.duration)*100)+'%';ct.innerText=fT(audio.currentTime);du.innerText=fT(audio.duration||0)});
+audio.addEventListener('ended',next);
+pc.addEventListener('click',e=>{const r=pc.getBoundingClientRect();audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration});
+function fT(s){const m=Math.floor(s/60);return `${m}:${Math.floor(s%60).toString().padStart(2,'0')}`}
+setInterval(()=>{if(isPlaying&&!audio.paused&&musicEnabled)vb.forEach(b=>b.style.height=(Math.random()*25+5)+'px');else vb.forEach(b=>b.style.height='5px')},150);
+load(0);isPlaying=false;plb.innerText='▶️';
+const cursor=document.getElementById('cursor');
+document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX-10+'px';cursor.style.top=e.clientY-10+'px'});
+document.addEventListener('click',e=>{const r=document.createElement('div');r.className='ripple';r.style.width=r.style.height='30px';r.style.left=e.clientX-15+'px';r.style.top=e.clientY-15+'px';document.body.appendChild(r);setTimeout(()=>r.remove(),600);clicks++;if(clicks>=50)unlock('click_master')});
+const card=document.getElementById('tiltCard');
+document.addEventListener('mousemove',e=>{if(window.innerWidth<768)return;card.style.transform=`rotateY(${(e.clientX/window.innerWidth-.5)*20}deg) rotateX(${-(e.clientY/window.innerHeight-.5)*20}deg)`});
+function updateClock(){document.getElementById('clock').innerText=new Date().toLocaleTimeString('ru-RU')}
+setInterval(updateClock,1e3);updateClock();
+function createSnow(){const f=document.createElement('div');f.className='snowflake';f.style.left=Math.random()*100+'vw';f.style.width=f.style.height=Math.random()*4+2+'px';f.style.animationDuration=Math.random()*3+3+'s';f.style.opacity=Math.random();document.body.appendChild(f);setTimeout(()=>f.remove(),6e3)}
+setInterval(createSnow,150);
+window.addEventListener('scroll',()=>{document.getElementById('parallaxBg').style.transform=`translateY(${window.scrollY*.3}px)`;unlock('scroller')});
+function toggleTheme(){const h=document.documentElement,d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeBtn').innerText=d?'☀️':'🌙';unlock('estet')}
+function copyTg(){navigator.clipboard.writeText('@Azoity');const b=event.target,o=b.innerText;b.innerText='✅ Скопировано!';setTimeout(()=>b.innerText=o,2e3);unlock('social')}
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('active')}
+document.getElementById('tgLink').addEventListener('click',()=>unlock('tg_user'));
+</script>
 </body>
 </html>
