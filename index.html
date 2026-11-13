@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Azoity bio</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 3px; }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -26,109 +27,139 @@
             align-items: center;
             text-align: center;
             position: relative;
+            padding: 20px;
         }
-
         body::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
             z-index: 1;
         }
-
         .container {
             position: relative;
             z-index: 2;
-            padding: 40px;
-            background: rgba(20, 20, 20, 0.7);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            padding: 45px 40px;
+            background: rgba(15, 15, 15, 0.75);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 71, 87, 0.15);
+            backdrop-filter: blur(15px);
             max-width: 600px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            box-shadow: 0 0 40px rgba(255, 71, 87, 0.1), 0 8px 32px rgba(0, 0, 0, 0.6);
             animation: fadeInUp 1s ease-out forwards;
         }
-
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        h1 {
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff4757;
+            margin-bottom: 25px;
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.5);
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+        .typewriter h1 {
+            overflow: hidden;
+            border-right: 2px solid #ff4757;
+            white-space: nowrap;
+            margin: 0 auto 20px;
+            animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
             font-size: 2.5em;
-            margin-bottom: 20px;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
         }
-
-        p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #ccc;
-            margin-bottom: 20px;
+        @keyframes typing { from { width: 0; } to { width: 100%; } }
+        @keyframes blink { 50% { border-color: transparent; } }
+        
+        p { 
+            font-size: 1.1em; 
+            line-height: 1.7; 
+            color: #bbb; 
+            margin-bottom: 25px; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
-
         .btn {
             display: inline-block;
-            padding: 12px 30px;
-            background: #ff4757;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
             color: white;
             text-decoration: none;
-            border-radius: 25px;
+            border-radius: 30px;
             font-weight: bold;
             transition: all 0.3s ease;
             margin-top: 10px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
         }
-
-        .btn:hover {
-            background: #ff6b81;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
+        .btn:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.7); 
         }
-
-        .socials {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .socials { margin-top: 30px; display: flex; justify-content: center; gap: 25px; }
+        .socials a { 
+            color: #888; 
+            text-decoration: none; 
+            font-size: 0.95em; 
+            transition: all 0.3s; 
+            letter-spacing: 0.5px;
         }
-
-        .socials a {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 0.95em;
-            transition: color 0.3s;
+        .socials a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        
+        .skills { margin-top: 35px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .skills span { 
+            background: rgba(255,255,255,0.08); 
+            padding: 8px 18px; 
+            border-radius: 20px; 
+            font-size: 0.9em; 
+            color: #ccc;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
         }
-
-        .socials a:hover {
+        .skills span:hover {
+            background: rgba(255, 71, 87, 0.15);
             color: #fff;
+            border-color: rgba(255, 71, 87, 0.3);
+            transform: translateY(-2px);
         }
-
-        .skills {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
+        
+        .projects { margin-top: 45px; text-align: left; }
+        .projects h3 { 
+            color: #fff; 
+            margin-bottom: 18px; 
+            font-size: 1.3em; 
+            text-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
         }
-
-        .skills span {
-            background: rgba(255,255,255,0.1);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            color: #ddd;
+        .project-card { 
+            background: rgba(255,255,255,0.04); 
+            padding: 22px; 
+            border-radius: 12px; 
+            margin-bottom: 12px; 
+            border-left: 3px solid #ff4757;
+            transition: all 0.3s ease;
         }
+        .project-card:hover {
+            background: rgba(255,255,255,0.07);
+            transform: translateX(5px);
+        }
+        .project-card strong { color: #ff4757; font-size: 1.05em; }
+        .project-card p { font-size: 0.9em; color: #999; margin-top: 6px; margin-bottom: 0; text-shadow: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Azoity bio</h1>
+        <img src="images/avatar.jpg" alt="Azoity" class="avatar">
+        <div class="typewriter">
+            <h1>Azoity bio</h1>
+        </div>
         <p>Добро пожаловать.</p>
-        <a href="tg://resolve?domain=Azoity" class="btn">Связаться со мной</a>
+        <a href="tg://resolve?domain=Azoity" class="btn" onclick="copyTg()">Связаться со мной</a>
         <div class="socials">
             <a href="https://github.com/Azoity-code">GitHub</a>
             <a href="https://t.me/Azoity">Telegram</a>
@@ -139,6 +170,26 @@
             <span>🌐 HTML/CSS</span>
             <span>📱 Termux</span>
         </div>
+        <div class="projects">
+            <h3>🚀 Мои проекты</h3>
+            <div class="project-card">
+                <strong>Telegram Bot</strong>
+                <p>Бот для автоматических ответов с проверкой активности пользователей.</p>
+            </div>
+            <div class="project-card">
+                <strong>Azoity bio</strong>
+                <p>Персональный сайт-визитка с анимациями и адаптивным дизайном.</p>
+            </div>
+        </div>
     </div>
+    <script>
+        function copyTg() {
+            navigator.clipboard.writeText('@Azoity');
+            const btn = document.querySelector('.btn');
+            const old = btn.innerText;
+            btn.innerText = '✅ Скопировано!';
+            setTimeout(() => btn.innerText = old, 2000);
+        }
+    </script>
 </body>
 </html>
