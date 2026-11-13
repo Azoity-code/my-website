@@ -3,28 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой первый сайт</title>
+    <title>Мой сайт</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-        h1 {
-            color: #333;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            color: #fff;
+            background-color: #000;
+            background-image: url('https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycHU4cXBjMHJldWtjM3J1a3B4dGJqZzQwbzhpZzQ4Ymcxc25jNGprOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4ilFRqgbzbx4c/giphy.gif');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            position: relative;
         }
+
+        /* Затемняющий слой, чтобы текст читался поверх гифки */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            padding: 40px;
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
         p {
+            font-size: 1.1em;
             line-height: 1.6;
-            color: #666;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #ff4757;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #ff6b81;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
+        }
+
+        .socials {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .socials a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: color 0.3s;
+        }
+
+        .socials a:hover {
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <h1>Привет! Это мой сайт</h1>
-    <p>Я создал этот сайт с помощью Termux на телефоне!</p>
-    <p>Здесь я могу писать о том, что мне интересно.</p>
+    <div class="container">
+        <h1>🎸 Cowboy Bebop Vibes</h1>
+        <p>Добро пожаловать на мой сайт, созданный с телефона через Termux и Vercel.</p>
+        <a href="https://t.me/ваш_ник" class="btn">Связаться со мной</a>
+        <div class="socials">
+            <a href="https://github.com/Azoity-code">GitHub</a>
+            <a href="https://t.me/ваш_ник">Telegram</a>
+        </div>
+    </div>
 </body>
 </html>
