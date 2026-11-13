@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт</title>
+    <title>Azoity bio</title>
     <style>
         * {
             margin: 0;
@@ -28,7 +28,6 @@
             position: relative;
         }
 
-        /* Затемняющий слой, чтобы текст читался поверх гифки */
         body::before {
             content: '';
             position: absolute;
@@ -50,12 +49,12 @@
             backdrop-filter: blur(10px);
             max-width: 600px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            <div class="skills" style="margin-top: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-    <span style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 0.9em;">🐍 Python</span>
-    <span style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 0.9em;">🤖 Telegram Bots</span>
-    <span style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 0.9em;">🌐 HTML/CSS</span>
-    <span style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 0.9em;">📱 Termux</span>
-</div>
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
@@ -107,16 +106,38 @@
         .socials a:hover {
             color: #fff;
         }
+
+        .skills {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .skills span {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #ddd;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Azoity bio</h1>
         <p>Добро пожаловать.</p>
-        <a href="https://t.me/Azoity" class="btn">Связаться со мной</a>
+        <a href="tg://resolve?domain=Azoity" class="btn">Связаться со мной</a>
         <div class="socials">
             <a href="https://github.com/Azoity-code">GitHub</a>
             <a href="https://t.me/Azoity">Telegram</a>
+        </div>
+        <div class="skills">
+            <span>🐍 Python</span>
+            <span>🤖 Telegram Bots</span>
+            <span>🌐 HTML/CSS</span>
+            <span>📱 Termux</span>
         </div>
     </div>
 </body>
