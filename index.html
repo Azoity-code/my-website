@@ -38,7 +38,7 @@ p{font-size:1.1em;line-height:1.7;color:var(--text);opacity:.8;margin-bottom:25p
 .progress-container{width:100%;height:6px;background:rgba(255,255,255,.1);border-radius:3px;margin:15px 0;cursor:pointer;position:relative}
 .progress-bar{height:100%;background:var(--acc);border-radius:3px;width:0%;transition:.1s}
 .time-display{display:flex;justify-content:space-between;font-size:.8em;opacity:.6;margin-top:5px}
-.controls-row{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:15px}
+.controls-row{display:flex;justify-content:center;align-items:center;gap:15px;margin-top:15px}
 .ctrl-btn{background:none;border:none;color:var(--text);font-size:1.5em;cursor:pointer;transition:.3s;opacity:.7}.ctrl-btn:hover{opacity:1;color:var(--acc);transform:scale(1.2)}.play-btn{font-size:2.2em;opacity:1}
 .visualizer{display:flex;justify-content:center;gap:3px;height:30px;align-items:flex-end;margin-top:15px}
 .viz-bar{width:4px;background:var(--acc);border-radius:2px;height:5px;transition:.15s ease}
@@ -76,10 +76,10 @@ p{font-size:1.1em;line-height:1.7;color:var(--text);opacity:.8;margin-bottom:25p
 <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
 <div class="time-display"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
 <div class="controls-row">
+<button class="ctrl-btn" onclick="toggleMusic()" id="musicToggleBtn">🔊</button>
 <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
 <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()">▶️</button>
 <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
-<button class="ctrl-btn" onclick="toggleMusic()" id="musicToggleBtn">🔇</button>
 </div>
 <div class="visualizer" id="visualizer"></div>
 </div>
@@ -91,7 +91,8 @@ p{font-size:1.1em;line-height:1.7;color:var(--text);opacity:.8;margin-bottom:25p
 <div class="ach-section" id="achievements"><h3 class="ach-title">🏆 Достижения</h3><div class="ach-grid" id="achGrid"></div></div>
 </div></div>
 <div class="controls"><button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
-<script>const achData=[
+<script>
+const achData=[
 {id:'first_visit',name:'Первый визит',icon:'👋',rank:'common'},
 {id:'meloman',name:'Меломан',icon:'🎵',rank:'common'},
 {id:'estet',name:'Эстет',icon:'🎨',rank:'common'},
@@ -108,7 +109,7 @@ p{font-size:1.1em;line-height:1.7;color:var(--text);opacity:.8;margin-bottom:25p
 {id:'click_master',name:'Клик-мастер',icon:'🖱️',rank:'common'}
 ];
 let unlocked=JSON.parse(localStorage.getItem('azoity_ach'))||[];
-let playedTracks=new Set(),siteStart=Date.now(),clicks=0,musicEnabled=false;
+let playedTracks=new Set(),siteStart=Date.now(),clicks=0,musicEnabled=true;
 function renderAch(){
 const g=document.getElementById('achGrid');g.innerHTML='';
 achData.forEach(a=>{
