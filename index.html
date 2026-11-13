@@ -1,195 +1,249 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Azoity bio</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        /* Кастомный скроллбар */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 3px; }
+        :root {
+            --bg: #000; --text: #fff; --card-bg: rgba(15,15,15,0.75);
+            --accent: #ff4757; --border: rgba(255,71,87,0.15);
+            --glow: rgba(255,71,87,0.1); --snow-color: rgba(255,255,255,0.8);
+        }
+        [data-theme="light"] {
+            --bg: #f0f0f0; --text: #1a1a1a; --card-bg: rgba(255,255,255,0.85);
+            --accent: #d63031; --border: rgba(214,48,49,0.15);
+            --glow: rgba(214,48,49,0.1); --snow-color: rgba(0,0,0,0.15);
+        }
 
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            min-height: 100vh;
-            color: #fff;
-            background-color: #000;
-            background-image: url('https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycHU4cXBjMHJldWtjM3J1a3B4dGJqZzQwbzhpZzQ4Ymcxc25jNGprOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4ilFRqgbzbx4c/giphy.gif');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            padding: 20px;
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        
+        /* Кастомный курсор */
+        .cursor { width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s; mix-blend-mode: difference; }
+        .ripple { position: fixed; border-radius: 50%; background: var(--accent); opacity: 0.4; pointer-events: none; animation: rippleAnim 0.6s ease-out forwards; z-index: 9998; }
+        @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+
+        body { font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; color: var(--text); background: var(--bg); overflow-x: hidden; transition: background 0.5s, color 0.5s; }
+        
+        /* Параллакс фон */
+        .parallax-bg { position: fixed; top: -10%; left: 0; width: 100%; height: 120%; background-image: url('https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycHU4cXBjMHJldWtjM3J1a3B4dGJqZzQwbzhpZzQ4Ymcxc25jNGprOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4ilFRqgbzbx4c/giphy.gif'); background-size: cover; background-position: center; z-index: -2; transition: transform 0.1s linear; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: -1; transition: background 0.5s; }
+        [data-theme="light"] .overlay { background: rgba(255,255,255,0.4); }
+
+        /* Снег */
+        .snowflake { position: fixed; top: -10px; background: var(--snow-color); border-radius: 50%; pointer-events: none; z-index: -1; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh); } }
+
+        /* Навигация */
+        nav { position: fixed; top: 0; left: 0; right: 0; padding: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px); background: rgba(0,0,0,0.3); }
+        [data-theme="light"] nav { background: rgba(255,255,255,0.3); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text); text-decoration: none; font-weight: bold; transition: color 0.3s; }
+        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .burger span { width: 25px; height: 3px; background: var(--text); transition: 0.3s; }
+        @media (max-width: 768px) {
+            .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: var(--card-bg); flex-direction: column; justify-content: center; align-items: center; transition: 0.4s; backdrop-filter: blur(20px); }
+            .nav-links.active { right: 0; }
+            .burger { display: flex; }
         }
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            z-index: 1;
-        }
-        .container {
-            position: relative;
-            z-index: 2;
-            padding: 45px 40px;
-            background: rgba(15, 15, 15, 0.75);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 71, 87, 0.15);
-            backdrop-filter: blur(15px);
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 0 40px rgba(255, 71, 87, 0.1), 0 8px 32px rgba(0, 0, 0, 0.6);
+
+        /* Контейнер с 3D наклоном */
+        .container-wrapper { perspective: 1000px; padding: 100px 20px 40px; display: flex; justify-content: center; }
+        .container { 
+            padding: 45px 40px; background: var(--card-bg); border-radius: 20px; 
+            border: 1px solid var(--border); backdrop-filter: blur(15px); 
+            max-width: 600px; width: 100%; text-align: center;
+            box-shadow: 0 0 40px var(--glow), 0 8px 32px rgba(0,0,0,0.6);
+            transform-style: preserve-3d; transition: transform 0.1s ease-out;
             animation: fadeInUp 1s ease-out forwards;
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #ff4757;
-            margin-bottom: 25px;
-            box-shadow: 0 0 30px rgba(255, 71, 87, 0.5);
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.3s;
-            opacity: 0;
-        }
-        .typewriter h1 {
-            overflow: hidden;
-            border-right: 2px solid #ff4757;
-            white-space: nowrap;
-            margin: 0 auto 20px;
-            animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
-            font-size: 2.5em;
-            text-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); margin-bottom: 25px; box-shadow: 0 0 30px var(--glow); }
+        
+        /* Печать + Глитч */
+        .typewriter h1 { overflow: hidden; border-right: 2px solid var(--accent); white-space: nowrap; margin: 0 auto 20px; animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite; font-size: 2.5em; }
+        .glitch:hover { animation: glitch 0.3s infinite; color: var(--accent); }
         @keyframes typing { from { width: 0; } to { width: 100%; } }
         @keyframes blink { 50% { border-color: transparent; } }
+        @keyframes glitch { 0%,100% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(2px, -2px); } 60% { transform: translate(-2px, -2px); } 80% { transform: translate(2px, 2px); } }
+
+        p { font-size: 1.1em; line-height: 1.7; color: var(--text); opacity: 0.8; margin-bottom: 25px; }
         
-        p { 
-            font-size: 1.1em; 
-            line-height: 1.7; 
-            color: #bbb; 
-            margin-bottom: 25px; 
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-        }
-        .btn {
-            display: inline-block;
-            padding: 14px 35px;
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-        }
-        .btn:hover { 
-            transform: scale(1.05); 
-            box-shadow: 0 0 30px rgba(255, 71, 87, 0.7); 
-        }
+        /* Часы */
+        .clock { font-family: monospace; font-size: 1.2em; color: var(--accent); margin-bottom: 20px; text-shadow: 0 0 10px var(--glow); letter-spacing: 2px; }
+
+        .btn { display: inline-block; padding: 14px 35px; background: linear-gradient(135deg, var(--accent), #ff6b81); color: white; text-decoration: none; border-radius: 30px; font-weight: bold; transition: all 0.3s; margin: 10px 5px; border: none; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--glow); }
+        
         .socials { margin-top: 30px; display: flex; justify-content: center; gap: 25px; }
-        .socials a { 
-            color: #888; 
-            text-decoration: none; 
-            font-size: 0.95em; 
-            transition: all 0.3s; 
-            letter-spacing: 0.5px;
-        }
-        .socials a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        
-        .skills { margin-top: 35px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .skills span { 
-            background: rgba(255,255,255,0.08); 
-            padding: 8px 18px; 
-            border-radius: 20px; 
-            font-size: 0.9em; 
-            color: #ccc;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-        .skills span:hover {
-            background: rgba(255, 71, 87, 0.15);
-            color: #fff;
-            border-color: rgba(255, 71, 87, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .projects { margin-top: 45px; text-align: left; }
-        .projects h3 { 
-            color: #fff; 
-            margin-bottom: 18px; 
-            font-size: 1.3em; 
-            text-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
-        }
-        .project-card { 
-            background: rgba(255,255,255,0.04); 
-            padding: 22px; 
-            border-radius: 12px; 
-            margin-bottom: 12px; 
-            border-left: 3px solid #ff4757;
-            transition: all 0.3s ease;
-        }
-        .project-card:hover {
-            background: rgba(255,255,255,0.07);
-            transform: translateX(5px);
-        }
-        .project-card strong { color: #ff4757; font-size: 1.05em; }
-        .project-card p { font-size: 0.9em; color: #999; margin-top: 6px; margin-bottom: 0; text-shadow: none; }
+        .socials a { color: var(--text); opacity: 0.7; text-decoration: none; transition: 0.3s; }
+        .socials a:hover { opacity: 1; color: var(--accent); }
+
+        /* Мой путь */
+        .timeline { margin-top: 40px; text-align: left; border-left: 2px solid var(--accent); padding-left: 20px; }
+        .timeline-item { margin-bottom: 20px; position: relative; }
+        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
+        .timeline-date { font-size: 0.8em; color: var(--accent); font-weight: bold; }
+        .timeline-text { font-size: 0.95em; opacity: 0.8; }
+
+        /* Достижения */
+        .achievements { margin-top: 40px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .achievement { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; text-align: center; min-width: 100px; opacity: 0.3; transition: 0.5s; border: 1px solid transparent; }
+        .achievement.unlocked { opacity: 1; border-color: var(--accent); box-shadow: 0 0 15px var(--glow); transform: scale(1.05); }
+        .achievement-icon { font-size: 2em; margin-bottom: 5px; }
+        .achievement-name { font-size: 0.75em; }
+
+        /* Переключатель темы и музыки */
+        .controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 100; }
+        .control-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; font-size: 1.2em; backdrop-filter: blur(10px); transition: 0.3s; }
+        .control-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--glow); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="images/avatar.jpg" alt="Azoity" class="avatar">
-        <div class="typewriter">
-            <h1>Azoity bio</h1>
+    <div class="cursor" id="cursor"></div>
+    <div class="parallax-bg" id="parallaxBg"></div>
+    <div class="overlay"></div>
+    
+    <nav>
+        <div style="font-weight:bold; color:var(--accent)">Azoity</div>
+        <div class="nav-links" id="navLinks">
+            <a href="#bio">Био</a>
+            <a href="#path">Путь</a>
+            <a href="#achievements">Достижения</a>
         </div>
-        <p>Добро пожаловать.</p>
-        <a href="tg://resolve?domain=Azoity" class="btn" onclick="copyTg()">Связаться со мной</a>
-        <div class="socials">
-            <a href="https://github.com/Azoity-code">GitHub</a>
-            <a href="https://t.me/Azoity">Telegram</a>
+        <div class="burger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
-        <div class="skills">
-            <span>🐍 Python</span>
-            <span>🤖 Telegram Bots</span>
-            <span>🌐 HTML/CSS</span>
-            <span>📱 Termux</span>
-        </div>
-        <div class="projects">
-            <h3>🚀 Мои проекты</h3>
-            <div class="project-card">
-                <strong>Telegram Bot</strong>
-                <p>Бот для автоматических ответов с проверкой активности пользователей.</p>
+    </nav>
+
+    <div class="container-wrapper">
+        <div class="container" id="tiltCard">
+            <img src="images/avatar.jpg" alt="Azoity" class="avatar">
+            <div class="typewriter"><h1 class="glitch">Azoity bio</h1></div>
+            <div class="clock" id="clock">00:00:00</div>
+            <p>Добро пожаловать в моё цифровое пространство.</p>
+            
+            <button class="btn" onclick="copyTg()">📋 Связаться со мной</button>
+            <button class="btn" onclick="toggleMusic()" id="musicBtn">🎵 Включить музыку</button>
+            
+            <div class="socials">
+                <a href="https://github.com/Azoity-code">GitHub</a>
+                <a href="https://t.me/Azoity">Telegram</a>
             </div>
-            <div class="project-card">
-                <strong>Azoity bio</strong>
-                <p>Персональный сайт-визитка с анимациями и адаптивным дизайном.</p>
+
+            <div class="timeline" id="path">
+                <h3 style="margin-bottom:15px; color:var(--accent)">📜 Мой путь</h3>
+                <div class="timeline-item"><div class="timeline-date">2024</div><div class="timeline-text">Начало пути в программировании</div></div>
+                <div class="timeline-item"><div class="timeline-date">2025</div><div class="timeline-text">Создание первых Telegram ботов</div></div>
+                <div class="timeline-item"><div class="timeline-date">2026</div><div class="timeline-text">Запуск личного сайта с телефона</div></div>
+                <div class="timeline-item"><div class="timeline-date">Цель 🎯</div><div class="timeline-text" style="color:var(--accent); font-weight:bold;">Выучить C++ наизусть</div></div>
+            </div>
+
+            <div class="achievements" id="achievements">
+                <div class="achievement" data-id="1"><div class="achievement-icon">🚀</div><div class="achievement-name">Первый сайт</div></div>
+                <div class="achievement" data-id="2"><div class="achievement-icon">🐍</div><div class="achievement-name">Python мастер</div></div>
+                <div class="achievement" data-id="3"><div class="achievement-icon">❄️</div><div class="achievement-name">Snow Effect</div></div>
+                <div class="achievement" data-id="4"><div class="achievement-icon">⚡</div><div class="achievement-name">C++ Goal</div></div>
             </div>
         </div>
     </div>
+
+    <div class="controls">
+        <button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+        <button class="control-btn" onclick="toggleMusic()" id="musicIcon">🔇</button>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="music/track.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
+        // Курсор и волна
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX - 10 + 'px'; cursor.style.top = e.clientY - 10 + 'px'; });
+        document.addEventListener('click', e => {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = '30px';
+            ripple.style.left = e.clientX - 15 + 'px';
+            ripple.style.top = e.clientY - 15 + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+
+        // 3D Наклон
+        const card = document.getElementById('tiltCard');
+        document.addEventListener('mousemove', e => {
+            if(window.innerWidth < 768) return;
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
+
+        // Часы
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('ru-RU');
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        // Снег
+        function createSnow() {
+            const flake = document.createElement('div');
+            flake.className = 'snowflake';
+            flake.style.left = Math.random() * 100 + 'vw';
+            flake.style.width = flake.style.height = Math.random() * 4 + 2 + 'px';
+            flake.style.animationDuration = Math.random() * 3 + 3 + 's';
+            flake.style.opacity = Math.random();
+            document.body.appendChild(flake);
+            setTimeout(() => flake.remove(), 6000);
+        }
+        setInterval(createSnow, 150);
+
+        // Параллакс
+        window.addEventListener('scroll', () => {
+            document.getElementById('parallaxBg').style.transform = `translateY(${window.scrollY * 0.3}px)`;
+        });
+
+        // Тема
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
+        }
+
+        // Музыка
+        let musicPlaying = false;
+        function toggleMusic() {
+            const audio = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            const icon = document.getElementById('musicIcon');
+            if(musicPlaying) { audio.pause(); btn.innerText = '🎵 Включить музыку'; icon.innerText = '🔇'; }
+            else { audio.play().catch(e => alert('Нажми на кнопку ещё раз для запуска аудио')); btn.innerText = '⏸ Пауза'; icon.innerText = '🔊'; }
+            musicPlaying = !musicPlaying;
+        }
+
+        // Копирование
         function copyTg() {
             navigator.clipboard.writeText('@Azoity');
-            const btn = document.querySelector('.btn');
+            const btn = event.target;
             const old = btn.innerText;
             btn.innerText = '✅ Скопировано!';
             setTimeout(() => btn.innerText = old, 2000);
         }
+
+        // Мобильное меню
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+
+        // Достижения при скролле
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.classList.add('unlocked');
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.achievement').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
