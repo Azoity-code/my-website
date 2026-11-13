@@ -21,10 +21,10 @@
         [data-theme="light"] nav { background: rgba(255,255,255,0.3); }
         .nav-links { display: flex; gap: 20px; }
         .nav-links a { color: var(--text); text-decoration: none; font-weight: bold; transition: color 0.3s; }
-        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 101; } /* ИСПРАВЛЕНО: добавлен z-index */
         .burger span { width: 25px; height: 3px; background: var(--text); transition: 0.3s; }
         @media (max-width: 768px) {
-            .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: var(--card-bg); flex-direction: column; justify-content: center; align-items: center; transition: 0.4s; backdrop-filter: blur(20px); }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: var(--card-bg); flex-direction: column; justify-content: center; align-items: center; transition: 0.4s; backdrop-filter: blur(20px); z-index: 100; }
             .nav-links.active { right: 0; }
             .burger { display: flex; }
         }
@@ -46,17 +46,8 @@
         @keyframes glitch { 0%,100% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(2px, -2px); } 60% { transform: translate(-2px, -2px); } 80% { transform: translate(2px, 2px); } }
         p { font-size: 1.1em; line-height: 1.7; color: var(--text); opacity: 0.8; margin-bottom: 25px; }
         .clock { font-family: monospace; font-size: 1.2em; color: var(--accent); margin-bottom: 20px; text-shadow: 0 0 10px var(--glow); letter-spacing: 2px; }
-        
-        /* Кнопка-ссылка */
-        .btn-link { 
-            display: inline-block; padding: 14px 35px; 
-            background: linear-gradient(135deg, var(--accent), #ff6b81); 
-            color: white; text-decoration: none; border-radius: 30px; 
-            font-weight: bold; transition: all 0.3s; margin: 10px 5px; 
-            border: none; cursor: pointer;
-        }
+        .btn-link { display: inline-block; padding: 14px 35px; background: linear-gradient(135deg, var(--accent), #ff6b81); color: white; text-decoration: none; border-radius: 30px; font-weight: bold; transition: all 0.3s; margin: 10px 5px; border: none; cursor: pointer; }
         .btn-link:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--glow); }
-        
         .socials { margin-top: 30px; display: flex; justify-content: center; gap: 25px; }
         .socials a { color: var(--text); opacity: 0.7; text-decoration: none; transition: 0.3s; }
         .socials a:hover { opacity: 1; color: var(--accent); }
@@ -76,17 +67,14 @@
         .timeline-item::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
         .timeline-date { font-size: 0.8em; color: var(--accent); font-weight: bold; }
         .timeline-text { font-size: 0.95em; opacity: 0.8; }
-        
         .achievements { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px; }
         .achievement { background: rgba(255,255,255,0.03); padding: 12px 8px; border-radius: 12px; text-align: center; opacity: 0.2; transition: 0.5s; border: 2px solid transparent; filter: grayscale(100%) blur(1px); }
         .achievement.unlocked { opacity: 1; filter: grayscale(0%) blur(0); transform: scale(1.05); border-color: var(--accent); box-shadow: 0 0 15px var(--glow); }
         .achievement-icon { font-size: 1.8em; margin-bottom: 5px; }
         .achievement-name { font-size: 0.7em; line-height: 1.2; }
-        
         .controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 100; }
         .control-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; font-size: 1.2em; backdrop-filter: blur(10px); transition: 0.3s; }
         .control-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--glow); }
-        
         .popup { position: fixed; top: 80px; right: 20px; background: var(--card-bg); border: 2px solid var(--accent); border-radius: 15px; padding: 12px 15px; z-index: 1000; animation: sI 0.5s, fO 0.5s 2.5s forwards; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px; }
         @keyframes sI { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes fO { to { opacity: 0; transform: translateY(-20px); } }
@@ -109,10 +97,7 @@
             <div class="typewriter"><h1 class="glitch">Azoity bio</h1></div>
             <div class="clock" id="clock">00:00:00</div>
             <p>Добро пожаловать в моё цифровое пространство.</p>
-            
-            <!-- НОВАЯ КНОПКА-ССЫЛКА -->
             <a href="https://t.me/Azoity" class="btn-link" target="_blank">Перейти в Telegram</a>
-            
             <div class="player">
                 <div class="track-name" id="trackName">Выбери трек ▶️</div>
                 <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
@@ -259,9 +244,26 @@
         setInterval(createSnow, 150);
         window.addEventListener('scroll', () => { document.getElementById('parallaxBg').style.transform = `translateY(${window.scrollY * 0.3}px)`; unlock('scroll'); });
         function toggleTheme() { const html = document.documentElement; const isDark = html.getAttribute('data-theme') === 'dark'; html.setAttribute('data-theme', isDark ? 'light' : 'dark'); document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙'; unlock('theme'); }
-        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
         
-        // Отслеживание клика по кнопке Telegram
+        // === ИСПРАВЛЕННОЕ МЕНЮ ===
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+        // Закрытие при клике вне меню
+        document.addEventListener('click', (e) => {
+            const nav = document.getElementById('navLinks');
+            const burger = document.querySelector('.burger');
+            if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target)) {
+                nav.classList.remove('active');
+}
+        });
+        // Закрытие при клике на ссылку внутри меню
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
         document.querySelector('.btn-link').addEventListener('click', () => unlock('tg'));
     </script>
 </body>
