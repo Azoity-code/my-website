@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,624 +8,232 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
         
         :root {
-            --cp-yellow: #fcee0a;
+            --cp-accent: #fcee0a;
             --cp-red: #ff003c;
             --cp-blue: #00f0ff;
             --cp-black: #000;
             --cp-dark: #0a0a0a;
             --cp-gray: #1a1a1a;
             --cp-text: #fff;
-            --glow-yellow: rgba(252, 238, 10, 0.5);
-            --glow-red: rgba(255, 0, 60, 0.5);
+            --glow-accent: rgba(252, 238, 10, 0.5);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none !important;
+        [data-theme="light"] {
+            --cp-accent: #00f0ff;
+            --cp-black: #e0e0e0;
+            --cp-dark: #ffffff;
+            --cp-gray: #cccccc;
+            --cp-text: #000;
+            --glow-accent: rgba(0, 240, 255, 0.5);
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: var(--cp-black);
-            color: var(--cp-text);
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
+            font-family: 'Rajdhani', sans-serif; background: var(--cp-black); color: var(--cp-text);
+            overflow-x: hidden; min-height: 100vh; position: relative; transition: background 0.5s, color 0.5s;
         }
-
-        /* Сканирующие линии */
         body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15),
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            z-index: 9998;
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
+            pointer-events: none; z-index: 9998;
         }
-
-        /* Кастомный курсор */
         .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--cp-yellow);
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s;
+            width: 20px; height: 20px; border: 2px solid var(--cp-accent); position: fixed;
+            pointer-events: none; z-index: 9999; transition: transform 0.1s;
             clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
         }
-
         .ripple {
-            position: fixed;
-            border-radius: 50%;
-            background: var(--cp-yellow);
-            opacity: 0.4;
-            pointer-events: none;
-            animation: rippleAnim 0.6s ease-out forwards;
-            z-index: 9998;
+            position: fixed; border-radius: 50%; background: var(--cp-accent); opacity: 0.4;
+            pointer-events: none; animation: rippleAnim 0.6s ease-out forwards; z-index: 9998;
         }
+        @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 
-        @keyframes rippleAnim {
-            to { transform: scale(4); opacity: 0; }
-        }
-
-        /* Фон */
+        /* ФОН С РАНДОМНОЙ ГИФКОЙ */
         .parallax-bg {
-            position: fixed;
-            top: -10%;
-            left: 0;
-            width: 100%;
-            height: 120%;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 50%, #000 100%);
-            z-index: -2;
-            transition: transform 0.1s linear;
+            position: fixed; top: -10%; left: 0; width: 100%; height: 120%;
+            background-size: cover; background-position: center;
+            z-index: -2; transition: transform 0.1s linear, background-image 1s ease-in-out;
         }
-
-        .parallax-bg::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(252, 238, 10, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.1) 0%, transparent 50%);
-        }
-
         .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: -1;
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); /* Меньше затемнения для гифки */
+            z-index: -1; transition: background 0.5s;
         }
+        [data-theme="light"] .overlay { background: rgba(255, 255, 255, 0.3); }
 
-        /* Снег */
         .snowflake {
-            position: fixed;
-            top: -10px;
-            background: var(--cp-yellow);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            animation: fall linear infinite;
-            box-shadow: 0 0 10px var(--cp-yellow);
+            position: fixed; top: -10px; background: var(--cp-accent); border-radius: 50%;
+            pointer-events: none; z-index: -1; animation: fall linear infinite;
+            box-shadow: 0 0 10px var(--glow-accent);
         }
+        @keyframes fall { to { transform: translateY(110vh); } }
 
-        @keyframes fall {
-            to { transform: translateY(110vh); }
-        }
-
-        /* Навигация */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.8);
-            border-bottom: 2px solid var(--cp-yellow);
+            position: fixed; top: 0; left: 0; right: 0; padding: 20px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+            background: rgba(0, 0, 0, 0.6); border-bottom: 2px solid var(--cp-accent);
             clip-path: polygon(0 0, 100% 0, 100% 85%, 98% 100%, 0 100%);
         }
-
         .nav-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 1.5em;
-            color: var(--cp-yellow);
-            text-shadow: 0 0 20px var(--glow-yellow);
-            letter-spacing: 3px;
+            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.5em;
+            color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent); letter-spacing: 3px;
         }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
+        .nav-links { display: flex; gap: 30px; }
         .nav-links a {
-            color: var(--cp-text);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s;
-            position: relative;
-            padding: 5px 15px;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+            color: var(--cp-text); text-decoration: none; font-weight: 700; font-size: 1.1em;
+            text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;
+            padding: 5px 15px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
         }
-
-        .nav-links a:hover {
-            color: var(--cp-yellow);
-            background: rgba(252, 238, 10, 0.1);
-            text-shadow: 0 0 10px var(--glow-yellow);
-        }
-
-        .burger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            z-index: 101;
-        }
-
-        .burger span {
-            width: 30px;
-            height: 3px;
-            background: var(--cp-yellow);
-            transition: 0.3s;
-            box-shadow: 0 0 10px var(--glow-yellow);
-        }
+        .nav-links a:hover { color: var(--cp-accent); background: rgba(252, 238, 10, 0.1); text-shadow: 0 0 10px var(--glow-accent); }
+        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 101; }
+        .burger span { width: 30px; height: 3px; background: var(--cp-accent); transition: 0.3s; box-shadow: 0 0 10px var(--glow-accent); }
 
         @media (max-width: 768px) {
             .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 70%;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.95);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: 0.4s;
-                border-left: 2px solid var(--cp-yellow);
+                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
+                background: rgba(0, 0, 0, 0.85); flex-direction: column; justify-content: center;
+                align-items: center; transition: 0.4s; border-left: 2px solid var(--cp-accent);
             }
             .nav-links.active { right: 0; }
             .burger { display: flex; }
         }
 
-        /* Главный контейнер */
-        .container-wrapper {
-            perspective: 1000px;
-            padding: 120px 20px 40px;
-            display: flex;
-            justify-content: center;
-        }
-
+        .container-wrapper { perspective: 1000px; padding: 120px 20px 40px; display: flex; justify-content: center; }
         .container {
-            padding: 50px 40px;
-            background: rgba(10, 10, 10, 0.9);
-            border: 2px solid var(--cp-yellow);
-            max-width: 700px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 
-                0 0 40px var(--glow-yellow),
-                inset 0 0 40px rgba(252, 238, 10, 0.05);
-            position: relative;
-            clip-path: polygon(
-                0 2%, 2% 0, 98% 0, 100% 2%,
-                100% 98%, 98% 100%, 2% 100%, 0 98%
-            );
+            padding: 50px 40px; 
+            /* ПОЛУПРОЗРАЧНЫЙ ФОН + РАЗМЫТИЕ ДЛЯ ВИДИМОСТИ ГИФКИ */
+            background: rgba(10, 10, 10, 0.65); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid var(--cp-accent); max-width: 700px; width: 100%; text-align: center;
+            box-shadow: 0 0 40px var(--glow-accent), inset 0 0 40px rgba(252, 238, 10, 0.05);
+            position: relative; clip-path: polygon(0 2%, 2% 0, 98% 0, 100% 2%, 100% 98%, 98% 100%, 2% 100%, 0 98%);
             animation: fadeInUp 1s ease-out forwards;
         }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .container::before, .container::after {
+            content: ''; position: absolute; width: 30px; height: 30px; border: 3px solid var(--cp-accent);
         }
-
-        /* Угловые декорации */
-        .container::before,
-        .container::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 3px solid var(--cp-yellow);
-        }
-
-        .container::before {
-            top: -5px;
-            left: -5px;
-            border-right: none;
-            border-bottom: none;
-        }
-
-        .container::after {
-            bottom: -5px;
-            right: -5px;
-            border-left: none;
-            border-top: none;
-        }
+        .container::before { top: -5px; left: -5px; border-right: none; border-bottom: none; }
+        .container::after { bottom: -5px; right: -5px; border-left: none; border-top: none; }
 
         .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--cp-yellow);
-            margin-bottom: 30px;
-            box-shadow: 0 0 30px var(--glow-yellow);
-            filter: contrast(1.2) brightness(1.1);
+            width: 150px; height: 150px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--cp-accent); margin-bottom: 30px;
+            box-shadow: 0 0 30px var(--glow-accent); filter: contrast(1.2) brightness(1.1);
         }
-
         .typewriter h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 3em;
-            color: var(--cp-yellow);
-            text-shadow: 
-                0 0 20px var(--glow-yellow),
-                0 0 40px var(--glow-yellow);
-            overflow: hidden;
-            border-right: 3px solid var(--cp-yellow);
-            white-space: nowrap;
-            margin: 0 auto 20px;
-            animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
+            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 3em;
+            color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent), 0 0 40px var(--glow-accent);
+            overflow: hidden; border-right: 3px solid var(--cp-accent); white-space: nowrap;
+            margin: 0 auto 20px; animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
             letter-spacing: 5px;
         }
-
-        .glitch:hover {
-            animation: glitch 0.3s infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes blink {
-            50% { border-color: transparent; }
-        }
-
+        .glitch:hover { animation: glitch 0.3s infinite; }
+        @keyframes typing { from { width: 0; } to { width: 100%; } }
+        @keyframes blink { 50% { border-color: transparent; } }
         @keyframes glitch {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(3px, -3px); }
-            60% { transform: translate(-3px, -3px); }
+            0%, 100% { transform: translate(0); } 20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(3px, -3px); } 60% { transform: translate(-3px, -3px); }
             80% { transform: translate(3px, 3px); }
         }
-
-        p {
-            font-size: 1.2em;
-            line-height: 1.7;
-            color: var(--cp-text);
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
+        p { font-size: 1.2em; line-height: 1.7; color: var(--cp-text); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
         .clock {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5em;
-            color: var(--cp-yellow);
-            margin-bottom: 25px;
-            text-shadow: 0 0 15px var(--glow-yellow);
-            letter-spacing: 3px;
+            font-family: 'Orbitron', sans-serif; font-size: 1.5em; color: var(--cp-accent);
+            margin-bottom: 25px; text-shadow: 0 0 15px var(--glow-accent); letter-spacing: 3px;
         }
-
-        /* Кнопки в стиле Cyberpunk */
         .btn-link {
-            display: inline-block;
-            padding: 15px 40px;
-            background: var(--cp-yellow);
-            color: var(--cp-black);
-            text-decoration: none;
-            font-weight: 900;
-            font-size: 1.1em;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            border: none;
-            cursor: pointer;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-            transition: all 0.3s;
-            margin: 10px;
-            position: relative;
+            display: inline-block; padding: 15px 40px; background: var(--cp-accent);
+            color: var(--cp-black); text-decoration: none; font-weight: 900; font-size: 1.1em;
+            text-transform: uppercase; letter-spacing: 3px; border: none; cursor: pointer;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); transition: all 0.3s; margin: 10px;
         }
-
-        .btn-link:hover {
-            background: var(--cp-red);
-            color: var(--cp-text);
-            transform: scale(1.05);
-            box-shadow: 0 0 30px var(--glow-red);
-        }
-
-        .socials {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
-
+        .btn-link:hover { background: var(--cp-red); color: var(--cp-text); transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 0, 60, 0.5); }
+        .socials { margin-top: 30px; display: flex; justify-content: center; gap: 30px; }
         .socials a {
-            color: var(--cp-text);
-            opacity: 0.7;
-            text-decoration: none;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s;
-            padding: 10px 20px;
-            border: 1px solid var(--cp-yellow);
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+            color: var(--cp-text); opacity: 0.7; text-decoration: none; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;
+            padding: 10px 20px; border: 1px solid var(--cp-accent); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
         }
-
-        .socials a:hover {
-            opacity: 1;
-            background: var(--cp-yellow);
-            color: var(--cp-black);
-            box-shadow: 0 0 20px var(--glow-yellow);
-        }
-/* Плеер */
-        .player {
-            margin-top: 40px;
-            padding: 25px;
-            background: rgba(20, 20, 20, 0.8);
-            border: 2px solid var(--cp-yellow);
+        .socials a:hover { opacity: 1; background: var(--cp-accent); color: var(--cp-black); box-shadow: 0 0 20px var(--glow-accent); }
+.player {
+            margin-top: 40px; padding: 25px; background: rgba(20, 20, 20, 0.7);
+            border: 2px solid var(--cp-accent); backdrop-filter: blur(5px);
             clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%);
         }
-
         .track-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3em;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--cp-yellow);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--glow-yellow);
+            font-family: 'Orbitron', sans-serif; font-size: 1.3em; font-weight: 700;
+            margin-bottom: 15px; color: var(--cp-accent); text-transform: uppercase;
+            letter-spacing: 2px; text-shadow: 0 0 10px var(--glow-accent);
         }
-
         .progress-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 20px 0;
-            cursor: pointer;
-            position: relative;
-            border: 1px solid var(--cp-yellow);
+            width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1);
+            margin: 20px 0; cursor: pointer; position: relative; border: 1px solid var(--cp-accent);
         }
-
         .progress-bar {
-            height: 100%;
-            background: var(--cp-yellow);
-            width: 0%;
-            transition: width 0.1s;
-            box-shadow: 0 0 10px var(--glow-yellow);
+            height: 100%; background: var(--cp-accent); width: 0%;
+            transition: width 0.1s; box-shadow: 0 0 10px var(--glow-accent);
         }
-
         .time-display {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: var(--cp-text);
-            margin-top: 10px;
-            font-family: 'Orbitron', sans-serif;
+            display: flex; justify-content: space-between; font-size: 0.9em;
+            color: var(--cp-text); margin-top: 10px; font-family: 'Orbitron', sans-serif;
         }
-
-        .controls-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            margin-top: 20px;
-        }
-
+        .controls-row { display: flex; justify-content: center; align-items: center; gap: 25px; margin-top: 20px; }
         .ctrl-btn {
-            background: none;
-            border: 2px solid var(--cp-yellow);
-            color: var(--cp-yellow);
-            font-size: 1.8em;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: none; border: 2px solid var(--cp-accent); color: var(--cp-accent);
+            font-size: 1.8em; cursor: pointer; transition: all 0.3s;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
             clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
         }
+        .ctrl-btn:hover { background: var(--cp-accent); color: var(--cp-black); transform: scale(1.1); box-shadow: 0 0 20px var(--glow-accent); }
+        .play-btn { font-size: 2.5em; width: 60px; height: 60px; }
+        .visualizer { display: flex; justify-content: center; gap: 4px; height: 40px; align-items: flex-end; margin-top: 20px; }
+        .viz-bar { width: 5px; background: var(--cp-accent); height: 5px; transition: height 0.15s ease; box-shadow: 0 0 5px var(--glow-accent); }
 
-        .ctrl-btn:hover {
-            background: var(--cp-yellow);
-            color: var(--cp-black);
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--glow-yellow);
-        }
-
-        .play-btn {
-            font-size: 2.5em;
-            width: 60px;
-            height: 60px;
-        }
-
-        .visualizer {
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            height: 40px;
-            align-items: flex-end;
-            margin-top: 20px;
-        }
-
-        .viz-bar {
-            width: 5px;
-            background: var(--cp-yellow);
-            height: 5px;
-            transition: height 0.15s ease;
-            box-shadow: 0 0 5px var(--glow-yellow);
-        }
-
-        /* Таймлайн */
         .timeline {
-            margin-top: 50px;
-            text-align: left;
-            border-left: 3px solid var(--cp-yellow);
-            padding-left: 25px;
-            position: relative;
+            margin-top: 50px; text-align: left; border-left: 3px solid var(--cp-accent);
+            padding-left: 25px; position: relative;
         }
-
         .timeline::before {
-            content: 'SYSTEM.LOG';
-            position: absolute;
-            top: -25px;
-            left: 0;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9em;
-            color: var(--cp-yellow);
-            letter-spacing: 2px;
+            content: 'SYSTEM.LOG'; position: absolute; top: -25px; left: 0;
+            font-family: 'Orbitron', sans-serif; font-size: 0.9em; color: var(--cp-accent); letter-spacing: 2px;
         }
-
-        .timeline-item {
-            margin-bottom: 25px;
-            position: relative;
-        }
-
+        .timeline-item { margin-bottom: 25px; position: relative; }
         .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -32px;
-            top: 5px;
-            width: 12px;
-            height: 12px;
-            background: var(--cp-yellow);
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            box-shadow: 0 0 10px var(--glow-yellow);
+            content: ''; position: absolute; left: -32px; top: 5px; width: 12px; height: 12px;
+            background: var(--cp-accent); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 0 10px var(--glow-accent);
         }
+        .timeline-date { font-family: 'Orbitron', sans-serif; font-size: 0.9em; color: var(--cp-accent); font-weight: 700; letter-spacing: 2px; }
+        .timeline-text { font-size: 1em; color: var(--cp-text); text-transform: uppercase; letter-spacing: 1px; }
 
-        .timeline-date {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9em;
-            color: var(--cp-yellow);
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        .timeline-text {
-            font-size: 1em;
-            color: var(--cp-text);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Достижения */
-        .achievements {
-            margin-top: 50px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px;
-        }
-
+        .achievements { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
         .achievement {
-            background: rgba(20, 20, 20, 0.8);
-            padding: 15px 10px;
-            text-align: center;
-            opacity: 0.3;
-            transition: all 0.5s;
-            border: 2px solid var(--cp-gray);
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-            position: relative;
+            background: rgba(20, 20, 20, 0.7); padding: 15px 10px; text-align: center;
+            opacity: 0.3; transition: all 0.5s; border: 2px solid var(--cp-gray);
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); position: relative; backdrop-filter: blur(5px);
         }
-
         .achievement.unlocked {
-            opacity: 1;
-            border-color: var(--cp-yellow);
-            box-shadow: 0 0 20px var(--glow-yellow);
-            transform: scale(1.05);
+            opacity: 1; border-color: var(--cp-accent); box-shadow: 0 0 20px var(--glow-accent); transform: scale(1.05);
         }
+        .achievement-icon { font-size: 2em; margin-bottom: 8px; }
+        .achievement-name { font-size: 0.7em; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
 
-        .achievement-icon {
-            font-size: 2em;
-            margin-bottom: 8px;
-        }
-
-        .achievement-name {
-            font-size: 0.7em;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-        }
-
-        .controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 15px;
-            z-index: 100;
-        }
-
+        .controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 15px; z-index: 100; }
         .control-btn {
-            width: 50px;
-            height: 50px;
-            background: var(--cp-black);
-            border: 2px solid var(--cp-yellow);
-            color: var(--cp-yellow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            transition: all 0.3s;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+            width: 50px; height: 50px; background: var(--cp-black); border: 2px solid var(--cp-accent);
+            color: var(--cp-accent); display: flex; align-items: center; justify-content: center;
+            font-size: 1.5em; transition: all 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
         }
+        .control-btn:hover { background: var(--cp-accent); color: var(--cp-black); transform: scale(1.1); box-shadow: 0 0 20px var(--glow-accent); }
 
-        .control-btn:hover {
-            background: var(--cp-yellow);
-            color: var(--cp-black);
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--glow-yellow);
-        }
-
-        /* Уведомление */
         .popup {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: var(--cp-black);
-            border: 2px solid var(--cp-yellow);
-            padding: 15px 20px;
-            z-index: 1000;
+            position: fixed; top: 100px; right: 20px; background: var(--cp-black);
+            border: 2px solid var(--cp-accent); padding: 15px 20px; z-index: 1000;
             animation: sI 0.5s, fO 0.5s 2.5s forwards;
             clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
-            box-shadow: 0 0 30px var(--glow-yellow);
+            box-shadow: 0 0 30px var(--glow-accent);
         }
-
-        @keyframes sI {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fO {
-            to { opacity: 0; transform: translateY(-20px); }
-        }
+        @keyframes sI { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fO { to { opacity: 0; transform: translateY(-20px); } }
     </style>
 </head>
 <body>
@@ -635,13 +243,9 @@
     <nav>
         <div class="nav-logo">AZOITY//2077</div>
         <div class="nav-links" id="navLinks">
-            <a href="#bio">BIO</a>
-            <a href="#path">PATH</a>
-            <a href="#achievements">ACHIEVEMENTS</a>
+            <a href="#bio">BIO</a><a href="#path">PATH</a><a href="#achievements">ACHIEVEMENTS</a>
         </div>
-        <div class="burger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
+        <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </nav>
     <div class="container-wrapper">
         <div class="container" id="tiltCard">
@@ -652,13 +256,8 @@
             <a href="https://t.me/Azoity" class="btn-link" target="_blank">CONNECT // TELEGRAM</a>
             <div class="player">
                 <div class="track-name" id="trackName">SELECT TRACK ▶</div>
-                <div class="progress-container" id="progressContainer">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-                <div class="time-display">
-                    <span id="currentTime">0:00</span>
-                    <span id="duration">0:00</span>
-                </div>
+                <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
+                <div class="time-display"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
                 <div class="controls-row">
                     <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
                     <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()">▶</button>
@@ -666,52 +265,45 @@
                 </div>
                 <div class="visualizer" id="visualizer"></div>
             </div>
-            <div class="socials">
-                <a href="https://github.com/Azoity-code">GITHUB</a>
-            </div>
+            <div class="socials"><a href="https://github.com/Azoity-code">GITHUB</a></div>
             <div class="timeline" id="path">
-                <div class="timeline-item">
-                    <div class="timeline-date">2024</div>
-                    <div class="timeline-text">INITIATED PROGRAMMING SEQUENCE</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2025</div>
-                    <div class="timeline-text">DEPLOYED FIRST TELEGRAM BOTS</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2026</div>
-                    <div class="timeline-text">LAUNCHED PERSONAL WEBSITE</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">OBJECTIVE</div>
-                    <div class="timeline-text" style="color: var(--cp-yellow); font-weight: bold;">MASTER C++ LANGUAGE</div>
-                </div>
+                <div class="timeline-item"><div class="timeline-date">2024</div><div class="timeline-text">INITIATED PROGRAMMING SEQUENCE</div></div>
+                <div class="timeline-item"><div class="timeline-date">2025</div><div class="timeline-text">DEPLOYED FIRST TELEGRAM BOTS</div></div>
+                <div class="timeline-item"><div class="timeline-date">2026</div><div class="timeline-text">LAUNCHED PERSONAL WEBSITE</div></div>
+                <div class="timeline-item"><div class="timeline-date">OBJECTIVE</div><div class="timeline-text" style="color: var(--cp-accent); font-weight: bold;">MASTER C++ LANGUAGE</div></div>
             </div>
             <div class="achievements" id="achievements"></div>
         </div>
     </div>
-    <div class="controls">
-        <button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-    </div>
+    <div class="controls"><button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
 <script>
+        document.documentElement.setAttribute('data-theme', 'dark');
+        
+        // === РАНДОМНАЯ ГИФКА ПРИ ЗАГРУЗКЕ ===
+        const bgGifs = [
+            "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyamV5cGtrOXUxMTBiaW5sZ2pwaDhua3Juc2U1aXRncm5rYmZodHc0YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4xKJUTzWPAVoY/giphy.gif",
+            "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2ZmbzUwdGZnNWFzbXg5b2g0MnhyMjNwbW8zN3J2ZThoYjRvbnJxdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3qYZ2RnKW6veM/giphy.gif",
+            "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyamFreDVyNXRhOGNudmdmeTBodHBhZG9rNXZ0dHMxMzk0eHhjNm85aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rPQaG7o8uqMzS/giphy.gif",
+            "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyaG85M3ptdzV4d3phaGQyc2lmcnV2M2lwajJvbzI3eHo5ZGt1dzNlYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WQr5l1Ye0Pj5Zf40El/giphy.gif",
+            "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyM3BwOGV1cXVkdXluZXR1N3Yxa2ttdHVyZ2t2ZHV1ZHlqM28wN255MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sNUWF7fAUP2q4/giphy.gif",
+            "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyejlmb2V6cWU5bnlhZmE5czR5aHRkNmZmbzQ3bGhzZ2FxcTlvbnBnNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jt7bAtEijhurm/giphy.gif",
+            "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycDRoYXE3emxvOGZxZTRpc2R6MzkzMHEwd2FlZ3hhZ29jOHA1bHZudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/D6cOhgDo73NcY/giphy.gif"
+        ];
+        const randomGif = bgGifs[Math.floor(Math.random() * bgGifs.length)];
+        document.getElementById('parallaxBg').style.backgroundImage = `url('${randomGif}')`;
+
         const achData = [
-            { id: 'visit', name: 'FIRST LOGIN', icon: '👋' },
-            { id: 'music', name: 'AUDIO JACK', icon: '🎵' },
-            { id: 'theme', name: 'VISUAL HACK', icon: '🎨' },
-            { id: 'tg', name: 'NETRUNNER', icon: '📱' },
-            { id: 'pause', name: 'SYSTEM PAUSE', icon: '⏸' },
-            { id: 'time1', name: 'DATA MINER', icon: '⏱' },
-            { id: 'time3', name: 'LOYAL USER', icon: '❤' },
-            { id: 'scroll', name: 'SCROLL MASTER', icon: '📜' },
-            { id: 'clicks', name: 'CLICK BOT', icon: '🖱' },
-            { id: 'collector', name: 'TRACK HUNTER', icon: '🎧' }
+            { id: 'visit', name: 'FIRST LOGIN', icon: '👋' }, { id: 'music', name: 'AUDIO JACK', icon: '🎵' },
+            { id: 'theme', name: 'VISUAL HACK', icon: '🎨' }, { id: 'tg', name: 'NETRUNNER', icon: '📱' },
+            { id: 'pause', name: 'SYSTEM PAUSE', icon: '⏸' }, { id: 'time1', name: 'DATA MINER', icon: '⏱' },
+            { id: 'time3', name: 'LOYAL USER', icon: '❤' }, { id: 'scroll', name: 'SCROLL MASTER', icon: '📜' },
+            { id: 'clicks', name: 'CLICK BOT', icon: '🖱' }, { id: 'collector', name: 'TRACK HUNTER', icon: '🎧' }
         ];
         let unlocked = JSON.parse(localStorage.getItem('azoity_ach')) || [];
         let clicks = 0, siteStart = Date.now(), playedTracks = new Set();
 
         function renderAch() {
-            const g = document.getElementById('achievements');
-            g.innerHTML = '';
+            const g = document.getElementById('achievements'); g.innerHTML = '';
             achData.forEach(a => {
                 const u = unlocked.includes(a.id);
                 const d = document.createElement('div');
@@ -720,41 +312,29 @@
                 g.appendChild(d);
             });
         }
-
         function unlock(id) {
             if (!unlocked.includes(id)) {
-                unlocked.push(id);
-                localStorage.setItem('azoity_ach', JSON.stringify(unlocked));
+                unlocked.push(id); localStorage.setItem('azoity_ach', JSON.stringify(unlocked));
                 renderAch();
                 const a = achData.find(x => x.id === id);
-                const p = document.createElement('div');
-                p.className = 'popup';
-                p.innerHTML = `<div style="font-size:1.5em">${a.icon}</div><div style="font-size:0.9em;font-weight:bold;color:var(--cp-yellow)">ACHIEVEMENT UNLOCKED: ${a.name}</div>`;
-                document.body.appendChild(p);
-                setTimeout(() => p.remove(), 3000);
+                const p = document.createElement('div'); p.className = 'popup';
+                p.innerHTML = `<div style="font-size:1.5em">${a.icon}</div><div style="font-size:0.9em;font-weight:bold;color:var(--cp-accent)">ACHIEVEMENT UNLOCKED: ${a.name}</div>`;
+                document.body.appendChild(p); setTimeout(() => p.remove(), 3000);
             }
         }
-
-        renderAch();
-        unlock('visit');
+        renderAch(); unlock('visit');
         setInterval(() => {
             const e = (Date.now() - siteStart) / 1000;
-            if (e > 60) unlock('time1');
-            if (e > 180) unlock('time3');
+            if (e > 60) unlock('time1'); if (e > 180) unlock('time3');
         }, 1000);
 
         const playlist = [
-            { file: "music/aprel.mp3", name: "APREL" },
-            { file: "music/Cloud.mp3", name: "MOSQUIT - CLOUD" },
-            { file: "music/ego.mp3", name: "EGO" },
-            { file: "music/lonelly.mp3", name: "LONELLY" },
-            { file: "music/mir-prikolov.mp3", name: "MIR PRIKOLOV" },
-            { file: "music/molchy.mp3", name: "MOLCHY" },
-            { file: "music/oblaka.mp3", name: "OBLAKA" },
-            { file: "music/pain.mp3", name: "PAIN" },
+            { file: "music/aprel.mp3", name: "APREL" }, { file: "music/Cloud.mp3", name: "MOSQUIT - CLOUD" },
+            { file: "music/ego.mp3", name: "EGO" }, { file: "music/lonelly.mp3", name: "LONELLY" },
+            { file: "music/mir-prikolov.mp3", name: "MIR PRIKOLOV" }, { file: "music/molchy.mp3", name: "MOLCHY" },
+            { file: "music/oblaka.mp3", name: "OBLAKA" }, { file: "music/pain.mp3", name: "PAIN" },
             { file: "music/shut-up.mp3", name: "SHUT UP" }
         ];
-
         let currentTrack = 0, isPlaying = false;
         const audio = new Audio();
         const trackNameEl = document.getElementById('trackName');
@@ -764,124 +344,64 @@
         const durationEl = document.getElementById('duration');
         const playBtn = document.getElementById('playBtn');
         const visualizer = document.getElementById('visualizer');
-
-        for(let i = 0; i < 20; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'viz-bar';
-            visualizer.appendChild(bar);
-        }
+        for(let i = 0; i < 20; i++) { const bar = document.createElement('div'); bar.className = 'viz-bar'; visualizer.appendChild(bar); }
         const vizBars = document.querySelectorAll('.viz-bar');
 
         function loadTrack(index) {
-            currentTrack = index;
-            audio.src = playlist[currentTrack].file;
+            currentTrack = index; audio.src = playlist[currentTrack].file;
             trackNameEl.innerText = playlist[currentTrack].name;
-            playedTracks.add(currentTrack);
-            if(playedTracks.size >= 5) unlock('collector');
+            playedTracks.add(currentTrack); if(playedTracks.size >= 5) unlock('collector');
             if(isPlaying) audio.play();
         }
-
         function togglePlay() {
             if(!audio.src) loadTrack(0);
-            if(isPlaying) {
-                audio.pause();
-                playBtn.innerText = '▶';
-                unlock('pause');
-            } else {
-                audio.play().catch(() => {});
-                playBtn.innerText = '⏸';
-                unlock('music');
-            }
+            if(isPlaying) { audio.pause(); playBtn.innerText = '▶'; unlock('pause'); } 
+            else { audio.play().catch(() => {}); playBtn.innerText = '⏸'; unlock('music'); }
             isPlaying = !isPlaying;
         }
-
-        function nextTrack() {
-            currentTrack = (currentTrack + 1) % playlist.length;
-            loadTrack(currentTrack);
-            if(!isPlaying) togglePlay();
-        }
-
-        function prevTrack() {
-            currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
-            loadTrack(currentTrack);
-            if(!isPlaying) togglePlay();
-        }
-
+        function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); if(!isPlaying) togglePlay(); }
+        function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); if(!isPlaying) togglePlay(); }
         audio.addEventListener('timeupdate', () => {
-            const pct = (audio.currentTime / audio.duration) * 100;
-            progressBar.style.width = pct + '%';
+            progressBar.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
             currentTimeEl.innerText = formatTime(audio.currentTime);
             durationEl.innerText = formatTime(audio.duration || 0);
         });
-
         audio.addEventListener('ended', nextTrack);
-
         progressContainer.addEventListener('click', (e) => {
             const rect = progressContainer.getBoundingClientRect();
             audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
         });
-
-        function formatTime(s) {
-            const m = Math.floor(s / 60);
-            return `${m}:${Math.floor(s % 60).toString().padStart(2, '0')}`;
-        }
-
+        function formatTime(s) { const m = Math.floor(s / 60); return `${m}:${Math.floor(s % 60).toString().padStart(2, '0')}`; }
         setInterval(() => {
-            if(isPlaying && !audio.paused) {
-                vizBars.forEach(bar => bar.style.height = (Math.random() * 30 + 5) + 'px');
-            } else {
-                vizBars.forEach(bar => bar.style.height = '5px');
-            }
+            if(isPlaying && !audio.paused) vizBars.forEach(bar => bar.style.height = (Math.random() * 30 + 5) + 'px');
+            else vizBars.forEach(bar => bar.style.height = '5px');
         }, 150);
-
-        loadTrack(0);
-        isPlaying = false;
-        playBtn.innerText = '▶';
+        loadTrack(0); isPlaying = false; playBtn.innerText = '▶';
 
         const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX - 10 + 'px';
-            cursor.style.top = e.clientY - 10 + 'px';
-        });
-
+        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX - 10 + 'px'; cursor.style.top = e.clientY - 10 + 'px'; });
         document.addEventListener('click', e => {
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
+            const ripple = document.createElement('div'); ripple.className = 'ripple';
             ripple.style.width = ripple.style.height = '30px';
-            ripple.style.left = e.clientX - 15 + 'px';
-            ripple.style.top = e.clientY - 15 + 'px';
-            document.body.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-            clicks++;
-            if(clicks >= 50) unlock('clicks');
+            ripple.style.left = e.clientX - 15 + 'px'; ripple.style.top = e.clientY - 15 + 'px';
+            document.body.appendChild(ripple); setTimeout(() => ripple.remove(), 600);
+            clicks++; if(clicks >= 50) unlock('clicks');
         });
-
         const card = document.getElementById('tiltCard');
         document.addEventListener('mousemove', e => {
             if(window.innerWidth < 768) return;
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+            card.style.transform = `rotateY(${(e.clientX/window.innerWidth - 0.5) * 20}deg) rotateX(${-(e.clientY/window.innerHeight - 0.5) * 20}deg)`;
         });
-
-        function updateClock() {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('ru-RU');
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
+        function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString('ru-RU'); }
+        setInterval(updateClock, 1000); updateClock();
         function createSnow() {
-            const flake = document.createElement('div');
-            flake.className = 'snowflake';
+            const flake = document.createElement('div'); flake.className = 'snowflake';
             flake.style.left = Math.random() * 100 + 'vw';
             flake.style.width = flake.style.height = Math.random() * 4 + 2 + 'px';
-            flake.style.animationDuration = Math.random() * 3 + 3 + 's';
-            flake.style.opacity = Math.random();
-            document.body.appendChild(flake);
-            setTimeout(() => flake.remove(), 6000);
+            flake.style.animationDuration = Math.random() * 3 + 3 + 's'; flake.style.opacity = Math.random();
+            document.body.appendChild(flake); setTimeout(() => flake.remove(), 6000);
         }
         setInterval(createSnow, 150);
-
         window.addEventListener('scroll', () => {
             document.getElementById('parallaxBg').style.transform = `translateY(${window.scrollY * 0.3}px)`;
             unlock('scroll');
@@ -891,28 +411,23 @@
             const html = document.documentElement;
             const isDark = html.getAttribute('data-theme') === 'dark';
             html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            document.getElementById('themeBtn').innerText = isDark ? '☀' : '🌙';
+            const btn = document.getElementById('themeBtn');
+            btn.innerText = isDark ? '☀' : '🌙';
+            btn.style.borderColor = isDark ? 'var(--cp-blue)' : 'var(--cp-yellow)';
+            btn.style.color = isDark ? 'var(--cp-blue)' : 'var(--cp-yellow)';
             unlock('theme');
         }
 
-        function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('active');
-        }
-
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
         document.addEventListener('click', (e) => {
-            const nav = document.getElementById('navLinks');
-            const burger = document.querySelector('.burger');
+            const nav = document.getElementById('navLinks'); const burger = document.querySelector('.burger');
             if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target)) {
                 nav.classList.remove('active');
             }
         });
-
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('navLinks').classList.remove('active');
-            });
+            link.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('active'); });
         });
-
         document.querySelector('.btn-link').addEventListener('click', () => unlock('tg'));
     </script>
 </body>
