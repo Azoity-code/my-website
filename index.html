@@ -25,7 +25,7 @@
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: var(--cp-text); text-decoration: none; font-weight: 700; font-size: 1.1em; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s; padding: 5px 15px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .nav-links a:hover { color: var(--cp-accent); background: rgba(252, 238, 10, 0.1); text-shadow: 0 0 10px var(--glow-accent); }
-        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 10000; position: relative; }
+       .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 10001 !important; position: relative; pointer-events: auto !important; }
         .burger span { width: 30px; height: 3px; background: var(--cp-accent); transition: 0.3s; box-shadow: 0 0 10px var(--glow-accent); }
         @media (max-width: 768px) { .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: rgba(0, 0, 0, 0.85); flex-direction: column; justify-content: center; align-items: center; transition: 0.4s; border-left: 2px solid var(--cp-accent); } .nav-links.active { right: 0; } .burger { display: flex; } }
         .container-wrapper { perspective: 1000px; padding: 120px 20px 40px; display: flex; justify-content: center; }
