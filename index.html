@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azoity // CYBERPUNK V2.0</title>
+    <title>Azoity // CYBERPUNK V3.0</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
         :root { --cp-accent: #fcee0a; --cp-red: #ff003c; --cp-blue: #00f0ff; --cp-black: #000; --cp-dark: #0a0a0a; --cp-gray: #1a1a1a; --cp-text: #fff; --glow-accent: rgba(252, 238, 10, 0.5); }
         [data-theme="light"] { --cp-accent: #00f0ff; --cp-black: #e0e0e0; --cp-dark: #ffffff; --cp-gray: #cccccc; --cp-text: #000; --glow-accent: rgba(0, 240, 255, 0.5); }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; scrollbar-width: thin; scrollbar-color: var(--cp-accent) transparent; }
         body { font-family: 'Rajdhani', sans-serif; background: var(--cp-black); color: var(--cp-text); overflow-x: hidden; min-height: 100vh; position: relative; transition: background 0.5s, color 0.5s; }
+        
+        /* CRT EFFECT */
+        .crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9996; display: none; }
+        .crt-active .crt-overlay { display: block; }
+        .crt-overlay::before { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%), linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06)); background-size: 100% 2px, 3px 100%; animation: flicker 0.15s infinite; }
+        .crt-overlay::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.4) 100%); box-shadow: inset 0 0 100px rgba(0,0,0,0.9); }
+        @keyframes flicker { 0% { opacity: 0.97; } 50% { opacity: 1; } 100% { opacity: 0.98; } }
+        
         body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px); pointer-events: none; z-index: 9998; }
         .screen-glitch { position: fixed; inset: 0; background: var(--cp-accent); opacity: 0; pointer-events: none; z-index: 9997; mix-blend-mode: overlay; }
         .cursor { width: 20px; height: 20px; border: 2px solid var(--cp-accent); position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
@@ -34,8 +42,11 @@
         .container::before, .container::after { content: ''; position: absolute; width: 40px; height: 40px; border: 3px solid var(--cp-accent); }
         .container::before { top: -5px; left: -5px; border-right: none; border-bottom: none; }
         .container::after { bottom: -5px; right: -5px; border-left: none; border-top: none; }
-        .avatar { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 3px solid var(--cp-accent); margin-bottom: 30px; box-shadow: 0 0 40px var(--glow-accent); filter: contrast(1.3) brightness(1.1) saturate(1.2); transition: transform 0.5s; }
+        .avatar-container { position: relative; display: inline-block; margin-bottom: 30px; }
+        .avatar { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 3px solid var(--cp-accent); box-shadow: 0 0 40px var(--glow-accent); filter: contrast(1.3) brightness(1.1) saturate(1.2); transition: transform 0.5s; }
         .avatar:hover { transform: rotateY(180deg) scale(1.1); }
+        .avatar-frame { position: absolute; inset: -10px; border: 2px dashed var(--cp-accent); border-radius: 50%; animation: spinFrame 10s linear infinite; pointer-events: none; }
+        @keyframes spinFrame { to { transform: rotate(360deg); } }
         .typewriter h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 3.2em; color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent), 0 0 40px var(--glow-accent); overflow: hidden; border-right: 3px solid var(--cp-accent); white-space: nowrap; margin: 0 auto 20px; animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite; letter-spacing: 5px; }
         .glitch:hover { animation: glitch 0.3s infinite; }
         @keyframes typing { from { width: 0; } to { width: 100%; } } @keyframes blink { 50% { border-color: transparent; } }
@@ -82,6 +93,35 @@
         .hidden-symbol:hover { opacity: 0.9; text-shadow: 0 0 10px var(--cp-accent); }
         .quest-hint { position: fixed; bottom: 80px; left: 20px; font-family: 'Orbitron'; font-size: 0.7em; color: var(--cp-accent); opacity: 0.6; z-index: 100; animation: pulseHint 2s infinite; }
         @keyframes pulseHint { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+        .daily-quests { margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.6); border: 1px solid var(--cp-accent); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
+        .daily-title { font-family: 'Orbitron'; font-size: 0.9em; color: var(--cp-accent); margin-bottom: 10px; text-transform: uppercase; }
+        .quest-item { display: flex; justify-content: space-between; align-items: center; font-family: 'Rajdhani'; font-size: 0.85em; margin-bottom: 8px; color: var(--cp-text); }
+        .quest-check { color: var(--cp-accent); font-weight: bold; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; margin: 20px; width: 100%; max-width: 500px; }
+        .shop-item { background: rgba(0,0,0,0.8); border: 2px solid var(--cp-gray); padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
+        .shop-item:hover { border-color: var(--cp-accent); box-shadow: 0 0 15px var(--glow-accent); }
+        .shop-item.owned { border-color: var(--cp-blue); opacity: 0.7; }
+        .shop-item.equipped { border-color: var(--cp-accent); box-shadow: 0 0 20px var(--glow-accent); }
+        .shop-icon { font-size: 2em; margin-bottom: 5px; }
+        .shop-name { font-family: 'Orbitron'; font-size: 0.7em; color: var(--cp-text); }
+        .shop-price { font-family: 'Rajdhani'; font-size: 0.7em; color: var(--cp-accent); margin-top: 5px; }
+        .snake-canvas { background: rgba(0,0,0,0.9); border: 2px solid var(--cp-accent); image-rendering: pixelated; }
+        .radio-stations { display: flex; gap: 10px; margin: 20px; flex-wrap: wrap; justify-content: center; }
+        .station-btn { padding: 10px 20px; background: rgba(0,0,0,0.8); border: 2px solid var(--cp-gray); color: var(--cp-text); font-family: 'Orbitron'; font-size: 0.8em; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); transition: 0.3s; }
+        .station-btn.active { border-color: var(--cp-accent); color: var(--cp-accent); box-shadow: 0 0 10px var(--glow-accent); }
+        .countdown-widget { margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.6); border: 1px solid var(--cp-accent); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); font-family: 'Orbitron'; }
+        .countdown-label { font-size: 0.8em; color: var(--cp-accent); margin-bottom: 5px; }
+        .countdown-time { font-size: 1.5em; color: var(--cp-text); letter-spacing: 3px; }
+        .diary-entry { background: rgba(0,0,0,0.8); border-left: 3px solid var(--cp-accent); padding: 15px; margin: 10px 0; text-align: left; font-family: 'Rajdhani'; font-size: 0.9em; color: var(--cp-text); }
+        .diary-date { font-family: 'Orbitron'; font-size: 0.7em; color: var(--cp-accent); margin-bottom: 5px; }
+        .map-container { width: 100%; max-width: 500px; height: 400px; background: rgba(0,0,0,0.9); border: 2px solid var(--cp-accent); position: relative; margin: 20px; overflow: hidden; }
+        .map-region { position: absolute; border: 2px solid var(--cp-accent); background: rgba(252, 238, 10, 0.1); cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 0.7em; color: var(--cp-accent); }
+        .map-region:hover { background: rgba(252, 238, 10, 0.3); box-shadow: 0 0 15px var(--glow-accent); }
+        .map-region.explored { background: rgba(0, 240, 255, 0.2); border-color: var(--cp-blue); color: var(--cp-blue); }
+        .duel-area { width: 100%; max-width: 400px; height: 200px; background: rgba(0,0,0,0.8); border: 2px solid var(--cp-accent); position: relative; margin: 20px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; color: var(--cp-accent); }
+        .combo-badge { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron'; font-size: 2em; color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent); pointer-events: none; z-index: 3000; opacity: 0; transition: opacity 0.5s; }
+        .combo-badge.show { opacity: 1; animation: comboPulse 1s ease-out; }
+        @keyframes comboPulse { 0% { transform: translate(-50%, -50%) scale(0.5); } 50% { transform: translate(-50%, -50%) scale(1.2); } 100% { transform: translate(-50%, -50%) scale(1); } }
 .player { margin-top: 40px; padding: 25px; background: rgba(20, 20, 20, 0.8); border: 2px solid var(--cp-accent); backdrop-filter: blur(5px); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
         .track-name { font-family: 'Orbitron', sans-serif; font-size: 1.3em; font-weight: 700; margin-bottom: 15px; color: var(--cp-accent); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--glow-accent); }
         .progress-container { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); margin: 20px 0; cursor: pointer; position: relative; border: 1px solid var(--cp-accent); }
@@ -102,6 +142,16 @@
         .achievements { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
         .achievement { background: rgba(20, 20, 20, 0.8); padding: 15px 10px; text-align: center; opacity: 0.3; transition: all 0.5s; border: 2px solid var(--cp-gray); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); position: relative; backdrop-filter: blur(5px); }
         .achievement.unlocked { opacity: 1; border-color: var(--cp-accent); box-shadow: 0 0 20px var(--glow-accent); transform: scale(1.05); }
+        .achievement.common { border-color: var(--cp-gray); }
+        .achievement.rare { border-color: var(--cp-blue); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
+        .achievement.epic { border-color: #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+        .achievement.legendary { border-color: var(--cp-accent); box-shadow: 0 0 25px var(--glow-accent); animation: legendaryPulse 2s infinite; }
+        @keyframes legendaryPulse { 0%, 100% { box-shadow: 0 0 25px var(--glow-accent); } 50% { box-shadow: 0 0 35px rgba(252, 238, 10, 0.8); } }
+        .achievement-rank { position: absolute; top: -5px; right: -5px; font-size: 0.5em; padding: 2px 6px; border-radius: 4px; font-family: 'Orbitron'; font-weight: bold; }
+        .achievement.common .achievement-rank { background: var(--cp-gray); color: #fff; }
+        .achievement.rare .achievement-rank { background: var(--cp-blue); color: #000; }
+        .achievement.epic .achievement-rank { background: #a855f7; color: #fff; }
+        .achievement.legendary .achievement-rank { background: var(--cp-accent); color: #000; }
         .achievement-icon { font-size: 2em; margin-bottom: 8px; }
         .achievement-name { font-size: 0.7em; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
         .controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 15px; z-index: 100; }
@@ -112,12 +162,16 @@
         @keyframes fO { to { opacity: 0; transform: translateY(-20px); } }
     </style>
 </head>
-<body>
+<body class="">
+    <div class="crt-overlay"></div>
     <div class="screen-glitch" id="screenGlitch"></div>
     <div class="cursor" id="cursor"></div>
     <div class="parallax-bg" id="parallaxBg"></div>
     <div class="overlay"></div>
     <div class="quest-hint" id="questHint">[QUEST: Find 5 hidden symbols]</div>
+    <div class="combo-badge" id="comboBadge">COMBO x2!</div>
+    
+    <!-- МОДАЛЬНЫЕ ОКНА -->
     <div class="modal-overlay" id="breachModal">
         <div class="modal-title">// BREACH PROTOCOL //</div>
         <div id="breachTimer" style="font-family: Orbitron; color: var(--cp-red); margin-bottom: 10px;">TIME: 30s</div>
@@ -141,7 +195,7 @@
         <button class="modal-close" onclick="closeGuestbook()">CLOSE</button>
     </div>
     <div class="modal-overlay" id="chatbotModal">
-        <div class="modal-title">// NETRUNNER AI v2.0 //</div>
+        <div class="modal-title">// NETRUNNER AI v3.0 //</div>
         <div class="chatbot-window">
             <div class="chatbot-messages" id="chatMessages"></div>
             <div class="chatbot-input-area">
@@ -170,6 +224,52 @@
         <div style="font-family: Orbitron; color: var(--cp-accent); margin-top: 10px;">WPM: <span id="wpmDisplay">0</span></div>
         <button class="modal-close" onclick="closeTypingGame()">EXIT</button>
     </div>
+    <div class="modal-overlay" id="snakeModal">
+        <div class="modal-title">// CYBER SNAKE //</div>
+        <div style="font-family: Orbitron; color: var(--cp-text); margin-bottom: 10px;">SCORE: <span id="snakeScore">0</span> | HIGH: <span id="snakeHigh">0</span></div>
+        <canvas class="snake-canvas" id="snakeCanvas" width="400" height="400"></canvas>
+        <div style="font-family: Rajdhani; color: var(--cp-text); margin-top: 10px; font-size: 0.8em;">Use Arrow Keys or Swipe</div>
+        <button class="modal-close" onclick="closeSnakeGame()">EXIT</button>
+    </div>
+    <div class="modal-overlay" id="duelModal">
+        <div class="modal-title">// AI DUEL //</div>
+        <div class="duel-area" id="duelArea">PRESS START TO BEGIN</div>
+        <button class="action-btn" onclick="startDuel()" style="margin-top: 10px;">START DUEL</button>
+        <button class="modal-close" onclick="closeDuel()">EXIT</button>
+    </div>
+    <div class="modal-overlay" id="shopModal">
+        <div class="modal-title">// SKIN SHOP //</div>
+        <div style="font-family: Orbitron; color: var(--cp-accent); margin-bottom: 10px;">YOUR XP: <span id="shopXp">0</span></div>
+        <div class="shop-grid" id="shopGrid"></div>
+        <button class="modal-close" onclick="closeShop()">CLOSE</button>
+    </div>
+    <div class="modal-overlay" id="radioModal">
+        <div class="modal-title">// CYBER RADIO //</div>
+        <div class="radio-stations">
+            <button class="station-btn active" onclick="setRadio('music')">MUSIC</button>
+            <button class="station-btn" onclick="setRadio('ambient')">AMBIENT</button>
+            <button class="station-btn" onclick="setRadio('white')">WHITE NOISE</button>
+        </div>
+        <div style="font-family: Rajdhani; color: var(--cp-text); margin-top: 10px; font-size: 0.8em;" id="radioStatus">Playing: Music Playlist</div>
+        <button class="modal-close" onclick="closeRadio()">CLOSE</button>
+    </div>
+    <div class="modal-overlay" id="diaryModal">
+        <div class="modal-title">// NETRUNNER DIARY //</div>
+        <div style="max-height: 400px; overflow-y: auto; width: 100%; max-width: 500px; padding: 10px;" id="diaryContent"></div>
+        <button class="modal-close" onclick="closeDiary()">CLOSE</button>
+    </div>
+    <div class="modal-overlay" id="mapModal">
+        <div class="modal-title">// NIGHT CITY MAP //</div>
+        <div class="map-container" id="mapContainer">
+            <div class="map-region" style="top: 10%; left: 10%; width: 30%; height: 25%;" onclick="exploreMap('watson')">WATSON</div>
+            <div class="map-region" style="top: 10%; right: 10%; width: 30%; height: 25%;" onclick="exploredMap('westbrook')">WESTBROOK</div>
+            <div class="map-region" style="bottom: 10%; left: 10%; width: 30%; height: 25%;" onclick="exploreMap('heywood')">HEYWOOD</div>
+            <div class="map-region" style="bottom: 10%; right: 10%; width: 30%; height: 25%;" onclick="exploreMap('santo')">SANTO DOMINGO</div>
+            <div class="map-region" style="top: 40%; left: 35%; width: 30%; height: 20%;" onclick="exploreMap('city')">CITY CENTER</div>
+        </div>
+        <button class="modal-close" onclick="closeMap()">CLOSE</button>
+    </div>
+
     <nav>
         <div class="nav-logo">AZOITY//2077</div>
         <div class="nav-links" id="navLinks"><a href="#bio">BIO</a><a href="#path">PATH</a><a href="#achievements">ACHIEVEMENTS</a></div>
@@ -177,10 +277,14 @@
     </nav>
     <div class="container-wrapper">
         <div class="container" id="tiltCard">
-            <img src="images/avatar.jpg" alt="Azoity" class="avatar" ondblclick="initBreach()">
+            <div class="avatar-container">
+                <img src="images/avatar.jpg" alt="Azoity" class="avatar" id="mainAvatar" ondblclick="initBreach()">
+                <div class="avatar-frame" id="avatarFrame"></div>
+            </div>
             <div class="typewriter"><h1 class="glitch">AZOITY BIO</h1></div>
             <div class="clock" id="clock">00:00:00</div>
             <p>// WELCOME TO MY DIGITAL SPACE //</p>
+            
             <div class="xp-bar-container">
                 <div class="xp-label"><span id="levelText">LVL 1</span><span id="xpText">0 / 100 XP</span></div>
                 <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
@@ -191,16 +295,36 @@
                 </div>
                 <div class="visitor-counter">VISITORS TODAY: <span id="visitorCount">0</span></div>
             </div>
-            <div class="terminal-box" id="terminalBox"><span id="terminalText"></span><span class="terminal-cursor"></span></div>
-            <div class="action-buttons">
-                <button class="action-btn" onclick="openPuzzle()">DECRYPT PUZZLE</button>
-                <button class="action-btn" onclick="openGuestbook()">GUEST TERMINAL</button>
-                <button class="action-btn" onclick="openChatbot()">NETRUNNER AI</button>
-                <button class="action-btn" onclick="initBreach()">BREACH PROTOCOL</button>
-                <button class="action-btn" onclick="openAimGame()">AIM TRAINER</button>
-                <button class="action-btn" onclick="openMemoryGame()">MEMORY HACK</button>
-                <button class="action-btn" onclick="openTypingGame()">SPEED TYPING</button>
+
+            <div class="daily-quests" id="dailyQuests">
+                <div class="daily-title">// DAILY QUESTS //</div>
+                <div id="questList"></div>
             </div>
+
+            <div class="countdown-widget">
+                <div class="countdown-label">// C++ MASTERY COUNTDOWN //</div>
+                <div class="countdown-time" id="countdownTime">00d 00h 00m 00s</div>
+            </div>
+
+            <div class="terminal-box" id="terminalBox"><span id="terminalText"></span><span class="terminal-cursor"></span></div>
+            
+            <div class="action-buttons">
+                <button class="action-btn" onclick="openPuzzle()">DECRYPT</button>
+                <button class="action-btn" onclick="openGuestbook()">GUESTBOOK</button>
+                <button class="action-btn" onclick="openChatbot()">AI CHAT</button>
+                <button class="action-btn" onclick="initBreach()">BREACH</button>
+                <button class="action-btn" onclick="openAimGame()">AIM</button>
+                <button class="action-btn" onclick="openMemoryGame()">MEMORY</button>
+                <button class="action-btn" onclick="openTypingGame()">TYPING</button>
+                <button class="action-btn" onclick="openSnakeGame()">SNAKE</button>
+                <button class="action-btn" onclick="openDuel()">DUEL AI</button>
+                <button class="action-btn" onclick="openShop()">SHOP</button>
+                <button class="action-btn" onclick="openRadio()">RADIO</button>
+                <button class="action-btn" onclick="openDiary()">DIARY</button>
+                <button class="action-btn" onclick="openMap()">MAP</button>
+                <button class="action-btn" onclick="toggleCRT()">CRT FX</button>
+            </div>
+            
             <a href="https://t.me/Azoity" class="btn-link" target="_blank">CONNECT // TELEGRAM</a>
             <div class="player">
                 <div class="track-name" id="trackName">SELECT TRACK ▶</div>
@@ -233,6 +357,8 @@
         document.documentElement.setAttribute('data-theme', 'dark');
         const bgGifs = ["https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyamV5cGtrOXUxMTBiaW5sZ2pwaDhua3Juc2U1aXRncm5rYmZodHc0YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4xKJUTzWPAVoY/giphy.gif", "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2ZmbzUwdGZnNWFzbXg5b2g0MnhyMjNwbW8zN3J2ZThoYjRvbnJxdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3qYZ2RnKW6veM/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyamFreDVyNXRhOGNudmdmeTBodHBhZG9rNXZ0dHMxMzk0eHhjNm85aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rPQaG7o8uqMzS/giphy.gif", "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyaG85M3ptdzV4d3phaGQyc2lmcnV2M2lwajJvbzI3eHo5ZGt1dzNlYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WQr5l1Ye0Pj5Zf40El/giphy.gif", "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyM3BwOGV1cXVkdXluZXR1N3Yxa2ttdHVyZ2t2ZHV1ZHlqM28wN255MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sNUWF7fAUP2q4/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyejlmb2V6cWU5bnlhZmE5czR5aHRkNmZmbzQ3bGhzZ2FxcTlvbnBnNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jt7bAtEijhurm/giphy.gif", "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycDRoYXE3emxvOGZxZTRpc2R6MzkzMHEwd2FlZ3hhZ29jOHA1bHZudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/D6cOhgDo73NcY/giphy.gif"];
         document.getElementById('parallaxBg').style.backgroundImage = `url('${bgGifs[Math.floor(Math.random() * bgGifs.length)]}')`;
+        
+        // АУДИО ДВИЖОК
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(type) {
             if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -243,6 +369,8 @@
             else if(type === 'glitch') { osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now); osc.frequency.linearRampToValueAtTime(50, now + 0.05); gain.gain.setValueAtTime(0.05, now); gain.gain.linearRampToValueAtTime(0, now + 0.05); osc.start(now); osc.stop(now + 0.05); }
             else if(type === 'success') { osc.type = 'sine'; osc.frequency.setValueAtTime(600, now); osc.frequency.linearRampToValueAtTime(1200, now + 0.2); gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0, now + 0.3); osc.start(now); osc.stop(now + 0.3); }
         }
+
+        // СИСТЕМА XP И РЕПУТАЦИИ
         let xp = parseInt(localStorage.getItem('azoity_xp')) || 0;
         let level = parseInt(localStorage.getItem('azoity_lvl')) || 1;
         let rep = JSON.parse(localStorage.getItem('azoity_rep')) || { net: 0, fix: 0, nom: 0 };
@@ -253,14 +381,23 @@
             while(xp >= xpPerLevel) { xp -= xpPerLevel; level++; playSound('levelup'); showPopup({icon: '⬆️', name: `LEVEL UP! NOW LVL ${level}`}); }
             localStorage.setItem('azoity_xp', xp); localStorage.setItem('azoity_lvl', level); renderXP();
         }
-        function renderXP() { document.getElementById('levelText').innerText = `LVL ${level}`; document.getElementById('xpText').innerText = `${xp} / ${xpPerLevel} XP`; document.getElementById('xpFill').style.width = `${(xp/xpPerLevel)*100}%`; }
+        function renderXP() { 
+            document.getElementById('levelText').innerText = `LVL ${level}`; 
+            document.getElementById('xpText').innerText = `${xp} / ${xpPerLevel} XP`; 
+            document.getElementById('xpFill').style.width = `${(xp/xpPerLevel)*100}%`; 
+            if(document.getElementById('shopXp')) document.getElementById('shopXp').innerText = xp;
+        }
         function renderRep() { document.getElementById('repNet').innerText = rep.net; document.getElementById('repFix').innerText = rep.fix; document.getElementById('repNom').innerText = rep.nom; }
         renderXP(); renderRep();
+
+        // СЧЁТЧИК ПОСЕТИТЕЛЕЙ
         const today = new Date().toDateString();
         let visitors = JSON.parse(localStorage.getItem('azoity_visitors')) || { date: today, count: 0 };
         if(visitors.date !== today) { visitors = { date: today, count: Math.floor(Math.random() * 50) + 10 }; }
         visitors.count++; localStorage.setItem('azoity_visitors', JSON.stringify(visitors));
         document.getElementById('visitorCount').innerText = visitors.count;
+
+        // ТЕРМИНАЛ
         const terminalLines = ["> SYSTEM BOOT...", "> CONNECTING TO NET...", "> LOADING USER PROFILE: AZOITY", "> DETECTED 9 AUDIO FILES...", "> ACHIEVEMENTS DATABASE: ONLINE", "> WELCOME, NETRUNNER."];
         let termLineIdx = 0, termCharIdx = 0;
         function typeTerminal() {
@@ -271,6 +408,8 @@
             }
         }
         setTimeout(typeTerminal, 1000);
+
+        // МАТРИЦА
         const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
         function createMatrixChar() {
             const c = document.createElement('div'); c.className = 'matrix-char';
@@ -280,18 +419,63 @@
             setTimeout(() => c.remove(), 5000);
         }
         setInterval(createMatrixChar, 100);
+
+        // СЛУЧАЙНЫЕ ГЛИТЧИ
         setInterval(() => {
             if(Math.random() > 0.95) { const g = document.getElementById('screenGlitch'); g.style.opacity = '0.3'; playSound('glitch'); setTimeout(() => g.style.opacity = '0', 50 + Math.random()*100); }
         }, 2000);
-        const achData = [{ id: 'visit', name: 'FIRST LOGIN', icon: '👋' }, { id: 'music', name: 'AUDIO JACK', icon: '🎵' }, { id: 'theme', name: 'VISUAL HACK', icon: '🎨' }, { id: 'tg', name: 'NETRUNNER', icon: '📱' }, { id: 'pause', name: 'SYSTEM PAUSE', icon: '⏸' }, { id: 'time1', name: 'DATA MINER', icon: '⏱' }, { id: 'time3', name: 'LOYAL USER', icon: '❤' }, { id: 'scroll', name: 'SCROLL MASTER', icon: '📜' }, { id: 'clicks', name: 'CLICK BOT', icon: '🖱' }, { id: 'collector', name: 'TRACK HUNTER', icon: '🎧' }, { id: 'hacker', name: 'MASTER HACKER', icon: '💻' }, { id: 'puzzle', name: 'CODE BREAKER', icon: '🔐' }, { id: 'aimer', name: 'SHARPSHOOTER', icon: '🎯' }, { id: 'memo', name: 'MEMORY CORE', icon: '🧠' }, { id: 'typer', name: 'KEYSTROKE KING', icon: '⌨️' }];
+
+        // ДОСТИЖЕНИЯ С РАНГАМИ
+        const achData = [
+            { id: 'visit', name: 'FIRST LOGIN', icon: '👋', rank: 'common' }, 
+            { id: 'music', name: 'AUDIO JACK', icon: '🎵', rank: 'common' }, 
+            { id: 'theme', name: 'VISUAL HACK', icon: '🎨', rank: 'rare' }, 
+            { id: 'tg', name: 'NETRUNNER', icon: '📱', rank: 'epic' }, 
+            { id: 'pause', name: 'SYSTEM PAUSE', icon: '⏸', rank: 'common' }, 
+            { id: 'time1', name: 'DATA MINER', icon: '⏱', rank: 'rare' }, 
+            { id: 'time3', name: 'LOYAL USER', icon: '❤', rank: 'legendary' }, 
+            { id: 'scroll', name: 'SCROLL MASTER', icon: '📜', rank: 'rare' }, 
+            { id: 'clicks', name: 'CLICK BOT', icon: '🖱', rank: 'common' }, 
+            { id: 'collector', name: 'TRACK HUNTER', icon: '🎧', rank: 'epic' }, 
+            { id: 'hacker', name: 'MASTER HACKER', icon: '💻', rank: 'legendary' }, 
+            { id: 'puzzle', name: 'CODE BREAKER', icon: '🔐', rank: 'epic' }, 
+            { id: 'aimer', name: 'SHARPSHOOTER', icon: '🎯', rank: 'rare' }, 
+            { id: 'memo', name: 'MEMORY CORE', icon: '🧠', rank: 'epic' }, 
+            { id: 'typer', name: 'KEYSTROKE KING', icon: '⌨', rank: 'rare' },
+            { id: 'snake', name: 'CYBER SERPENT', icon: '🐍', rank: 'legendary' },
+            { id: 'duelist', name: 'AI VANQUISHER', icon: '⚔', rank: 'epic' },
+            { id: 'shopper', name: 'STYLE ICON', icon: '🛒', rank: 'rare' },
+            { id: 'explorer', name: 'CITY EXPLORER', icon: '🗺', rank: 'legendary' }
+        ];
         let unlocked = JSON.parse(localStorage.getItem('azoity_ach')) || [];
         let clicks = 0, siteStart = Date.now(), playedTracks = new Set(), foundSymbols = new Set();
-        function renderAch() { const g = document.getElementById('achievements'); g.innerHTML = ''; achData.forEach(a => { const u = unlocked.includes(a.id); const d = document.createElement('div'); d.className = `achievement ${u ? 'unlocked' : ''}`; d.innerHTML = `<div class="achievement-icon">${a.icon}</div><div class="achievement-name">${a.name}</div>`; g.appendChild(d); }); }
-        function unlock(id) { if (!unlocked.includes(id)) { unlocked.push(id); localStorage.setItem('azoity_ach', JSON.stringify(unlocked)); renderAch(); updateXP(25, 'net'); const a = achData.find(x => x.id === id); showPopup({icon: a.icon, name: `UNLOCKED: ${a.name}`}); } }
-        function showPopup(data) { const p = document.createElement('div'); p.className = 'popup'; p.innerHTML = `<div style="font-size:1.5em">${data.icon}</div><div style="font-size:0.9em;font-weight:bold;color:var(--cp-accent)">${data.name}</div>`; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }
+        function renderAch() { 
+            const g = document.getElementById('achievements'); g.innerHTML = ''; 
+            achData.forEach(a => { 
+                const u = unlocked.includes(a.id); 
+                const d = document.createElement('div'); 
+                d.className = `achievement ${a.rank} ${u ? 'unlocked' : ''}`; 
+                d.innerHTML = `<div class="achievement-rank">${{common:'COM',rare:'RAR',epic:'EPIC',legendary:'LEG'}[a.rank]}</div><div class="achievement-icon">${a.icon}</div><div class="achievement-name">${a.name}</div>`; 
+                g.appendChild(d); 
+            }); 
+        }
+        function unlock(id) { 
+            if (!unlocked.includes(id)) { 
+                unlocked.push(id); localStorage.setItem('azoity_ach', JSON.stringify(unlocked)); 
+                renderAch(); updateXP(25, 'net'); 
+                const a = achData.find(x => x.id === id); 
+                showPopup({icon: a.icon, name: `UNLOCKED: ${a.name}`}); 
+            } 
+        }
+        function showPopup(data) { 
+            const p = document.createElement('div'); p.className = 'popup'; 
+            p.innerHTML = `<div style="font-size:1.5em">${data.icon}</div><div style="font-size:0.9em;font-weight:bold;color:var(--cp-accent)">${data.name}</div>`; 
+            document.body.appendChild(p); setTimeout(() => p.remove(), 3000); 
+        }
         renderAch(); unlock('visit');
         setInterval(() => { const e = (Date.now() - siteStart) / 1000; if (e > 60) unlock('time1'); if (e > 180) unlock('time3'); }, 1000);
-const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Cloud.mp3", name: "MOSQUIT - CLOUD" }, { file: "music/ego.mp3", name: "EGO" }, { file: "music/lonelly.mp3", name: "LONELLY" }, { file: "music/mir-prikolov.mp3", name: "MIR PRIKOLOV" }, { file: "music/molchy.mp3", name: "MOLCHY" }, { file: "music/oblaka.mp3", name: "OBLAKA" }, { file: "music/pain.mp3", name: "PAIN" }, { file: "music/shut-up.mp3", name: "SHUT UP" }];
+// ПЛЕЕР
+        const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Cloud.mp3", name: "MOSQUIT - CLOUD" }, { file: "music/ego.mp3", name: "EGO" }, { file: "music/lonelly.mp3", name: "LONELLY" }, { file: "music/mir-prikolov.mp3", name: "MIR PRIKOLOV" }, { file: "music/molchy.mp3", name: "MOLCHY" }, { file: "music/oblaka.mp3", name: "OBLAKA" }, { file: "music/pain.mp3", name: "PAIN" }, { file: "music/shut-up.mp3", name: "SHUT UP" }];
         let currentTrack = 0, isPlaying = false; const audio = new Audio();
         const trackNameEl = document.getElementById('trackName'), progressBar = document.getElementById('progressBar'), progressContainer = document.getElementById('progressContainer'), currentTimeEl = document.getElementById('currentTime'), durationEl = document.getElementById('duration'), playBtn = document.getElementById('playBtn'), visualizer = document.getElementById('visualizer');
         for(let i = 0; i < 20; i++) { const bar = document.createElement('div'); bar.className = 'viz-bar'; visualizer.appendChild(bar); }
@@ -306,9 +490,30 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
         function formatTime(s) { const m = Math.floor(s / 60); return `${m}:${Math.floor(s % 60).toString().padStart(2, '0')}`; }
         setInterval(() => { if(isPlaying && !audio.paused) vizBars.forEach(bar => bar.style.height = (Math.random() * 30 + 5) + 'px'); else vizBars.forEach(bar => bar.style.height = '5px'); }, 150);
         loadTrack(0); isPlaying = false; playBtn.innerText = '▶';
+
+        // ИНТЕРФЕЙС И КОМБО
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', e => { cursor.style.left = e.clientX - 10 + 'px'; cursor.style.top = e.clientY - 10 + 'px'; });
-        document.addEventListener('click', e => { playSound('click'); const ripple = document.createElement('div'); ripple.className = 'ripple'; ripple.style.width = ripple.style.height = '30px'; ripple.style.left = e.clientX - 15 + 'px'; ripple.style.top = e.clientY - 15 + 'px'; document.body.appendChild(ripple); setTimeout(() => ripple.remove(), 600); clicks++; updateXP(1, 'fix'); if(clicks >= 50) unlock('clicks'); });
+        let comboCount = 0, comboTimer = null;
+        document.addEventListener('click', e => { 
+            playSound('click'); 
+            const ripple = document.createElement('div'); ripple.className = 'ripple'; 
+            ripple.style.width = ripple.style.height = '30px'; 
+            ripple.style.left = e.clientX - 15 + 'px'; ripple.style.top = e.clientY - 15 + 'px'; 
+            document.body.appendChild(ripple); setTimeout(() => ripple.remove(), 600); 
+            clicks++; updateXP(1, 'fix'); if(clicks >= 50) unlock('clicks');
+            
+            // Логика комбо
+            comboCount++;
+            clearTimeout(comboTimer);
+            if(comboCount >= 3) {
+                const badge = document.getElementById('comboBadge');
+                badge.innerText = `COMBO x${comboCount}!`;
+                badge.classList.add('show');
+                setTimeout(() => badge.classList.remove('show'), 1000);
+            }
+            comboTimer = setTimeout(() => { comboCount = 0; }, 2000);
+        });
         const card = document.getElementById('tiltCard');
         document.addEventListener('mousemove', e => { if(window.innerWidth < 768) return; card.style.transform = `rotateY(${(e.clientX/window.innerWidth - 0.5) * 20}deg) rotateX(${-(e.clientY/window.innerHeight - 0.5) * 20}deg)`; });
         function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString('ru-RU'); }
@@ -319,6 +524,41 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
         document.addEventListener('click', (e) => { const nav = document.getElementById('navLinks'); const burger = document.querySelector('.burger'); if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target) && !e.target.closest('.burger')) { nav.classList.remove('active'); } });
         document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('active'); }); });
         document.querySelector('.btn-link').addEventListener('click', () => unlock('tg'));
+
+        // ЕЖЕДНЕВНЫЕ ЗАДАНИЯ
+        const dailyQuests = [
+            { id: 'dq_listen', text: 'Listen to 2 tracks', check: () => playedTracks.size >= 2 },
+            { id: 'dq_breach', text: 'Complete a Breach', check: () => unlocked.includes('breach_temp') },
+            { id: 'dq_scroll', text: 'Scroll the page', check: () => true } // Выполняется при скролле
+        ];
+        function renderDailyQuests() {
+            const list = document.getElementById('questList');
+            list.innerHTML = dailyQuests.map(q => {
+                const done = q.check();
+                return `<div class="quest-item"><span>${q.text}</span><span class="quest-check">${done ? '✓' : '○'}</span></div>`;
+            }).join('');
+        }
+        renderDailyQuests();
+        window.addEventListener('scroll', () => { renderDailyQuests(); });
+
+        // ОБРАТНЫЙ ОТСЧЁТ C++
+        const cppDate = new Date('2027-01-01T00:00:00'); // Установи свою дату цели
+        function updateCountdown() {
+            const now = new Date();
+            const diff = cppDate - now;
+            if(diff <= 0) {
+                document.getElementById('countdownTime').innerText = "GOAL REACHED!";
+                return;
+            }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById('countdownTime').innerText = `${d}d ${h}h ${m}m ${s}s`;
+        }
+        setInterval(updateCountdown, 1000); updateCountdown();
+
+        // КВЕСТ НА СИМВОЛЫ
         function findSymbol(num) {
             if(!foundSymbols.has(num)) {
                 foundSymbols.add(num); updateXP(10, 'nom');
@@ -326,6 +566,8 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
                 if(foundSymbols.size === 5) { unlock('hacker'); showPopup({icon: '💻', name: 'ALL SYMBOLS FOUND! MASTER HACKER!'}); }
             }
         }
+
+        // ПАЗЛ
         function openPuzzle() { document.getElementById('puzzleModal').classList.add('active'); playSound('click'); }
         function closePuzzle() { document.getElementById('puzzleModal').classList.remove('active'); }
         function checkPuzzle() {
@@ -333,6 +575,8 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
             if(ans === 'HELLO WORLD') { unlock('puzzle'); updateXP(50, 'net'); showPopup({icon: '🔓', name: 'CODE DECRYPTED! +50 XP'}); closePuzzle(); }
             else { showPopup({icon: '❌', name: 'WRONG CODE'}); }
         }
+
+        // ГОСТЕВАЯ КНИГА
         function openGuestbook() { document.getElementById('guestbookModal').classList.add('active'); loadGuestEntries(); playSound('click'); }
         function closeGuestbook() { document.getElementById('guestbookModal').classList.remove('active'); }
         function loadGuestEntries() {
@@ -352,6 +596,8 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
                 showPopup({icon: '📝', name: 'MESSAGE TRANSMITTED!'});
             }
         }
+
+        // УМНЫЙ ИИ V3.0
         function openChatbot() { document.getElementById('chatbotModal').classList.add('active'); playSound('click'); }
         function closeChatbot() { document.getElementById('chatbotModal').classList.remove('active'); }
         let chatHistory = JSON.parse(localStorage.getItem('azoity_chat')) || [];
@@ -361,13 +607,15 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
             const messages = document.getElementById('chatMessages');
             messages.innerHTML += `<div style="color: var(--cp-text); margin: 5px 0;">> ${input.value}</div>`;
             chatHistory.push({ role: 'user', text: input.value });
-            let response = "UNKNOWN COMMAND";
+            let response = "UNKNOWN COMMAND. TYPE 'HELP' FOR LIST.";
             if(msg.includes('track') || msg.includes('music')) response = "CURRENTLY PLAYING: " + document.getElementById('trackName').innerText;
             else if(msg.includes('achievement')) response = "YOU HAVE " + unlocked.length + " ACHIEVEMENTS UNLOCKED";
             else if(msg.includes('c++') || msg.includes('cpp')) response = "GOAL: MASTER C++ LANGUAGE. CURRENT STATUS: IN PROGRESS";
             else if(msg.includes('hello') || msg.includes('hi')) response = "GREETINGS, NETRUNNER";
             else if(msg.includes('who')) response = "I AM AZOITY, DIGITAL ENTITY";
-            else if(msg.includes('help')) response = "COMMANDS: TRACK, ACHIEVEMENT, C++, HELLO, WHO, HELP";
+            else if(msg.includes('help')) response = "COMMANDS: TRACK, ACHIEVEMENT, C++, HELLO, WHO, HELP, SHOP, RADIO";
+            else if(msg.includes('shop')) response = "TYPE 'SHOP' TO OPEN SKIN STORE";
+            else if(msg.includes('radio')) response = "TYPE 'RADIO' TO CHANGE STATION";
             messages.innerHTML += `<div style="color: var(--cp-accent); margin: 5px 0;">${response}</div>`;
             chatHistory.push({ role: 'ai', text: response });
             localStorage.setItem('azoity_chat', JSON.stringify(chatHistory));
@@ -478,11 +726,223 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
                 document.getElementById('wpmDisplay').innerText = wpm;
                 playSound('success');
                 nextTypingWord();
-                if(typingCorrect >= 20) { unlock('typer'); showPopup({icon: '⌨️', name: 'KEYSTROKE KING! +50 XP'}); updateXP(50, 'fix'); }
+                if(typingCorrect >= 20) { unlock('typer'); showPopup({icon: '⌨', name: 'KEYSTROKE KING! +50 XP'}); updateXP(50, 'fix'); }
             }
         });
         function closeTypingGame() { document.getElementById('typingGameModal').classList.remove('active'); }
-// IMPROVED BREACH PROTOCOL
+
+        // КИБЕР-ЗМЕЙКА
+        let snake, snakeDir, snakeFood, snakeScoreVal, snakeHighScore, snakeGameLoop;
+        const gridSize = 20, tileCount = 20;
+        function openSnakeGame() {
+            document.getElementById('snakeModal').classList.add('active');
+            snake = [{x: 10, y: 10}]; snakeDir = {x: 0, y: 0};
+            snakeScoreVal = 0; 
+            snakeHighScore = parseInt(localStorage.getItem('azoity_snake_high')) || 0;
+            document.getElementById('snakeScore').innerText = snakeScoreVal;
+            document.getElementById('snakeHigh').innerText = snakeHighScore;
+            placeSnakeFood();
+            if(snakeGameLoop) clearInterval(snakeGameLoop);
+            snakeGameLoop = setInterval(updateSnake, 100);
+            playSound('click');
+        }
+        function placeSnakeFood() {
+            snakeFood = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
+        }
+        function updateSnake() {
+            const canvas = document.getElementById('snakeCanvas');
+            const ctx = canvas.getContext('2d');
+            const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
+            
+            // Проверка столкновений
+            if(head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
+                clearInterval(snakeGameLoop);
+                if(snakeScoreVal > snakeHighScore) {
+                    snakeHighScore = snakeScoreVal;
+                    localStorage.setItem('azoity_snake_high', snakeHighScore);
+                    unlock('snake');
+                    showPopup({icon: '🐍', name: `NEW HIGH SCORE: ${snakeHighScore}!`});
+                } else {
+                    showPopup({icon: '💀', name: `GAME OVER! SCORE: ${snakeScoreVal}`});
+                }
+                closeSnakeGame(); return;
+            }
+            
+            snake.unshift(head);
+            if(head.x === snakeFood.x && head.y === snakeFood.y) {
+                snakeScoreVal += 10; updateXP(2, 'nom');
+                document.getElementById('snakeScore').innerText = snakeScoreVal;
+                placeSnakeFood(); playSound('success');
+            } else {
+                snake.pop();
+            }
+            
+            // Отрисовка
+            ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fcee0a';
+            snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+            ctx.fillStyle = '#ff003c';
+            ctx.fillRect(snakeFood.x * gridSize, snakeFood.y * gridSize, gridSize - 2, gridSize - 2);
+        }
+        document.addEventListener('keydown', (e) => {
+            if(!document.getElementById('snakeModal').classList.contains('active')) return;
+            switch(e.key) {
+                case 'ArrowUp': if(snakeDir.y !== 1) snakeDir = {x: 0, y: -1}; break;
+                case 'ArrowDown': if(snakeDir.y !== -1) snakeDir = {x: 0, y: 1}; break;
+                case 'ArrowLeft': if(snakeDir.x !== 1) snakeDir = {x: -1, y: 0}; break;
+                case 'ArrowRight': if(snakeDir.x !== -1) snakeDir = {x: 1, y: 0}; break;
+            }
+        });
+        function closeSnakeGame() { document.getElementById('snakeModal').classList.remove('active'); clearInterval(snakeGameLoop); }
+// AI DUEL
+        let duelActive = false, duelScore = 0, aiScore = 0, duelTimer = null;
+        function openDuel() { document.getElementById('duelModal').classList.add('active'); playSound('click'); }
+        function closeDuel() { document.getElementById('duelModal').classList.remove('active'); clearInterval(duelTimer); duelActive = false; }
+        function startDuel() {
+            duelActive = true; duelScore = 0; aiScore = 0;
+            const area = document.getElementById('duelArea');
+            area.innerHTML = 'WAIT FOR SIGNAL...';
+            setTimeout(() => {
+                area.innerHTML = 'CLICK NOW!';
+                area.style.cursor = 'pointer';
+                area.onclick = () => {
+                    if(!duelActive) return;
+                    duelScore++;
+                    area.innerHTML = `YOU: ${duelScore} | AI: ${aiScore}`;
+                    playSound('success');
+                    setTimeout(() => {
+                        if(duelActive) {
+                            aiScore++;
+                            area.innerHTML = `YOU: ${duelScore} | AI: ${aiScore}`;
+                            playSound('glitch');
+                            if(duelScore >= 5) {
+                                duelActive = false; unlock('duelist'); updateXP(50, 'net');
+                                showPopup({icon: '⚔', name: 'AI VANQUISHED! +50 XP'});
+                                closeDuel();
+                            } else if(aiScore >= 5) {
+                                duelActive = false;
+                                showPopup({icon: '❌', name: 'DEFEATED BY AI'});
+                                closeDuel();
+                            } else {
+                                area.innerHTML = 'CLICK NOW!';
+                            }
+                        }
+                    }, Math.random() * 500 + 200);
+                };
+            }, Math.random() * 2000 + 1000);
+        }
+
+        // МАГАЗИН СКИНОВ
+        const skins = [
+            { id: 'neon_pink', name: 'Neon Pink', price: 50, color: '#ff00ff', icon: '💖' },
+            { id: 'toxic_green', name: 'Toxic Green', price: 50, color: '#39ff14', icon: '☣' },
+            { id: 'plasma_blue', name: 'Plasma Blue', price: 50, color: '#00f0ff', icon: '⚡' },
+            { id: 'gold_frame', name: 'Gold Frame', price: 100, type: 'frame', icon: '👑' }
+        ];
+        let ownedSkins = JSON.parse(localStorage.getItem('azoity_skins')) || [];
+        let equippedSkin = localStorage.getItem('azoity_equipped_skin') || null;
+        function openShop() { 
+            document.getElementById('shopModal').classList.add('active'); 
+            renderShop(); playSound('click'); 
+        }
+        function closeShop() { document.getElementById('shopModal').classList.remove('active'); }
+        function renderShop() {
+            const grid = document.getElementById('shopGrid');
+            grid.innerHTML = skins.map(s => {
+                const owned = ownedSkins.includes(s.id);
+                const equipped = equippedSkin === s.id;
+                return `<div class="shop-item ${owned ? 'owned' : ''} ${equipped ? 'equipped' : ''}" onclick="buyOrEquipSkin('${s.id}')">
+                    <div class="shop-icon">${s.icon}</div>
+                    <div class="shop-name">${s.name}</div>
+                    <div class="shop-price">${owned ? (equipped ? 'EQUIPPED' : 'OWNED') : s.price + ' XP'}</div>
+                </div>`;
+            }).join('');
+        }
+        function buyOrEquipSkin(id) {
+            const skin = skins.find(s => s.id === id);
+            if(ownedSkins.includes(id)) {
+                equippedSkin = id; localStorage.setItem('azoity_equipped_skin', id);
+                applySkin(skin); renderShop(); unlock('shopper');
+                showPopup({icon: '✨', name: `${skin.name} EQUIPPED!`});
+            } else if(xp >= skin.price) {
+                xp -= skin.price; ownedSkins.push(id);
+                localStorage.setItem('azoity_xp', xp); localStorage.setItem('azoity_skins', JSON.stringify(ownedSkins));
+                renderXP(); renderShop();
+                showPopup({icon: '🛒', name: `${skin.name} PURCHASED!`});
+            } else {
+                showPopup({icon: '❌', name: 'NOT ENOUGH XP!'});
+            }
+        }
+        function applySkin(skin) {
+            if(skin.type === 'frame') {
+                document.getElementById('avatarFrame').style.borderColor = '#ffd700';
+                document.getElementById('avatarFrame').style.borderStyle = 'solid';
+            } else {
+                document.documentElement.style.setProperty('--cp-accent', skin.color);
+                document.getElementById('avatarFrame').style.borderColor = skin.color;
+            }
+        }
+        if(equippedSkin) { const s = skins.find(x => x.id === equippedSkin); if(s) applySkin(s); }
+
+        // КИБЕР-РАДИО
+        let currentRadio = 'music';
+        function openRadio() { document.getElementById('radioModal').classList.add('active'); playSound('click'); }
+        function closeRadio() { document.getElementById('radioModal').classList.remove('active'); }
+        function setRadio(station) {
+            currentRadio = station;
+            document.querySelectorAll('.station-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            const status = document.getElementById('radioStatus');
+            if(station === 'music') status.innerText = "Playing: Music Playlist";
+            else if(station === 'ambient') status.innerText = "Playing: Night City Rain & Traffic";
+            else status.innerText = "Playing: White Noise";
+            // Здесь можно добавить реальное переключение аудио, если есть файлы
+            updateXP(1, 'fix');
+        }
+
+        // ДНЕВНИК НЕТРАННЕРА
+        const diaryEntries = [
+            { date: '2024-01-15', text: 'Started learning to code. The net feels vast.' },
+            { date: '2025-06-20', text: 'Deployed my first bot. It\'s alive!' },
+            { date: '2026-11-15', text: 'Launched my personal site. Welcome to my digital soul.' }
+        ];
+        function openDiary() {
+            document.getElementById('diaryModal').classList.add('active');
+            const content = document.getElementById('diaryContent');
+            content.innerHTML = diaryEntries.map(e => `<div class="diary-entry"><div class="diary-date">${e.date}</div><div>${e.text}</div></div>`).join('');
+            playSound('click');
+        }
+        function closeDiary() { document.getElementById('diaryModal').classList.remove('active'); }
+
+        // КАРТА NIGHT CITY
+        let exploredRegions = JSON.parse(localStorage.getItem('azoity_map')) || [];
+        function openMap() { document.getElementById('mapModal').classList.add('active'); renderMap(); playSound('click'); }
+        function closeMap() { document.getElementById('mapModal').classList.remove('active'); }
+        function renderMap() {
+            document.querySelectorAll('.map-region').forEach(r => {
+                const region = r.getAttribute('onclick').match(/'(\w+)'/)[1];
+                if(exploredRegions.includes(region)) r.classList.add('explored');
+            });
+        }
+        function exploreMap(region) {
+            if(!exploredRegions.includes(region)) {
+                exploredRegions.push(region);
+                localStorage.setItem('azoity_map', JSON.stringify(exploredRegions));
+                updateXP(15, 'nom');
+                showPopup({icon: '🗺', name: `REGION DISCOVERED: ${region.toUpperCase()}!`});
+                if(exploredRegions.length === 5) { unlock('explorer'); showPopup({icon: '🌃', name: 'NIGHT CITY FULLY EXPLORED!'}); }
+                renderMap();
+            }
+        }
+
+        // CRT ЭФФЕКТ
+        function toggleCRT() {
+            document.body.classList.toggle('crt-active');
+            playSound('click');
+            showPopup({icon: '📺', name: document.body.classList.contains('crt-active') ? 'CRT EFFECT ON' : 'CRT EFFECT OFF'});
+        }
+
+        // BREACH PROTOCOL (Улучшенный)
         const hexCodes = ['1C', '55', 'BD', 'E9', 'FF', '7A', '3D', '8B'];
         let breachSequence = [], userSequence = [], breachActive = false, breachTimer = null, breachTimeLeft = 30;
         function initBreach() {
@@ -529,3 +989,4 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
     </script>
 </body>
 </html>
+
