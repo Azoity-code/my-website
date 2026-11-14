@@ -3,82 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azoity // CYBERPUNK</title>
+    <title>Azoity // CYBERPUNK V2.0</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
         :root { --cp-accent: #fcee0a; --cp-red: #ff003c; --cp-blue: #00f0ff; --cp-black: #000; --cp-dark: #0a0a0a; --cp-gray: #1a1a1a; --cp-text: #fff; --glow-accent: rgba(252, 238, 10, 0.5); }
         [data-theme="light"] { --cp-accent: #00f0ff; --cp-black: #e0e0e0; --cp-dark: #ffffff; --cp-gray: #cccccc; --cp-text: #000; --glow-accent: rgba(0, 240, 255, 0.5); }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; scrollbar-width: thin; scrollbar-color: var(--cp-accent) transparent; }
         body { font-family: 'Rajdhani', sans-serif; background: var(--cp-black); color: var(--cp-text); overflow-x: hidden; min-height: 100vh; position: relative; transition: background 0.5s, color 0.5s; }
         body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px); pointer-events: none; z-index: 9998; }
         .screen-glitch { position: fixed; inset: 0; background: var(--cp-accent); opacity: 0; pointer-events: none; z-index: 9997; mix-blend-mode: overlay; }
         .cursor { width: 20px; height: 20px; border: 2px solid var(--cp-accent); position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
         .ripple { position: fixed; border-radius: 50%; background: var(--cp-accent); opacity: 0.4; pointer-events: none; animation: rippleAnim 0.6s ease-out forwards; z-index: 9998; }
         @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
-        .parallax-bg { position: fixed; top: -10%; left: 0; width: 100%; height: 120%; background-size: cover; background-position: center; z-index: -2; transition: transform 0.1s linear, background-image 1s ease-in-out; }
-        .overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); z-index: -1; transition: background 0.5s; }
-        [data-theme="light"] .overlay { background: rgba(255, 255, 255, 0.3); }
+        .parallax-bg { position: fixed; top: -10%; left: 0; width: 100%; height: 120%; background-size: cover; background-position: center; z-index: -2; transition: transform 0.1s linear, background-image 1s ease-in-out; filter: brightness(0.8) contrast(1.2); }
+        .overlay { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%); z-index: -1; transition: background 0.5s; }
+        [data-theme="light"] .overlay { background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.7) 100%); }
         .matrix-char { position: fixed; top: -20px; color: var(--cp-accent); font-family: 'Orbitron', monospace; font-size: 14px; pointer-events: none; z-index: -1; opacity: 0.6; text-shadow: 0 0 5px var(--glow-accent); animation: matrixFall linear infinite; }
         @keyframes matrixFall { to { transform: translateY(110vh); } }
-        nav { position: fixed; top: 0; left: 0; right: 0; padding: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(0, 0, 0, 0.6); border-bottom: 2px solid var(--cp-accent); clip-path: polygon(0 0, 100% 0, 100% 85%, 98% 100%, 0 100%); }
+        nav { position: fixed; top: 0; left: 0; right: 0; padding: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); border-bottom: 2px solid var(--cp-accent); clip-path: polygon(0 0, 100% 0, 100% 85%, 98% 100%, 0 100%); }
         .nav-logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.5em; color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent); letter-spacing: 3px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: var(--cp-text); text-decoration: none; font-weight: 700; font-size: 1.1em; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s; padding: 5px 15px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .nav-links a:hover { color: var(--cp-accent); background: rgba(252, 238, 10, 0.1); text-shadow: 0 0 10px var(--glow-accent); }
         .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 10001 !important; position: relative; pointer-events: auto !important; }
         .burger span { width: 30px; height: 3px; background: var(--cp-accent); transition: 0.3s; box-shadow: 0 0 10px var(--glow-accent); }
-        @media (max-width: 768px) { .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: rgba(0, 0, 0, 0.85); flex-direction: column; justify-content: center; align-items: center; transition: 0.4s; border-left: 2px solid var(--cp-accent); } .nav-links.active { right: 0; } .burger { display: flex; } }
+        @media (max-width: 768px) { .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: rgba(0, 0, 0, 0.95); flex-direction: column; justify-content: center; align-items: center; transition: 0.4s; border-left: 2px solid var(--cp-accent); } .nav-links.active { right: 0; } .burger { display: flex; } }
         .container-wrapper { perspective: 1000px; padding: 120px 20px 40px; display: flex; justify-content: center; }
-        .container { padding: 50px 40px; background: rgba(10, 10, 10, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 2px solid var(--cp-accent); max-width: 700px; width: 100%; text-align: center; box-shadow: 0 0 40px var(--glow-accent), inset 0 0 40px rgba(252, 238, 10, 0.05); position: relative; clip-path: polygon(0 2%, 2% 0, 98% 0, 100% 2%, 100% 98%, 98% 100%, 2% 100%, 0 98%); animation: fadeInUp 1s ease-out forwards; overflow: visible !important; }
+        .container { padding: 50px 40px; background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid var(--cp-accent); max-width: 750px; width: 100%; text-align: center; box-shadow: 0 0 50px var(--glow-accent), inset 0 0 50px rgba(252, 238, 10, 0.05); position: relative; clip-path: polygon(0 2%, 2% 0, 98% 0, 100% 2%, 100% 98%, 98% 100%, 2% 100%, 0 98%); animation: fadeInUp 1s ease-out forwards; overflow: visible !important; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .container::before, .container::after { content: ''; position: absolute; width: 30px; height: 30px; border: 3px solid var(--cp-accent); }
+        .container::before, .container::after { content: ''; position: absolute; width: 40px; height: 40px; border: 3px solid var(--cp-accent); }
         .container::before { top: -5px; left: -5px; border-right: none; border-bottom: none; }
         .container::after { bottom: -5px; right: -5px; border-left: none; border-top: none; }
-        .avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--cp-accent); margin-bottom: 30px; box-shadow: 0 0 30px var(--glow-accent); filter: contrast(1.2) brightness(1.1); }
-        .typewriter h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 3em; color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent), 0 0 40px var(--glow-accent); overflow: hidden; border-right: 3px solid var(--cp-accent); white-space: nowrap; margin: 0 auto 20px; animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite; letter-spacing: 5px; }
+        .avatar { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 3px solid var(--cp-accent); margin-bottom: 30px; box-shadow: 0 0 40px var(--glow-accent); filter: contrast(1.3) brightness(1.1) saturate(1.2); transition: transform 0.5s; }
+        .avatar:hover { transform: rotateY(180deg) scale(1.1); }
+        .typewriter h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 3.2em; color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent), 0 0 40px var(--glow-accent); overflow: hidden; border-right: 3px solid var(--cp-accent); white-space: nowrap; margin: 0 auto 20px; animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite; letter-spacing: 5px; }
         .glitch:hover { animation: glitch 0.3s infinite; }
         @keyframes typing { from { width: 0; } to { width: 100%; } } @keyframes blink { 50% { border-color: transparent; } }
         @keyframes glitch { 0%, 100% { transform: translate(0); } 20% { transform: translate(-3px, 3px); } 40% { transform: translate(3px, -3px); } 60% { transform: translate(-3px, -3px); } 80% { transform: translate(3px, 3px); } }
         p { font-size: 1.2em; line-height: 1.7; color: var(--cp-text); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
-        .clock { font-family: 'Orbitron', sans-serif; font-size: 1.5em; color: var(--cp-accent); margin-bottom: 25px; text-shadow: 0 0 15px var(--glow-accent); letter-spacing: 3px; }
+        .clock { font-family: 'Orbitron', sans-serif; font-size: 1.6em; color: var(--cp-accent); margin-bottom: 25px; text-shadow: 0 0 15px var(--glow-accent); letter-spacing: 3px; }
         .btn-link { display: inline-block; padding: 15px 40px; background: var(--cp-accent); color: var(--cp-black); text-decoration: none; font-weight: 900; font-size: 1.1em; text-transform: uppercase; letter-spacing: 3px; border: none; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); transition: all 0.3s; margin: 10px; }
         .btn-link:hover { background: var(--cp-red); color: var(--cp-text); transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 0, 60, 0.5); }
         .socials { margin-top: 30px; display: flex; justify-content: center; gap: 30px; }
         .socials a { color: var(--cp-text); opacity: 0.7; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s; padding: 10px 20px; border: 1px solid var(--cp-accent); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .socials a:hover { opacity: 1; background: var(--cp-accent); color: var(--cp-black); box-shadow: 0 0 20px var(--glow-accent); }
-        .xp-bar-container { margin-top: 20px; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--cp-accent); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
+        .xp-bar-container { margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.6); border: 1px solid var(--cp-accent); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
         .xp-label { font-family: 'Orbitron'; font-size: 0.8em; color: var(--cp-accent); margin-bottom: 5px; display: flex; justify-content: space-between; }
-        .xp-track { width: 100%; height: 10px; background: rgba(255,255,255,0.1); position: relative; }
+        .xp-track { width: 100%; height: 12px; background: rgba(255,255,255,0.1); position: relative; }
         .xp-fill { height: 100%; background: var(--cp-accent); width: 0%; transition: width 0.5s ease; box-shadow: 0 0 10px var(--glow-accent); }
-        .rep-row { display: flex; justify-content: space-between; margin-top: 8px; font-family: 'Rajdhani'; font-size: 0.8em; text-transform: uppercase; }
+        .rep-row { display: flex; justify-content: space-between; margin-top: 10px; font-family: 'Rajdhani'; font-size: 0.8em; text-transform: uppercase; }
         .rep-item { color: var(--cp-text); opacity: 0.7; } .rep-item span { color: var(--cp-accent); font-weight: bold; }
         .visitor-counter { margin-top: 10px; font-family: 'Orbitron'; font-size: 0.75em; color: var(--cp-accent); text-align: center; }
-        .terminal-box { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.8); border-left: 3px solid var(--cp-accent); text-align: left; font-family: 'Orbitron', monospace; font-size: 0.9em; color: var(--cp-accent); min-height: 60px; line-height: 1.6; }
+        .terminal-box { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.9); border-left: 3px solid var(--cp-accent); text-align: left; font-family: 'Orbitron', monospace; font-size: 0.9em; color: var(--cp-accent); min-height: 60px; line-height: 1.6; }
         .terminal-cursor { display: inline-block; width: 8px; height: 15px; background: var(--cp-accent); animation: blink 1s step-end infinite; vertical-align: middle; }
-        .breach-modal, .puzzle-modal, .guestbook-modal, .chatbot-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .breach-modal.active, .puzzle-modal.active, .guestbook-modal.active, .chatbot-modal.active { display: flex; }
+        .action-buttons { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .action-btn { padding: 12px 25px; background: rgba(0,0,0,0.8); border: 2px solid var(--cp-accent); color: var(--cp-accent); font-family: 'Orbitron'; font-size: 0.8em; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .action-btn:hover { background: var(--cp-accent); color: var(--cp-black); box-shadow: 0 0 15px var(--glow-accent); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-overlay.active { display: flex; }
+        .modal-title { font-family: 'Orbitron'; font-size: 1.8em; color: var(--cp-accent); margin-bottom: 15px; text-shadow: 0 0 10px var(--glow-accent); }
+        .modal-close { margin-top: 20px; padding: 10px 30px; background: var(--cp-red); border: none; color: #fff; font-family: 'Orbitron'; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .breach-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px; }
         .breach-cell { width: 60px; height: 60px; border: 2px solid var(--cp-accent); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 1.5em; color: var(--cp-accent); cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.5); }
         .breach-cell:hover { background: var(--cp-accent); color: var(--cp-black); box-shadow: 0 0 15px var(--glow-accent); }
         .breach-cell.selected { background: var(--cp-blue); color: var(--cp-black); border-color: var(--cp-blue); }
-        .modal-title { font-family: 'Orbitron'; font-size: 1.5em; color: var(--cp-accent); margin-bottom: 10px; }
-        .modal-close { margin-top: 20px; padding: 10px 30px; background: var(--cp-red); border: none; color: #fff; font-family: 'Orbitron'; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .puzzle-input { padding: 10px; background: rgba(0,0,0,0.8); border: 2px solid var(--cp-accent); color: var(--cp-accent); font-family: 'Orbitron'; font-size: 1.2em; margin: 10px; width: 200px; text-align: center; }
         .guestbook-entries { max-height: 300px; overflow-y: auto; width: 100%; max-width: 500px; margin: 20px; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--cp-accent); }
         .guest-entry { font-family: 'Orbitron'; font-size: 0.8em; color: var(--cp-text); margin-bottom: 10px; padding: 5px; border-left: 2px solid var(--cp-accent); }
         .guest-input { padding: 10px; background: rgba(0,0,0,0.8); border: 2px solid var(--cp-accent); color: var(--cp-accent); font-family: 'Orbitron'; margin: 5px; width: 80%; max-width: 400px; }
-        .chatbot-window { width: 100%; max-width: 400px; height: 400px; background: rgba(0,0,0,0.9); border: 2px solid var(--cp-accent); display: flex; flex-direction: column; }
-        .chatbot-messages { flex: 1; overflow-y: auto; padding: 10px; font-family: 'Orbitron'; font-size: 0.8em; color: var(--cp-accent); }
+        .chatbot-window { width: 100%; max-width: 450px; height: 450px; background: rgba(0,0,0,0.9); border: 2px solid var(--cp-accent); display: flex; flex-direction: column; }
+        .chatbot-messages { flex: 1; overflow-y: auto; padding: 15px; font-family: 'Orbitron'; font-size: 0.8em; color: var(--cp-accent); }
         .chatbot-input-area { display: flex; border-top: 1px solid var(--cp-accent); }
-        .chatbot-input { flex: 1; padding: 10px; background: rgba(0,0,0,0.8); border: none; color: var(--cp-accent); font-family: 'Orbitron'; }
-        .chatbot-send { padding: 10px 20px; background: var(--cp-accent); border: none; color: var(--cp-black); font-family: 'Orbitron'; cursor: pointer; }
-        .quest-hint { position: fixed; bottom: 80px; left: 20px; font-family: 'Orbitron'; font-size: 0.7em; color: var(--cp-accent); opacity: 0.5; z-index: 100; }
-        .hidden-symbol { position: absolute; width: 20px; height: 20px; opacity: 0.1; cursor: pointer; transition: opacity 0.3s; }
-        .hidden-symbol:hover { opacity: 0.8; }
-        .action-buttons { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .action-btn { padding: 10px 20px; background: rgba(0,0,0,0.8); border: 2px solid var(--cp-accent); color: var(--cp-accent); font-family: 'Orbitron'; font-size: 0.8em; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); transition: 0.3s; }
-        .action-btn:hover { background: var(--cp-accent); color: var(--cp-black); }
-.player { margin-top: 40px; padding: 25px; background: rgba(20, 20, 20, 0.7); border: 2px solid var(--cp-accent); backdrop-filter: blur(5px); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
+        .chatbot-input { flex: 1; padding: 12px; background: rgba(0,0,0,0.8); border: none; color: var(--cp-accent); font-family: 'Orbitron'; }
+        .chatbot-send { padding: 12px 25px; background: var(--cp-accent); border: none; color: var(--cp-black); font-family: 'Orbitron'; cursor: pointer; }
+        .game-area { width: 100%; max-width: 400px; height: 300px; background: rgba(0,0,0,0.8); border: 2px solid var(--cp-accent); position: relative; overflow: hidden; margin: 20px; }
+        .game-target { position: absolute; width: 30px; height: 30px; background: var(--cp-accent); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); cursor: pointer; box-shadow: 0 0 10px var(--glow-accent); }
+        .hidden-symbol { position: absolute; width: 20px; height: 20px; opacity: 0.08; cursor: pointer; transition: opacity 0.3s; font-size: 1.2em; }
+        .hidden-symbol:hover { opacity: 0.9; text-shadow: 0 0 10px var(--cp-accent); }
+        .quest-hint { position: fixed; bottom: 80px; left: 20px; font-family: 'Orbitron'; font-size: 0.7em; color: var(--cp-accent); opacity: 0.6; z-index: 100; animation: pulseHint 2s infinite; }
+        @keyframes pulseHint { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+.player { margin-top: 40px; padding: 25px; background: rgba(20, 20, 20, 0.8); border: 2px solid var(--cp-accent); backdrop-filter: blur(5px); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
         .track-name { font-family: 'Orbitron', sans-serif; font-size: 1.3em; font-weight: 700; margin-bottom: 15px; color: var(--cp-accent); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--glow-accent); }
         .progress-container { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); margin: 20px 0; cursor: pointer; position: relative; border: 1px solid var(--cp-accent); }
         .progress-bar { height: 100%; background: var(--cp-accent); width: 0%; transition: width 0.1s; box-shadow: 0 0 10px var(--glow-accent); }
@@ -96,7 +100,7 @@
         .timeline-date { font-family: 'Orbitron', sans-serif; font-size: 0.9em; color: var(--cp-accent); font-weight: 700; letter-spacing: 2px; }
         .timeline-text { font-size: 1em; color: var(--cp-text); text-transform: uppercase; letter-spacing: 1px; }
         .achievements { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
-        .achievement { background: rgba(20, 20, 20, 0.7); padding: 15px 10px; text-align: center; opacity: 0.3; transition: all 0.5s; border: 2px solid var(--cp-gray); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); position: relative; backdrop-filter: blur(5px); }
+        .achievement { background: rgba(20, 20, 20, 0.8); padding: 15px 10px; text-align: center; opacity: 0.3; transition: all 0.5s; border: 2px solid var(--cp-gray); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); position: relative; backdrop-filter: blur(5px); }
         .achievement.unlocked { opacity: 1; border-color: var(--cp-accent); box-shadow: 0 0 20px var(--glow-accent); transform: scale(1.05); }
         .achievement-icon { font-size: 2em; margin-bottom: 8px; }
         .achievement-name { font-size: 0.7em; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
@@ -114,21 +118,21 @@
     <div class="parallax-bg" id="parallaxBg"></div>
     <div class="overlay"></div>
     <div class="quest-hint" id="questHint">[QUEST: Find 5 hidden symbols]</div>
-    <div class="breach-modal" id="breachModal">
+    <div class="modal-overlay" id="breachModal">
         <div class="modal-title">// BREACH PROTOCOL //</div>
         <div id="breachTimer" style="font-family: Orbitron; color: var(--cp-red); margin-bottom: 10px;">TIME: 30s</div>
         <div class="breach-sequence" id="breachSeq">BD 55 E9</div>
         <div class="breach-grid" id="breachGrid"></div>
         <button class="modal-close" onclick="closeBreach()">ABORT</button>
     </div>
-    <div class="puzzle-modal" id="puzzleModal">
+    <div class="modal-overlay" id="puzzleModal">
         <div class="modal-title">// DECRYPT THE CODE //</div>
         <p style="font-family: Orbitron; color: var(--cp-text); margin: 10px;">Shift cipher: KHOOR ZRUOG</p>
         <input type="text" class="puzzle-input" id="puzzleAnswer" placeholder="ENTER CODE">
         <button class="action-btn" onclick="checkPuzzle()">DECRYPT</button>
         <button class="modal-close" onclick="closePuzzle()">CLOSE</button>
     </div>
-    <div class="guestbook-modal" id="guestbookModal">
+    <div class="modal-overlay" id="guestbookModal">
         <div class="modal-title">// GUEST TERMINAL //</div>
         <div class="guestbook-entries" id="guestEntries"></div>
         <input type="text" class="guest-input" id="guestName" placeholder="YOUR CALLSIGN">
@@ -136,8 +140,8 @@
         <button class="action-btn" onclick="addGuestEntry()">TRANSMIT</button>
         <button class="modal-close" onclick="closeGuestbook()">CLOSE</button>
     </div>
-    <div class="chatbot-modal" id="chatbotModal">
-        <div class="modal-title">// NETRUNNER AI //</div>
+    <div class="modal-overlay" id="chatbotModal">
+        <div class="modal-title">// NETRUNNER AI v2.0 //</div>
         <div class="chatbot-window">
             <div class="chatbot-messages" id="chatMessages"></div>
             <div class="chatbot-input-area">
@@ -146,6 +150,25 @@
             </div>
         </div>
         <button class="modal-close" onclick="closeChatbot()">CLOSE</button>
+    </div>
+    <div class="modal-overlay" id="aimGameModal">
+        <div class="modal-title">// AIM TRAINER //</div>
+        <div style="font-family: Orbitron; color: var(--cp-text); margin-bottom: 10px;">SCORE: <span id="aimScore">0</span> | TIME: <span id="aimTime">30</span>s</div>
+        <div class="game-area" id="aimArea"></div>
+        <button class="modal-close" onclick="closeAimGame()">EXIT</button>
+    </div>
+    <div class="modal-overlay" id="memoryGameModal">
+        <div class="modal-title">// MEMORY HACK //</div>
+        <div style="font-family: Orbitron; color: var(--cp-text); margin-bottom: 10px;">LEVEL: <span id="memLevel">1</span></div>
+        <div class="game-area" id="memArea" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px;"></div>
+        <button class="modal-close" onclick="closeMemoryGame()">EXIT</button>
+    </div>
+    <div class="modal-overlay" id="typingGameModal">
+        <div class="modal-title">// SPEED TYPING //</div>
+        <div style="font-family: Orbitron; color: var(--cp-text); margin: 10px;" id="typingWord">TYPE THIS</div>
+        <input type="text" class="puzzle-input" id="typingInput" placeholder="TYPE HERE">
+        <div style="font-family: Orbitron; color: var(--cp-accent); margin-top: 10px;">WPM: <span id="wpmDisplay">0</span></div>
+        <button class="modal-close" onclick="closeTypingGame()">EXIT</button>
     </div>
     <nav>
         <div class="nav-logo">AZOITY//2077</div>
@@ -174,6 +197,9 @@
                 <button class="action-btn" onclick="openGuestbook()">GUEST TERMINAL</button>
                 <button class="action-btn" onclick="openChatbot()">NETRUNNER AI</button>
                 <button class="action-btn" onclick="initBreach()">BREACH PROTOCOL</button>
+                <button class="action-btn" onclick="openAimGame()">AIM TRAINER</button>
+                <button class="action-btn" onclick="openMemoryGame()">MEMORY HACK</button>
+                <button class="action-btn" onclick="openTypingGame()">SPEED TYPING</button>
             </div>
             <a href="https://t.me/Azoity" class="btn-link" target="_blank">CONNECT // TELEGRAM</a>
             <div class="player">
@@ -215,6 +241,7 @@
             if(type === 'click') { osc.type = 'square'; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(300, now + 0.1); gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1); osc.start(now); osc.stop(now + 0.1); }
             else if(type === 'levelup') { osc.type = 'sawtooth'; osc.frequency.setValueAtTime(400, now); osc.frequency.linearRampToValueAtTime(1200, now + 0.3); gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0, now + 0.5); osc.start(now); osc.stop(now + 0.5); }
             else if(type === 'glitch') { osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now); osc.frequency.linearRampToValueAtTime(50, now + 0.05); gain.gain.setValueAtTime(0.05, now); gain.gain.linearRampToValueAtTime(0, now + 0.05); osc.start(now); osc.stop(now + 0.05); }
+            else if(type === 'success') { osc.type = 'sine'; osc.frequency.setValueAtTime(600, now); osc.frequency.linearRampToValueAtTime(1200, now + 0.2); gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0, now + 0.3); osc.start(now); osc.stop(now + 0.3); }
         }
         let xp = parseInt(localStorage.getItem('azoity_xp')) || 0;
         let level = parseInt(localStorage.getItem('azoity_lvl')) || 1;
@@ -256,7 +283,7 @@
         setInterval(() => {
             if(Math.random() > 0.95) { const g = document.getElementById('screenGlitch'); g.style.opacity = '0.3'; playSound('glitch'); setTimeout(() => g.style.opacity = '0', 50 + Math.random()*100); }
         }, 2000);
-        const achData = [{ id: 'visit', name: 'FIRST LOGIN', icon: '👋' }, { id: 'music', name: 'AUDIO JACK', icon: '🎵' }, { id: 'theme', name: 'VISUAL HACK', icon: '🎨' }, { id: 'tg', name: 'NETRUNNER', icon: '📱' }, { id: 'pause', name: 'SYSTEM PAUSE', icon: '⏸' }, { id: 'time1', name: 'DATA MINER', icon: '⏱' }, { id: 'time3', name: 'LOYAL USER', icon: '❤' }, { id: 'scroll', name: 'SCROLL MASTER', icon: '📜' }, { id: 'clicks', name: 'CLICK BOT', icon: '🖱' }, { id: 'collector', name: 'TRACK HUNTER', icon: '🎧' }, { id: 'hacker', name: 'MASTER HACKER', icon: '💻' }, { id: 'puzzle', name: 'CODE BREAKER', icon: '🔐' }];
+        const achData = [{ id: 'visit', name: 'FIRST LOGIN', icon: '👋' }, { id: 'music', name: 'AUDIO JACK', icon: '🎵' }, { id: 'theme', name: 'VISUAL HACK', icon: '🎨' }, { id: 'tg', name: 'NETRUNNER', icon: '📱' }, { id: 'pause', name: 'SYSTEM PAUSE', icon: '⏸' }, { id: 'time1', name: 'DATA MINER', icon: '⏱' }, { id: 'time3', name: 'LOYAL USER', icon: '❤' }, { id: 'scroll', name: 'SCROLL MASTER', icon: '📜' }, { id: 'clicks', name: 'CLICK BOT', icon: '🖱' }, { id: 'collector', name: 'TRACK HUNTER', icon: '🎧' }, { id: 'hacker', name: 'MASTER HACKER', icon: '💻' }, { id: 'puzzle', name: 'CODE BREAKER', icon: '🔐' }, { id: 'aimer', name: 'SHARPSHOOTER', icon: '🎯' }, { id: 'memo', name: 'MEMORY CORE', icon: '🧠' }, { id: 'typer', name: 'KEYSTROKE KING', icon: '⌨️' }];
         let unlocked = JSON.parse(localStorage.getItem('azoity_ach')) || [];
         let clicks = 0, siteStart = Date.now(), playedTracks = new Set(), foundSymbols = new Set();
         function renderAch() { const g = document.getElementById('achievements'); g.innerHTML = ''; achData.forEach(a => { const u = unlocked.includes(a.id); const d = document.createElement('div'); d.className = `achievement ${u ? 'unlocked' : ''}`; d.innerHTML = `<div class="achievement-icon">${a.icon}</div><div class="achievement-name">${a.name}</div>`; g.appendChild(d); }); }
@@ -327,21 +354,136 @@ const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Clo
         }
         function openChatbot() { document.getElementById('chatbotModal').classList.add('active'); playSound('click'); }
         function closeChatbot() { document.getElementById('chatbotModal').classList.remove('active'); }
+        let chatHistory = JSON.parse(localStorage.getItem('azoity_chat')) || [];
         function sendChat() {
             const input = document.getElementById('chatInput');
             const msg = input.value.toLowerCase();
             const messages = document.getElementById('chatMessages');
             messages.innerHTML += `<div style="color: var(--cp-text); margin: 5px 0;">> ${input.value}</div>`;
+            chatHistory.push({ role: 'user', text: input.value });
             let response = "UNKNOWN COMMAND";
             if(msg.includes('track') || msg.includes('music')) response = "CURRENTLY PLAYING: " + document.getElementById('trackName').innerText;
             else if(msg.includes('achievement')) response = "YOU HAVE " + unlocked.length + " ACHIEVEMENTS UNLOCKED";
             else if(msg.includes('c++') || msg.includes('cpp')) response = "GOAL: MASTER C++ LANGUAGE. CURRENT STATUS: IN PROGRESS";
             else if(msg.includes('hello') || msg.includes('hi')) response = "GREETINGS, NETRUNNER";
             else if(msg.includes('who')) response = "I AM AZOITY, DIGITAL ENTITY";
+            else if(msg.includes('help')) response = "COMMANDS: TRACK, ACHIEVEMENT, C++, HELLO, WHO, HELP";
             messages.innerHTML += `<div style="color: var(--cp-accent); margin: 5px 0;">${response}</div>`;
+            chatHistory.push({ role: 'ai', text: response });
+            localStorage.setItem('azoity_chat', JSON.stringify(chatHistory));
             input.value = ''; messages.scrollTop = messages.scrollHeight;
         }
-const hexCodes = ['1C', '55', 'BD', 'E9', 'FF', '7A', '3D', '8B'];
+// AIM TRAINER GAME
+        let aimScore = 0, aimTimeLeft = 30, aimInterval = null;
+        function openAimGame() {
+            document.getElementById('aimGameModal').classList.add('active');
+            aimScore = 0; aimTimeLeft = 30;
+            document.getElementById('aimScore').innerText = aimScore;
+            document.getElementById('aimTime').innerText = aimTimeLeft;
+            spawnAimTarget();
+            aimInterval = setInterval(() => {
+                aimTimeLeft--;
+                document.getElementById('aimTime').innerText = aimTimeLeft;
+                if(aimTimeLeft <= 0) { closeAimGame(); showPopup({icon: '🎯', name: `AIM COMPLETE! SCORE: ${aimScore}`}); if(aimScore >= 20) unlock('aimer'); }
+            }, 1000);
+            playSound('click');
+        }
+        function spawnAimTarget() {
+            const area = document.getElementById('aimArea');
+            area.innerHTML = '';
+            const target = document.createElement('div');
+            target.className = 'game-target';
+            target.style.left = Math.random() * 370 + 'px';
+            target.style.top = Math.random() * 270 + 'px';
+            target.onclick = () => { aimScore++; document.getElementById('aimScore').innerText = aimScore; playSound('success'); spawnAimTarget(); };
+            area.appendChild(target);
+        }
+        function closeAimGame() { document.getElementById('aimGameModal').classList.remove('active'); clearInterval(aimInterval); }
+
+        // MEMORY HACK GAME
+        let memLevel = 1, memSequence = [], memUserSeq = [], memShowing = false;
+        function openMemoryGame() {
+            document.getElementById('memoryGameModal').classList.add('active');
+            memLevel = 1; startMemRound();
+            playSound('click');
+        }
+        function startMemRound() {
+            document.getElementById('memLevel').innerText = memLevel;
+            memSequence = []; memUserSeq = [];
+            const area = document.getElementById('memArea');
+            area.innerHTML = '';
+            for(let i=0; i<16; i++) {
+                const cell = document.createElement('div');
+                cell.style.width = '70px'; cell.style.height = '70px';
+                cell.style.border = '2px solid var(--cp-accent)';
+                cell.style.cursor = 'pointer';
+                cell.dataset.index = i;
+                cell.onclick = () => handleMemClick(i);
+                area.appendChild(cell);
+            }
+            for(let i=0; i<memLevel + 2; i++) memSequence.push(Math.floor(Math.random() * 16));
+            showMemSequence();
+        }
+        function showMemSequence() {
+            memShowing = true;
+            let i = 0;
+            const interval = setInterval(() => {
+                if(i >= memSequence.length) { clearInterval(interval); memShowing = false; return; }
+                const cells = document.getElementById('memArea').children;
+                cells[memSequence[i]].style.background = 'var(--cp-accent)';
+                playSound('click');
+                setTimeout(() => { cells[memSequence[i]].style.background = 'transparent'; }, 300);
+                i++;
+            }, 600);
+        }
+        function handleMemClick(idx) {
+            if(memShowing) return;
+            memUserSeq.push(idx);
+            const cells = document.getElementById('memArea').children;
+            cells[idx].style.background = 'var(--cp-blue)';
+            playSound('click');
+            setTimeout(() => { cells[idx].style.background = 'transparent'; }, 200);
+            if(memUserSeq[memUserSeq.length - 1] !== memSequence[memUserSeq.length - 1]) {
+                showPopup({icon: '❌', name: 'MEMORY FAILED'}); closeMemoryGame(); return;
+            }
+            if(memUserSeq.length === memSequence.length) {
+                memLevel++; updateXP(10, 'net'); playSound('success');
+                if(memLevel >= 5) unlock('memo');
+                setTimeout(startMemRound, 1000);
+            }
+        }
+        function closeMemoryGame() { document.getElementById('memoryGameModal').classList.remove('active'); }
+
+        // SPEED TYPING GAME
+        const typingWords = ['CYBERPUNK', 'NETRUNNER', 'MATRIX', 'HACKER', 'SYSTEM', 'PROTOCOL', 'BREACH', 'NEURAL', 'SYNTHETIC', 'QUANTUM'];
+        let typingStartTime = 0, typingCorrect = 0;
+        function openTypingGame() {
+            document.getElementById('typingGameModal').classList.add('active');
+            typingStartTime = Date.now(); typingCorrect = 0;
+            nextTypingWord();
+            playSound('click');
+        }
+        function nextTypingWord() {
+            const word = typingWords[Math.floor(Math.random() * typingWords.length)];
+            document.getElementById('typingWord').innerText = word;
+            document.getElementById('typingInput').value = '';
+            document.getElementById('typingInput').focus();
+        }
+        document.getElementById('typingInput')?.addEventListener('input', (e) => {
+            const word = document.getElementById('typingWord').innerText;
+            if(e.target.value.toUpperCase() === word) {
+                typingCorrect++;
+                const elapsed = (Date.now() - typingStartTime) / 60000;
+                const wpm = Math.round((typingCorrect / 5) / elapsed);
+                document.getElementById('wpmDisplay').innerText = wpm;
+                playSound('success');
+                nextTypingWord();
+                if(typingCorrect >= 20) { unlock('typer'); showPopup({icon: '⌨️', name: 'KEYSTROKE KING! +50 XP'}); updateXP(50, 'fix'); }
+            }
+        });
+        function closeTypingGame() { document.getElementById('typingGameModal').classList.remove('active'); }
+// IMPROVED BREACH PROTOCOL
+        const hexCodes = ['1C', '55', 'BD', 'E9', 'FF', '7A', '3D', '8B'];
         let breachSequence = [], userSequence = [], breachActive = false, breachTimer = null, breachTimeLeft = 30;
         function initBreach() {
             breachSequence = []; userSequence = []; breachTimeLeft = 30;
@@ -379,6 +521,8 @@ const hexCodes = ['1C', '55', 'BD', 'E9', 'FF', '7A', '3D', '8B'];
             } else { clearInterval(breachTimer); closeBreach(); showPopup({icon: '❌', name: 'BREACH FAILED'}); }
         }
         function closeBreach() { document.getElementById('breachModal').classList.remove('active'); breachActive = false; clearInterval(breachTimer); }
+        
+        // KONAMI CODE PASCHALKA
         const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
         let konamiIdx = 0;
         document.addEventListener('keydown', (e) => { if(e.key === konamiCode[konamiIdx]) { konamiIdx++; if(konamiIdx === konamiCode.length) { playSound('levelup'); showPopup({icon: '🔓', name: 'SECRET MODE ACTIVATED'}); document.documentElement.style.filter = 'hue-rotate(180deg) invert(1)'; konamiIdx = 0; } } else { konamiIdx = 0; } });
