@@ -6,245 +6,113 @@
     <title>Azoity // CYBERPUNK</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
-        
-        :root {
-            --cp-accent: #fcee0a;
-            --cp-red: #ff003c;
-            --cp-blue: #00f0ff;
-            --cp-black: #000;
-            --cp-dark: #0a0a0a;
-            --cp-gray: #1a1a1a;
-            --cp-text: #fff;
-            --glow-accent: rgba(252, 238, 10, 0.5);
-        }
-        [data-theme="light"] {
-            --cp-accent: #00f0ff;
-            --cp-black: #e0e0e0;
-            --cp-dark: #ffffff;
-            --cp-gray: #cccccc;
-            --cp-text: #000;
-            --glow-accent: rgba(0, 240, 255, 0.5);
-        }
+        :root { --cp-accent: #fcee0a; --cp-red: #ff003c; --cp-blue: #00f0ff; --cp-black: #000; --cp-dark: #0a0a0a; --cp-gray: #1a1a1a; --cp-text: #fff; --glow-accent: rgba(252, 238, 10, 0.5); }
+        [data-theme="light"] { --cp-accent: #00f0ff; --cp-black: #e0e0e0; --cp-dark: #ffffff; --cp-gray: #cccccc; --cp-text: #000; --glow-accent: rgba(0, 240, 255, 0.5); }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-        body {
-            font-family: 'Rajdhani', sans-serif; background: var(--cp-black); color: var(--cp-text);
-            overflow-x: hidden; min-height: 100vh; position: relative; transition: background 0.5s, color 0.5s;
-        }
-        body::before {
-            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
-            pointer-events: none; z-index: 9998;
-        }
-        .cursor {
-            width: 20px; height: 20px; border: 2px solid var(--cp-accent); position: fixed;
-            pointer-events: none; z-index: 9999; transition: transform 0.1s;
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        }
-        .ripple {
-            position: fixed; border-radius: 50%; background: var(--cp-accent); opacity: 0.4;
-            pointer-events: none; animation: rippleAnim 0.6s ease-out forwards; z-index: 9998;
-        }
+        body { font-family: 'Rajdhani', sans-serif; background: var(--cp-black); color: var(--cp-text); overflow-x: hidden; min-height: 100vh; position: relative; transition: background 0.5s, color 0.5s; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px); pointer-events: none; z-index: 9998; }
+        .screen-glitch { position: fixed; inset: 0; background: var(--cp-accent); opacity: 0; pointer-events: none; z-index: 9997; mix-blend-mode: overlay; }
+        .cursor { width: 20px; height: 20px; border: 2px solid var(--cp-accent); position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+        .ripple { position: fixed; border-radius: 50%; background: var(--cp-accent); opacity: 0.4; pointer-events: none; animation: rippleAnim 0.6s ease-out forwards; z-index: 9998; }
         @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
-
-        /* ФОН С РАНДОМНОЙ ГИФКОЙ */
-        .parallax-bg {
-            position: fixed; top: -10%; left: 0; width: 100%; height: 120%;
-            background-size: cover; background-position: center;
-            z-index: -2; transition: transform 0.1s linear, background-image 1s ease-in-out;
-        }
-        .overlay {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); /* Меньше затемнения для гифки */
-            z-index: -1; transition: background 0.5s;
-        }
+        .parallax-bg { position: fixed; top: -10%; left: 0; width: 100%; height: 120%; background-size: cover; background-position: center; z-index: -2; transition: transform 0.1s linear, background-image 1s ease-in-out; }
+        .overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); z-index: -1; transition: background 0.5s; }
         [data-theme="light"] .overlay { background: rgba(255, 255, 255, 0.3); }
-
-        .snowflake {
-            position: fixed; top: -10px; background: var(--cp-accent); border-radius: 50%;
-            pointer-events: none; z-index: -1; animation: fall linear infinite;
-            box-shadow: 0 0 10px var(--glow-accent);
-        }
-        @keyframes fall { to { transform: translateY(110vh); } }
-
-        nav {
-            position: fixed; top: 0; left: 0; right: 0; padding: 20px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 100;
-            background: rgba(0, 0, 0, 0.6); border-bottom: 2px solid var(--cp-accent);
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 98% 100%, 0 100%);
-        }
-        .nav-logo {
-            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.5em;
-            color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent); letter-spacing: 3px;
-        }
+        .matrix-char { position: fixed; top: -20px; color: var(--cp-accent); font-family: 'Orbitron', monospace; font-size: 14px; pointer-events: none; z-index: -1; opacity: 0.6; text-shadow: 0 0 5px var(--glow-accent); animation: matrixFall linear infinite; }
+        @keyframes matrixFall { to { transform: translateY(110vh); } }
+        nav { position: fixed; top: 0; left: 0; right: 0; padding: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(0, 0, 0, 0.6); border-bottom: 2px solid var(--cp-accent); clip-path: polygon(0 0, 100% 0, 100% 85%, 98% 100%, 0 100%); }
+        .nav-logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.5em; color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent); letter-spacing: 3px; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
-            color: var(--cp-text); text-decoration: none; font-weight: 700; font-size: 1.1em;
-            text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;
-            padding: 5px 15px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-        }
+        .nav-links a { color: var(--cp-text); text-decoration: none; font-weight: 700; font-size: 1.1em; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s; padding: 5px 15px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .nav-links a:hover { color: var(--cp-accent); background: rgba(252, 238, 10, 0.1); text-shadow: 0 0 10px var(--glow-accent); }
-        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 101; }
+        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 10000; position: relative; }
         .burger span { width: 30px; height: 3px; background: var(--cp-accent); transition: 0.3s; box-shadow: 0 0 10px var(--glow-accent); }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
-                background: rgba(0, 0, 0, 0.85); flex-direction: column; justify-content: center;
-                align-items: center; transition: 0.4s; border-left: 2px solid var(--cp-accent);
-            }
-            .nav-links.active { right: 0; }
-            .burger { display: flex; }
-        }
-
+        @media (max-width: 768px) { .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: rgba(0, 0, 0, 0.85); flex-direction: column; justify-content: center; align-items: center; transition: 0.4s; border-left: 2px solid var(--cp-accent); } .nav-links.active { right: 0; } .burger { display: flex; } }
         .container-wrapper { perspective: 1000px; padding: 120px 20px 40px; display: flex; justify-content: center; }
-        .container {
-            padding: 50px 40px; 
-            /* ПОЛУПРОЗРАЧНЫЙ ФОН + РАЗМЫТИЕ ДЛЯ ВИДИМОСТИ ГИФКИ */
-            background: rgba(10, 10, 10, 0.65); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid var(--cp-accent); max-width: 700px; width: 100%; text-align: center;
-            box-shadow: 0 0 40px var(--glow-accent), inset 0 0 40px rgba(252, 238, 10, 0.05);
-            position: relative; clip-path: polygon(0 2%, 2% 0, 98% 0, 100% 2%, 100% 98%, 98% 100%, 2% 100%, 0 98%);
-            animation: fadeInUp 1s ease-out forwards;
-        }
+        .container { padding: 50px 40px; background: rgba(10, 10, 10, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 2px solid var(--cp-accent); max-width: 700px; width: 100%; text-align: center; box-shadow: 0 0 40px var(--glow-accent), inset 0 0 40px rgba(252, 238, 10, 0.05); position: relative; clip-path: polygon(0 2%, 2% 0, 98% 0, 100% 2%, 100% 98%, 98% 100%, 2% 100%, 0 98%); animation: fadeInUp 1s ease-out forwards; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .container::before, .container::after {
-            content: ''; position: absolute; width: 30px; height: 30px; border: 3px solid var(--cp-accent);
-        }
+        .container::before, .container::after { content: ''; position: absolute; width: 30px; height: 30px; border: 3px solid var(--cp-accent); }
         .container::before { top: -5px; left: -5px; border-right: none; border-bottom: none; }
         .container::after { bottom: -5px; right: -5px; border-left: none; border-top: none; }
-
-        .avatar {
-            width: 150px; height: 150px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--cp-accent); margin-bottom: 30px;
-            box-shadow: 0 0 30px var(--glow-accent); filter: contrast(1.2) brightness(1.1);
-        }
-        .typewriter h1 {
-            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 3em;
-            color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent), 0 0 40px var(--glow-accent);
-            overflow: hidden; border-right: 3px solid var(--cp-accent); white-space: nowrap;
-            margin: 0 auto 20px; animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
-            letter-spacing: 5px;
-        }
+        .avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--cp-accent); margin-bottom: 30px; box-shadow: 0 0 30px var(--glow-accent); filter: contrast(1.2) brightness(1.1); }
+        .typewriter h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 3em; color: var(--cp-accent); text-shadow: 0 0 20px var(--glow-accent), 0 0 40px var(--glow-accent); overflow: hidden; border-right: 3px solid var(--cp-accent); white-space: nowrap; margin: 0 auto 20px; animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite; letter-spacing: 5px; }
         .glitch:hover { animation: glitch 0.3s infinite; }
-        @keyframes typing { from { width: 0; } to { width: 100%; } }
-        @keyframes blink { 50% { border-color: transparent; } }
-        @keyframes glitch {
-            0%, 100% { transform: translate(0); } 20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(3px, -3px); } 60% { transform: translate(-3px, -3px); }
-            80% { transform: translate(3px, 3px); }
-        }
+        @keyframes typing { from { width: 0; } to { width: 100%; } } @keyframes blink { 50% { border-color: transparent; } }
+        @keyframes glitch { 0%, 100% { transform: translate(0); } 20% { transform: translate(-3px, 3px); } 40% { transform: translate(3px, -3px); } 60% { transform: translate(-3px, -3px); } 80% { transform: translate(3px, 3px); } }
         p { font-size: 1.2em; line-height: 1.7; color: var(--cp-text); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
-        .clock {
-            font-family: 'Orbitron', sans-serif; font-size: 1.5em; color: var(--cp-accent);
-            margin-bottom: 25px; text-shadow: 0 0 15px var(--glow-accent); letter-spacing: 3px;
-        }
-        .btn-link {
-            display: inline-block; padding: 15px 40px; background: var(--cp-accent);
-            color: var(--cp-black); text-decoration: none; font-weight: 900; font-size: 1.1em;
-            text-transform: uppercase; letter-spacing: 3px; border: none; cursor: pointer;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); transition: all 0.3s; margin: 10px;
-        }
+        .clock { font-family: 'Orbitron', sans-serif; font-size: 1.5em; color: var(--cp-accent); margin-bottom: 25px; text-shadow: 0 0 15px var(--glow-accent); letter-spacing: 3px; }
+        .btn-link { display: inline-block; padding: 15px 40px; background: var(--cp-accent); color: var(--cp-black); text-decoration: none; font-weight: 900; font-size: 1.1em; text-transform: uppercase; letter-spacing: 3px; border: none; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); transition: all 0.3s; margin: 10px; }
         .btn-link:hover { background: var(--cp-red); color: var(--cp-text); transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 0, 60, 0.5); }
         .socials { margin-top: 30px; display: flex; justify-content: center; gap: 30px; }
-        .socials a {
-            color: var(--cp-text); opacity: 0.7; text-decoration: none; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;
-            padding: 10px 20px; border: 1px solid var(--cp-accent); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-        }
+        .socials a { color: var(--cp-text); opacity: 0.7; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s; padding: 10px 20px; border: 1px solid var(--cp-accent); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .socials a:hover { opacity: 1; background: var(--cp-accent); color: var(--cp-black); box-shadow: 0 0 20px var(--glow-accent); }
-.player {
-            margin-top: 40px; padding: 25px; background: rgba(20, 20, 20, 0.7);
-            border: 2px solid var(--cp-accent); backdrop-filter: blur(5px);
-            clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%);
-        }
-        .track-name {
-            font-family: 'Orbitron', sans-serif; font-size: 1.3em; font-weight: 700;
-            margin-bottom: 15px; color: var(--cp-accent); text-transform: uppercase;
-            letter-spacing: 2px; text-shadow: 0 0 10px var(--glow-accent);
-        }
-        .progress-container {
-            width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1);
-            margin: 20px 0; cursor: pointer; position: relative; border: 1px solid var(--cp-accent);
-        }
-        .progress-bar {
-            height: 100%; background: var(--cp-accent); width: 0%;
-            transition: width 0.1s; box-shadow: 0 0 10px var(--glow-accent);
-        }
-        .time-display {
-            display: flex; justify-content: space-between; font-size: 0.9em;
-            color: var(--cp-text); margin-top: 10px; font-family: 'Orbitron', sans-serif;
-        }
+        
+        /* XP BAR & REPUTATION */
+        .xp-bar-container { margin-top: 20px; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--cp-accent); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
+        .xp-label { font-family: 'Orbitron'; font-size: 0.8em; color: var(--cp-accent); margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .xp-track { width: 100%; height: 10px; background: rgba(255,255,255,0.1); position: relative; }
+        .xp-fill { height: 100%; background: var(--cp-accent); width: 0%; transition: width 0.5s ease; box-shadow: 0 0 10px var(--glow-accent); }
+        .rep-row { display: flex; justify-content: space-between; margin-top: 8px; font-family: 'Rajdhani'; font-size: 0.8em; text-transform: uppercase; }
+        .rep-item { color: var(--cp-text); opacity: 0.7; } .rep-item span { color: var(--cp-accent); font-weight: bold; }
+
+        /* TERMINAL */
+        .terminal-box { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.8); border-left: 3px solid var(--cp-accent); text-align: left; font-family: 'Orbitron', monospace; font-size: 0.9em; color: var(--cp-accent); min-height: 60px; line-height: 1.6; }
+        .terminal-cursor { display: inline-block; width: 8px; height: 15px; background: var(--cp-accent); animation: blink 1s step-end infinite; vertical-align: middle; }
+
+        /* BREACH PROTOCOL MODAL */
+        .breach-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .breach-modal.active { display: flex; }
+        .breach-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px; }
+        .breach-cell { width: 60px; height: 60px; border: 2px solid var(--cp-accent); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 1.5em; color: var(--cp-accent); cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.5); }
+        .breach-cell:hover { background: var(--cp-accent); color: var(--cp-black); box-shadow: 0 0 15px var(--glow-accent); }
+        .breach-cell.selected { background: var(--cp-blue); color: var(--cp-black); border-color: var(--cp-blue); }
+        .breach-title { font-family: 'Orbitron'; font-size: 1.5em; color: var(--cp-accent); margin-bottom: 10px; }
+        .breach-sequence { font-family: 'Orbitron'; font-size: 1.2em; color: var(--cp-text); margin-bottom: 20px; letter-spacing: 5px; }
+        .breach-close { margin-top: 20px; padding: 10px 30px; background: var(--cp-red); border: none; color: #fff; font-family: 'Orbitron'; cursor: pointer; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
+.player { margin-top: 40px; padding: 25px; background: rgba(20, 20, 20, 0.7); border: 2px solid var(--cp-accent); backdrop-filter: blur(5px); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
+        .track-name { font-family: 'Orbitron', sans-serif; font-size: 1.3em; font-weight: 700; margin-bottom: 15px; color: var(--cp-accent); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--glow-accent); }
+        .progress-container { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); margin: 20px 0; cursor: pointer; position: relative; border: 1px solid var(--cp-accent); }
+        .progress-bar { height: 100%; background: var(--cp-accent); width: 0%; transition: width 0.1s; box-shadow: 0 0 10px var(--glow-accent); }
+        .time-display { display: flex; justify-content: space-between; font-size: 0.9em; color: var(--cp-text); margin-top: 10px; font-family: 'Orbitron', sans-serif; }
         .controls-row { display: flex; justify-content: center; align-items: center; gap: 25px; margin-top: 20px; }
-        .ctrl-btn {
-            background: none; border: 2px solid var(--cp-accent); color: var(--cp-accent);
-            font-size: 1.8em; cursor: pointer; transition: all 0.3s;
-            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-        }
+        .ctrl-btn { background: none; border: 2px solid var(--cp-accent); color: var(--cp-accent); font-size: 1.8em; cursor: pointer; transition: all 0.3s; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .ctrl-btn:hover { background: var(--cp-accent); color: var(--cp-black); transform: scale(1.1); box-shadow: 0 0 20px var(--glow-accent); }
         .play-btn { font-size: 2.5em; width: 60px; height: 60px; }
         .visualizer { display: flex; justify-content: center; gap: 4px; height: 40px; align-items: flex-end; margin-top: 20px; }
         .viz-bar { width: 5px; background: var(--cp-accent); height: 5px; transition: height 0.15s ease; box-shadow: 0 0 5px var(--glow-accent); }
-
-        .timeline {
-            margin-top: 50px; text-align: left; border-left: 3px solid var(--cp-accent);
-            padding-left: 25px; position: relative;
-        }
-        .timeline::before {
-            content: 'SYSTEM.LOG'; position: absolute; top: -25px; left: 0;
-            font-family: 'Orbitron', sans-serif; font-size: 0.9em; color: var(--cp-accent); letter-spacing: 2px;
-        }
+        .timeline { margin-top: 50px; text-align: left; border-left: 3px solid var(--cp-accent); padding-left: 25px; position: relative; }
+        .timeline::before { content: 'SYSTEM.LOG'; position: absolute; top: -25px; left: 0; font-family: 'Orbitron', sans-serif; font-size: 0.9em; color: var(--cp-accent); letter-spacing: 2px; }
         .timeline-item { margin-bottom: 25px; position: relative; }
-        .timeline-item::before {
-            content: ''; position: absolute; left: -32px; top: 5px; width: 12px; height: 12px;
-            background: var(--cp-accent); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            box-shadow: 0 0 10px var(--glow-accent);
-        }
+        .timeline-item::before { content: ''; position: absolute; left: -32px; top: 5px; width: 12px; height: 12px; background: var(--cp-accent); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); box-shadow: 0 0 10px var(--glow-accent); }
         .timeline-date { font-family: 'Orbitron', sans-serif; font-size: 0.9em; color: var(--cp-accent); font-weight: 700; letter-spacing: 2px; }
         .timeline-text { font-size: 1em; color: var(--cp-text); text-transform: uppercase; letter-spacing: 1px; }
-
         .achievements { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
-        .achievement {
-            background: rgba(20, 20, 20, 0.7); padding: 15px 10px; text-align: center;
-            opacity: 0.3; transition: all 0.5s; border: 2px solid var(--cp-gray);
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); position: relative; backdrop-filter: blur(5px);
-        }
-        .achievement.unlocked {
-            opacity: 1; border-color: var(--cp-accent); box-shadow: 0 0 20px var(--glow-accent); transform: scale(1.05);
-        }
+        .achievement { background: rgba(20, 20, 20, 0.7); padding: 15px 10px; text-align: center; opacity: 0.3; transition: all 0.5s; border: 2px solid var(--cp-gray); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); position: relative; backdrop-filter: blur(5px); }
+        .achievement.unlocked { opacity: 1; border-color: var(--cp-accent); box-shadow: 0 0 20px var(--glow-accent); transform: scale(1.05); }
         .achievement-icon { font-size: 2em; margin-bottom: 8px; }
         .achievement-name { font-size: 0.7em; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-
         .controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 15px; z-index: 100; }
-        .control-btn {
-            width: 50px; height: 50px; background: var(--cp-black); border: 2px solid var(--cp-accent);
-            color: var(--cp-accent); display: flex; align-items: center; justify-content: center;
-            font-size: 1.5em; transition: all 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-        }
+        .control-btn { width: 50px; height: 50px; background: var(--cp-black); border: 2px solid var(--cp-accent); color: var(--cp-accent); display: flex; align-items: center; justify-content: center; font-size: 1.5em; transition: all 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
         .control-btn:hover { background: var(--cp-accent); color: var(--cp-black); transform: scale(1.1); box-shadow: 0 0 20px var(--glow-accent); }
-
-        .popup {
-            position: fixed; top: 100px; right: 20px; background: var(--cp-black);
-            border: 2px solid var(--cp-accent); padding: 15px 20px; z-index: 1000;
-            animation: sI 0.5s, fO 0.5s 2.5s forwards;
-            clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
-            box-shadow: 0 0 30px var(--glow-accent);
-        }
+        .popup { position: fixed; top: 100px; right: 20px; background: var(--cp-black); border: 2px solid var(--cp-accent); padding: 15px 20px; z-index: 1000; animation: sI 0.5s, fO 0.5s 2.5s forwards; clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%); box-shadow: 0 0 30px var(--glow-accent); }
         @keyframes sI { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes fO { to { opacity: 0; transform: translateY(-20px); } }
     </style>
 </head>
 <body>
+    <div class="screen-glitch" id="screenGlitch"></div>
     <div class="cursor" id="cursor"></div>
     <div class="parallax-bg" id="parallaxBg"></div>
     <div class="overlay"></div>
+    <div class="breach-modal" id="breachModal">
+        <div class="breach-title">// BREACH PROTOCOL //</div>
+        <div class="breach-sequence" id="breachSeq">BD 55 E9</div>
+        <div class="breach-grid" id="breachGrid"></div>
+        <button class="breach-close" onclick="closeBreach()">ABORT</button>
+    </div>
     <nav>
         <div class="nav-logo">AZOITY//2077</div>
-        <div class="nav-links" id="navLinks">
-            <a href="#bio">BIO</a><a href="#path">PATH</a><a href="#achievements">ACHIEVEMENTS</a>
-        </div>
+        <div class="nav-links" id="navLinks"><a href="#bio">BIO</a><a href="#path">PATH</a><a href="#achievements">ACHIEVEMENTS</a></div>
         <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </nav>
     <div class="container-wrapper">
@@ -253,6 +121,16 @@
             <div class="typewriter"><h1 class="glitch">AZOITY BIO</h1></div>
             <div class="clock" id="clock">00:00:00</div>
             <p>// WELCOME TO MY DIGITAL SPACE //</p>
+            <div class="xp-bar-container">
+                <div class="xp-label"><span id="levelText">LVL 1</span><span id="xpText">0 / 100 XP</span></div>
+                <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+                <div class="rep-row">
+                    <div class="rep-item">NETRUNNERS: <span id="repNet">0</span></div>
+                    <div class="rep-item">FIXERS: <span id="repFix">0</span></div>
+                    <div class="rep-item">NOMADS: <span id="repNom">0</span></div>
+                </div>
+            </div>
+            <div class="terminal-box" id="terminalBox"><span id="terminalText"></span><span class="terminal-cursor"></span></div>
             <a href="https://t.me/Azoity" class="btn-link" target="_blank">CONNECT // TELEGRAM</a>
             <div class="player">
                 <div class="track-name" id="trackName">SELECT TRACK ▶</div>
@@ -278,157 +156,141 @@
     <div class="controls"><button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
 <script>
         document.documentElement.setAttribute('data-theme', 'dark');
-        
-        // === РАНДОМНАЯ ГИФКА ПРИ ЗАГРУЗКЕ ===
-        const bgGifs = [
-            "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyamV5cGtrOXUxMTBiaW5sZ2pwaDhua3Juc2U1aXRncm5rYmZodHc0YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4xKJUTzWPAVoY/giphy.gif",
-            "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2ZmbzUwdGZnNWFzbXg5b2g0MnhyMjNwbW8zN3J2ZThoYjRvbnJxdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3qYZ2RnKW6veM/giphy.gif",
-            "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyamFreDVyNXRhOGNudmdmeTBodHBhZG9rNXZ0dHMxMzk0eHhjNm85aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rPQaG7o8uqMzS/giphy.gif",
-            "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyaG85M3ptdzV4d3phaGQyc2lmcnV2M2lwajJvbzI3eHo5ZGt1dzNlYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WQr5l1Ye0Pj5Zf40El/giphy.gif",
-            "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyM3BwOGV1cXVkdXluZXR1N3Yxa2ttdHVyZ2t2ZHV1ZHlqM28wN255MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sNUWF7fAUP2q4/giphy.gif",
-            "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyejlmb2V6cWU5bnlhZmE5czR5aHRkNmZmbzQ3bGhzZ2FxcTlvbnBnNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jt7bAtEijhurm/giphy.gif",
-            "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycDRoYXE3emxvOGZxZTRpc2R6MzkzMHEwd2FlZ3hhZ29jOHA1bHZudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/D6cOhgDo73NcY/giphy.gif"
-        ];
-        const randomGif = bgGifs[Math.floor(Math.random() * bgGifs.length)];
-        document.getElementById('parallaxBg').style.backgroundImage = `url('${randomGif}')`;
+        const bgGifs = ["https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyamV5cGtrOXUxMTBiaW5sZ2pwaDhua3Juc2U1aXRncm5rYmZodHc0YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4xKJUTzWPAVoY/giphy.gif", "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2ZmbzUwdGZnNWFzbXg5b2g0MnhyMjNwbW8zN3J2ZThoYjRvbnJxdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3qYZ2RnKW6veM/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyamFreDVyNXRhOGNudmdmeTBodHBhZG9rNXZ0dHMxMzk0eHhjNm85aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rPQaG7o8uqMzS/giphy.gif", "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyaG85M3ptdzV4d3phaGQyc2lmcnV2M2lwajJvbzI3eHo5ZGt1dzNlYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WQr5l1Ye0Pj5Zf40El/giphy.gif", "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyM3BwOGV1cXVkdXluZXR1N3Yxa2ttdHVyZ2t2ZHV1ZHlqM28wN255MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sNUWF7fAUP2q4/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyejlmb2V6cWU5bnlhZmE5czR5aHRkNmZmbzQ3bGhzZ2FxcTlvbnBnNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jt7bAtEijhurm/giphy.gif", "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycDRoYXE3emxvOGZxZTRpc2R6MzkzMHEwd2FlZ3hhZ29jOHA1bHZudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/D6cOhgDo73NcY/giphy.gif"];
+        document.getElementById('parallaxBg').style.backgroundImage = `url('${bgGifs[Math.floor(Math.random() * bgGifs.length)]}')`;
 
-        const achData = [
-            { id: 'visit', name: 'FIRST LOGIN', icon: '👋' }, { id: 'music', name: 'AUDIO JACK', icon: '🎵' },
-            { id: 'theme', name: 'VISUAL HACK', icon: '🎨' }, { id: 'tg', name: 'NETRUNNER', icon: '📱' },
-            { id: 'pause', name: 'SYSTEM PAUSE', icon: '⏸' }, { id: 'time1', name: 'DATA MINER', icon: '⏱' },
-            { id: 'time3', name: 'LOYAL USER', icon: '❤' }, { id: 'scroll', name: 'SCROLL MASTER', icon: '📜' },
-            { id: 'clicks', name: 'CLICK BOT', icon: '🖱' }, { id: 'collector', name: 'TRACK HUNTER', icon: '🎧' }
-        ];
+        // АУДИО ДВИЖОК
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination); const now = audioCtx.currentTime;
+            if(type === 'click') { osc.type = 'square'; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(300, now + 0.1); gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1); osc.start(now); osc.stop(now + 0.1); }
+            else if(type === 'levelup') { osc.type = 'sawtooth'; osc.frequency.setValueAtTime(400, now); osc.frequency.linearRampToValueAtTime(1200, now + 0.3); gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0, now + 0.5); osc.start(now); osc.stop(now + 0.5); }
+            else if(type === 'glitch') { osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now); osc.frequency.linearRampToValueAtTime(50, now + 0.05); gain.gain.setValueAtTime(0.05, now); gain.gain.linearRampToValueAtTime(0, now + 0.05); osc.start(now); osc.stop(now + 0.05); }
+        }
+
+        // СИСТЕМА XP И РЕПУТАЦИИ
+        let xp = parseInt(localStorage.getItem('azoity_xp')) || 0;
+        let level = parseInt(localStorage.getItem('azoity_lvl')) || 1;
+        let rep = JSON.parse(localStorage.getItem('azoity_rep')) || { net: 0, fix: 0, nom: 0 };
+        const xpPerLevel = 100;
+        function updateXP(amount, faction) {
+            xp += amount;
+            if(faction && rep[faction] !== undefined) { rep[faction]++; localStorage.setItem('azoity_rep', JSON.stringify(rep)); renderRep(); }
+            while(xp >= xpPerLevel) { xp -= xpPerLevel; level++; playSound('levelup'); showPopup({icon: '⬆️', name: `LEVEL UP! NOW LVL ${level}`}); }
+            localStorage.setItem('azoity_xp', xp); localStorage.setItem('azoity_lvl', level); renderXP();
+        }
+        function renderXP() { document.getElementById('levelText').innerText = `LVL ${level}`; document.getElementById('xpText').innerText = `${xp} / ${xpPerLevel} XP`; document.getElementById('xpFill').style.width = `${(xp/xpPerLevel)*100}%`; }
+        function renderRep() { document.getElementById('repNet').innerText = rep.net; document.getElementById('repFix').innerText = rep.fix; document.getElementById('repNom').innerText = rep.nom; }
+        renderXP(); renderRep();
+
+        // ТЕРМИНАЛ
+        const terminalLines = ["> SYSTEM BOOT...", "> CONNECTING TO NET...", "> LOADING USER PROFILE: AZOITY", "> DETECTED 9 AUDIO FILES...", "> ACHIEVEMENTS DATABASE: ONLINE", "> WELCOME, NETRUNNER."];
+        let termLineIdx = 0, termCharIdx = 0;
+        function typeTerminal() {
+            const el = document.getElementById('terminalText');
+            if(termLineIdx < terminalLines.length) {
+                if(termCharIdx < terminalLines[termLineIdx].length) { el.innerHTML += terminalLines[termLineIdx][termCharIdx]; termCharIdx++; setTimeout(typeTerminal, 30); }
+                else { el.innerHTML += '<br>'; termLineIdx++; termCharIdx = 0; setTimeout(typeTerminal, 300); }
+            }
+        }
+        setTimeout(typeTerminal, 1000);
+
+        // МАТРИЦА
+        const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+        function createMatrixChar() {
+            const c = document.createElement('div'); c.className = 'matrix-char';
+            c.innerText = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            c.style.left = Math.random() * 100 + 'vw'; c.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            c.style.fontSize = (Math.random() * 10 + 10) + 'px'; document.body.appendChild(c);
+            setTimeout(() => c.remove(), 5000);
+        }
+        setInterval(createMatrixChar, 100);
+
+        // СЛУЧАЙНЫЕ ГЛИТЧИ
+        setInterval(() => {
+            if(Math.random() > 0.95) { const g = document.getElementById('screenGlitch'); g.style.opacity = '0.3'; playSound('glitch'); setTimeout(() => g.style.opacity = '0', 50 + Math.random()*100); }
+        }, 2000);
+
+        // ДОСТИЖЕНИЯ
+        const achData = [{ id: 'visit', name: 'FIRST LOGIN', icon: '👋' }, { id: 'music', name: 'AUDIO JACK', icon: '🎵' }, { id: 'theme', name: 'VISUAL HACK', icon: '🎨' }, { id: 'tg', name: 'NETRUNNER', icon: '📱' }, { id: 'pause', name: 'SYSTEM PAUSE', icon: '⏸' }, { id: 'time1', name: 'DATA MINER', icon: '⏱' }, { id: 'time3', name: 'LOYAL USER', icon: '❤' }, { id: 'scroll', name: 'SCROLL MASTER', icon: '📜' }, { id: 'clicks', name: 'CLICK BOT', icon: '🖱' }, { id: 'collector', name: 'TRACK HUNTER', icon: '🎧' }];
         let unlocked = JSON.parse(localStorage.getItem('azoity_ach')) || [];
         let clicks = 0, siteStart = Date.now(), playedTracks = new Set();
-
-        function renderAch() {
-            const g = document.getElementById('achievements'); g.innerHTML = '';
-            achData.forEach(a => {
-                const u = unlocked.includes(a.id);
-                const d = document.createElement('div');
-                d.className = `achievement ${u ? 'unlocked' : ''}`;
-                d.innerHTML = `<div class="achievement-icon">${a.icon}</div><div class="achievement-name">${a.name}</div>`;
-                g.appendChild(d);
-            });
-        }
-        function unlock(id) {
-            if (!unlocked.includes(id)) {
-                unlocked.push(id); localStorage.setItem('azoity_ach', JSON.stringify(unlocked));
-                renderAch();
-                const a = achData.find(x => x.id === id);
-                const p = document.createElement('div'); p.className = 'popup';
-                p.innerHTML = `<div style="font-size:1.5em">${a.icon}</div><div style="font-size:0.9em;font-weight:bold;color:var(--cp-accent)">ACHIEVEMENT UNLOCKED: ${a.name}</div>`;
-                document.body.appendChild(p); setTimeout(() => p.remove(), 3000);
-            }
-        }
+        function renderAch() { const g = document.getElementById('achievements'); g.innerHTML = ''; achData.forEach(a => { const u = unlocked.includes(a.id); const d = document.createElement('div'); d.className = `achievement ${u ? 'unlocked' : ''}`; d.innerHTML = `<div class="achievement-icon">${a.icon}</div><div class="achievement-name">${a.name}</div>`; g.appendChild(d); }); }
+        function unlock(id) { if (!unlocked.includes(id)) { unlocked.push(id); localStorage.setItem('azoity_ach', JSON.stringify(unlocked)); renderAch(); updateXP(25, 'net'); const a = achData.find(x => x.id === id); showPopup({icon: a.icon, name: `UNLOCKED: ${a.name}`}); } }
+        function showPopup(data) { const p = document.createElement('div'); p.className = 'popup'; p.innerHTML = `<div style="font-size:1.5em">${data.icon}</div><div style="font-size:0.9em;font-weight:bold;color:var(--cp-accent)">${data.name}</div>`; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }
         renderAch(); unlock('visit');
-        setInterval(() => {
-            const e = (Date.now() - siteStart) / 1000;
-            if (e > 60) unlock('time1'); if (e > 180) unlock('time3');
-        }, 1000);
-
-        const playlist = [
-            { file: "music/aprel.mp3", name: "APREL" }, { file: "music/Cloud.mp3", name: "MOSQUIT - CLOUD" },
-            { file: "music/ego.mp3", name: "EGO" }, { file: "music/lonelly.mp3", name: "LONELLY" },
-            { file: "music/mir-prikolov.mp3", name: "MIR PRIKOLOV" }, { file: "music/molchy.mp3", name: "MOLCHY" },
-            { file: "music/oblaka.mp3", name: "OBLAKA" }, { file: "music/pain.mp3", name: "PAIN" },
-            { file: "music/shut-up.mp3", name: "SHUT UP" }
-        ];
-        let currentTrack = 0, isPlaying = false;
-        const audio = new Audio();
-        const trackNameEl = document.getElementById('trackName');
-        const progressBar = document.getElementById('progressBar');
-        const progressContainer = document.getElementById('progressContainer');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationEl = document.getElementById('duration');
-        const playBtn = document.getElementById('playBtn');
-        const visualizer = document.getElementById('visualizer');
+        setInterval(() => { const e = (Date.now() - siteStart) / 1000; if (e > 60) unlock('time1'); if (e > 180) unlock('time3'); }, 1000);
+// ПЛЕЕР
+        const playlist = [{ file: "music/aprel.mp3", name: "APREL" }, { file: "music/Cloud.mp3", name: "MOSQUIT - CLOUD" }, { file: "music/ego.mp3", name: "EGO" }, { file: "music/lonelly.mp3", name: "LONELLY" }, { file: "music/mir-prikolov.mp3", name: "MIR PRIKOLOV" }, { file: "music/molchy.mp3", name: "MOLCHY" }, { file: "music/oblaka.mp3", name: "OBLAKA" }, { file: "music/pain.mp3", name: "PAIN" }, { file: "music/shut-up.mp3", name: "SHUT UP" }];
+        let currentTrack = 0, isPlaying = false; const audio = new Audio();
+        const trackNameEl = document.getElementById('trackName'), progressBar = document.getElementById('progressBar'), progressContainer = document.getElementById('progressContainer'), currentTimeEl = document.getElementById('currentTime'), durationEl = document.getElementById('duration'), playBtn = document.getElementById('playBtn'), visualizer = document.getElementById('visualizer');
         for(let i = 0; i < 20; i++) { const bar = document.createElement('div'); bar.className = 'viz-bar'; visualizer.appendChild(bar); }
         const vizBars = document.querySelectorAll('.viz-bar');
-
-        function loadTrack(index) {
-            currentTrack = index; audio.src = playlist[currentTrack].file;
-            trackNameEl.innerText = playlist[currentTrack].name;
-            playedTracks.add(currentTrack); if(playedTracks.size >= 5) unlock('collector');
-            if(isPlaying) audio.play();
-        }
-        function togglePlay() {
-            if(!audio.src) loadTrack(0);
-            if(isPlaying) { audio.pause(); playBtn.innerText = '▶'; unlock('pause'); } 
-            else { audio.play().catch(() => {}); playBtn.innerText = '⏸'; unlock('music'); }
-            isPlaying = !isPlaying;
-        }
+        function loadTrack(index) { currentTrack = index; audio.src = playlist[currentTrack].file; trackNameEl.innerText = playlist[currentTrack].name; playedTracks.add(currentTrack); if(playedTracks.size >= 5) unlock('collector'); if(isPlaying) audio.play(); }
+        function togglePlay() { if(!audio.src) loadTrack(0); if(isPlaying) { audio.pause(); playBtn.innerText = '▶'; unlock('pause'); } else { audio.play().catch(() => {}); playBtn.innerText = '⏸'; unlock('music'); } isPlaying = !isPlaying; }
         function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); if(!isPlaying) togglePlay(); }
         function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); if(!isPlaying) togglePlay(); }
-        audio.addEventListener('timeupdate', () => {
-            progressBar.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
-            currentTimeEl.innerText = formatTime(audio.currentTime);
-            durationEl.innerText = formatTime(audio.duration || 0);
-        });
+        audio.addEventListener('timeupdate', () => { progressBar.style.width = ((audio.currentTime / audio.duration) * 100) + '%'; currentTimeEl.innerText = formatTime(audio.currentTime); durationEl.innerText = formatTime(audio.duration || 0); });
         audio.addEventListener('ended', nextTrack);
-        progressContainer.addEventListener('click', (e) => {
-            const rect = progressContainer.getBoundingClientRect();
-            audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-        });
+        progressContainer.addEventListener('click', (e) => { const rect = progressContainer.getBoundingClientRect(); audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration; });
         function formatTime(s) { const m = Math.floor(s / 60); return `${m}:${Math.floor(s % 60).toString().padStart(2, '0')}`; }
-        setInterval(() => {
-            if(isPlaying && !audio.paused) vizBars.forEach(bar => bar.style.height = (Math.random() * 30 + 5) + 'px');
-            else vizBars.forEach(bar => bar.style.height = '5px');
-        }, 150);
+        setInterval(() => { if(isPlaying && !audio.paused) vizBars.forEach(bar => bar.style.height = (Math.random() * 30 + 5) + 'px'); else vizBars.forEach(bar => bar.style.height = '5px'); }, 150);
         loadTrack(0); isPlaying = false; playBtn.innerText = '▶';
 
+        // ИНТЕРФЕЙС И ПАССХАЛКА
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', e => { cursor.style.left = e.clientX - 10 + 'px'; cursor.style.top = e.clientY - 10 + 'px'; });
-        document.addEventListener('click', e => {
-            const ripple = document.createElement('div'); ripple.className = 'ripple';
-            ripple.style.width = ripple.style.height = '30px';
-            ripple.style.left = e.clientX - 15 + 'px'; ripple.style.top = e.clientY - 15 + 'px';
-            document.body.appendChild(ripple); setTimeout(() => ripple.remove(), 600);
-            clicks++; if(clicks >= 50) unlock('clicks');
-        });
+        document.addEventListener('click', e => { playSound('click'); const ripple = document.createElement('div'); ripple.className = 'ripple'; ripple.style.width = ripple.style.height = '30px'; ripple.style.left = e.clientX - 15 + 'px'; ripple.style.top = e.clientY - 15 + 'px'; document.body.appendChild(ripple); setTimeout(() => ripple.remove(), 600); clicks++; updateXP(1, 'fix'); if(clicks >= 50) unlock('clicks'); });
         const card = document.getElementById('tiltCard');
-        document.addEventListener('mousemove', e => {
-            if(window.innerWidth < 768) return;
-            card.style.transform = `rotateY(${(e.clientX/window.innerWidth - 0.5) * 20}deg) rotateX(${-(e.clientY/window.innerHeight - 0.5) * 20}deg)`;
-        });
+        document.addEventListener('mousemove', e => { if(window.innerWidth < 768) return; card.style.transform = `rotateY(${(e.clientX/window.innerWidth - 0.5) * 20}deg) rotateX(${-(e.clientY/window.innerHeight - 0.5) * 20}deg)`; });
         function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString('ru-RU'); }
         setInterval(updateClock, 1000); updateClock();
-        function createSnow() {
-            const flake = document.createElement('div'); flake.className = 'snowflake';
-            flake.style.left = Math.random() * 100 + 'vw';
-            flake.style.width = flake.style.height = Math.random() * 4 + 2 + 'px';
-            flake.style.animationDuration = Math.random() * 3 + 3 + 's'; flake.style.opacity = Math.random();
-            document.body.appendChild(flake); setTimeout(() => flake.remove(), 6000);
-        }
-        setInterval(createSnow, 150);
-        window.addEventListener('scroll', () => {
-            document.getElementById('parallaxBg').style.transform = `translateY(${window.scrollY * 0.3}px)`;
-            unlock('scroll');
-        });
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const isDark = html.getAttribute('data-theme') === 'dark';
-            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            const btn = document.getElementById('themeBtn');
-            btn.innerText = isDark ? '☀' : '🌙';
-            btn.style.borderColor = isDark ? 'var(--cp-blue)' : 'var(--cp-yellow)';
-            btn.style.color = isDark ? 'var(--cp-blue)' : 'var(--cp-yellow)';
-            unlock('theme');
-        }
-
-        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
-        document.addEventListener('click', (e) => {
-            const nav = document.getElementById('navLinks'); const burger = document.querySelector('.burger');
-            if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target)) {
-                nav.classList.remove('active');
-            }
-        });
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('active'); });
-        });
+        window.addEventListener('scroll', () => { document.getElementById('parallaxBg').style.transform = `translateY(${window.scrollY * 0.3}px)`; unlock('scroll'); });
+        function toggleTheme() { const html = document.documentElement; const isDark = html.getAttribute('data-theme') === 'dark'; html.setAttribute('data-theme', isDark ? 'light' : 'dark'); const btn = document.getElementById('themeBtn'); btn.innerText = isDark ? '☀' : '🌙'; btn.style.borderColor = isDark ? 'var(--cp-blue)' : 'var(--cp-yellow)'; btn.style.color = isDark ? 'var(--cp-blue)' : 'var(--cp-yellow)'; unlock('theme'); }
+        function toggleMenu() { playSound('click'); document.getElementById('navLinks').classList.toggle('active'); }
+        document.addEventListener('click', (e) => { const nav = document.getElementById('navLinks'); const burger = document.querySelector('.burger'); if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target)) { nav.classList.remove('active'); } });
+        document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('active'); }); });
         document.querySelector('.btn-link').addEventListener('click', () => unlock('tg'));
+
+        // KONAMI CODE
+        const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+        let konamiIdx = 0;
+        document.addEventListener('keydown', (e) => { if(e.key === konamiCode[konamiIdx]) { konamiIdx++; if(konamiIdx === konamiCode.length) { playSound('levelup'); showPopup({icon: '🔓', name: 'SECRET MODE ACTIVATED'}); document.documentElement.style.filter = 'hue-rotate(180deg) invert(1)'; konamiIdx = 0; } } else { konamiIdx = 0; } });
+
+        // MINI-GAME: BREACH PROTOCOL
+        const hexCodes = ['1C', '55', 'BD', 'E9', 'FF', '7A', '3D', '8B'];
+        let breachSequence = [], userSequence = [], breachActive = false;
+        function initBreach() {
+            breachSequence = []; userSequence = [];
+            for(let i=0; i<3; i++) breachSequence.push(hexCodes[Math.floor(Math.random() * hexCodes.length)]);
+            document.getElementById('breachSeq').innerText = breachSequence.join(' ');
+            const grid = document.getElementById('breachGrid'); grid.innerHTML = '';
+            for(let i=0; i<16; i++) {
+                const cell = document.createElement('div'); cell.className = 'breach-cell';
+                cell.innerText = hexCodes[Math.floor(Math.random() * hexCodes.length)];
+                cell.onclick = () => selectBreachCell(cell);
+                grid.appendChild(cell);
+            }
+            document.getElementById('breachModal').classList.add('active'); breachActive = true;
+        }
+        function selectBreachCell(cell) {
+            if(!breachActive) return;
+            const val = cell.innerText;
+            if(val === breachSequence[userSequence.length]) {
+                cell.classList.add('selected'); userSequence.push(val);
+                playSound('click');
+                if(userSequence.length === breachSequence.length) {
+                    breachActive = false; updateXP(50, 'nom');
+                    showPopup({icon: '💻', name: 'BREACH SUCCESSFUL! +50 XP'});
+                    setTimeout(closeBreach, 1000);
+                }
+            } else { closeBreach(); showPopup({icon: '❌', name: 'BREACH FAILED'}); }
+        }
+        function closeBreach() { document.getElementById('breachModal').classList.remove('active'); breachActive = false; }
+        // Кнопка для запуска игры (можно привязать к чему угодно, пока добавим в консоль или по двойному клику на аватар)
+        document.querySelector('.avatar').addEventListener('dblclick', initBreach);
     </script>
 </body>
 </html>
