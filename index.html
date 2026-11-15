@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azoity // CYBERPUNK V3.0</title>
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Azoity — cyberpunk personal website: games, XP system, music player.">
+<meta property="og:title" content="Azoity // CYBERPUNK V4.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E⚡%3C/text%3E%3C/svg%3E">
+<title>Azoity // CYBERPUNK V4.0</title>
+<style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
         :root { --cp-accent: #fcee0a; --cp-red: #ff003c; --cp-blue: #00f0ff; --cp-black: #000; --cp-dark: #0a0a0a; --cp-gray: #1a1a1a; --cp-text: #fff; --glow-accent: rgba(252, 238, 10, 0.5); }
         [data-theme="light"] { --cp-accent: #00f0ff; --cp-black: #e0e0e0; --cp-dark: #ffffff; --cp-gray: #cccccc; --cp-text: #000; --glow-accent: rgba(0, 240, 255, 0.5); }
@@ -124,46 +128,76 @@
         @keyframes comboPulse { 0% { transform: translate(-50%, -50%) scale(0.5); } 50% { transform: translate(-50%, -50%) scale(1.2); } 100% { transform: translate(-50%, -50%) scale(1); } }
 .player { margin-top: 40px; padding: 25px; background: rgba(20, 20, 20, 0.8); border: 2px solid var(--cp-accent); backdrop-filter: blur(5px); clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%); }
         .track-name { font-family: 'Orbitron', sans-serif; font-size: 1.3em; font-weight: 700; margin-bottom: 15px; color: var(--cp-accent); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--glow-accent); }
-        .progress-container { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); margin: 20px 0; cursor: pointer; position: relative; border: 1px solid var(--cp-accent); }
-        .progress-bar { height: 100%; background: var(--cp-accent); width: 0%; transition: width 0.1s; box-shadow: 0 0 10px var(--glow-accent); }
-        .time-display { display: flex; justify-content: space-between; font-size: 0.9em; color: var(--cp-text); margin-top: 10px; font-family: 'Orbitron', sans-serif; }
-        .controls-row { display: flex; justify-content: center; align-items: center; gap: 25px; margin-top: 20px; }
-        .ctrl-btn { background: none; border: 2px solid var(--cp-accent); color: var(--cp-accent); font-size: 1.8em; cursor: pointer; transition: all 0.3s; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
-        .ctrl-btn:hover { background: var(--cp-accent); color: var(--cp-black); transform: scale(1.1); box-shadow: 0 0 20px var(--glow-accent); }
-        .play-btn { font-size: 2.5em; width: 60px; height: 60px; }
-        .visualizer { display: flex; justify-content: center; gap: 4px; height: 40px; align-items: flex-end; margin-top: 20px; }
-        .viz-bar { width: 5px; background: var(--cp-accent); height: 5px; transition: height 0.15s ease; box-shadow: 0 0 5px var(--glow-accent); }
-        .timeline { margin-top: 50px; text-align: left; border-left: 3px solid var(--cp-accent); padding-left: 25px; position: relative; }
-        .timeline::before { content: 'SYSTEM.LOG'; position: absolute; top: -25px; left: 0; font-family: 'Orbitron', sans-serif; font-size: 0.9em; color: var(--cp-accent); letter-spacing: 2px; }
-        .timeline-item { margin-bottom: 25px; position: relative; }
-        .timeline-item::before { content: ''; position: absolute; left: -32px; top: 5px; width: 12px; height: 12px; background: var(--cp-accent); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); box-shadow: 0 0 10px var(--glow-accent); }
-        .timeline-date { font-family: 'Orbitron', sans-serif; font-size: 0.9em; color: var(--cp-accent); font-weight: 700; letter-spacing: 2px; }
-        .timeline-text { font-size: 1em; color: var(--cp-text); text-transform: uppercase; letter-spacing: 1px; }
-        .achievements { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
-        .achievement { background: rgba(20, 20, 20, 0.8); padding: 15px 10px; text-align: center; opacity: 0.3; transition: all 0.5s; border: 2px solid var(--cp-gray); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); position: relative; backdrop-filter: blur(5px); }
-        .achievement.unlocked { opacity: 1; border-color: var(--cp-accent); box-shadow: 0 0 20px var(--glow-accent); transform: scale(1.05); }
-        .achievement.common { border-color: var(--cp-gray); }
-        .achievement.rare { border-color: var(--cp-blue); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
-        .achievement.epic { border-color: #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
-        .achievement.legendary { border-color: var(--cp-accent); box-shadow: 0 0 25px var(--glow-accent); animation: legendaryPulse 2s infinite; }
-        @keyframes legendaryPulse { 0%, 100% { box-shadow: 0 0 25px var(--glow-accent); } 50% { box-shadow: 0 0 35px rgba(252, 238, 10, 0.8); } }
-        .achievement-rank { position: absolute; top: -5px; right: -5px; font-size: 0.5em; padding: 2px 6px; border-radius: 4px; font-family: 'Orbitron'; font-weight: bold; }
-        .achievement.common .achievement-rank { background: var(--cp-gray); color: #fff; }
-        .achievement.rare .achievement-rank { background: var(--cp-blue); color: #000; }
-        .achievement.epic .achievement-rank { background: #a855f7; color: #fff; }
-        .achievement.legendary .achievement-rank { background: var(--cp-accent); color: #000; }
-        .achievement-icon { font-size: 2em; margin-bottom: 8px; }
-        .achievement-name { font-size: 0.7em; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-        .controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 15px; z-index: 100; }
-        .control-btn { width: 50px; height: 50px; background: var(--cp-black); border: 2px solid var(--cp-accent); color: var(--cp-accent); display: flex; align-items: center; justify-content: center; font-size: 1.5em; transition: all 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
-        .control-btn:hover { background: var(--cp-accent); color: var(--cp-black); transform: scale(1.1); box-shadow: 0 0 20px var(--glow-accent); }
-        .popup { position: fixed; top: 100px; right: 20px; background: var(--cp-black); border: 2px solid var(--cp-accent); padding: 15px 20px; z-index: 1000; animation: sI 0.5s, fO 0.5s 2.5s forwards; clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%); box-shadow: 0 0 30px var(--glow-accent); }
-        @keyframes sI { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes fO { to { opacity: 0; transform: translateY(-20px); } }
-    </style>
+        /* ===================== AZOITY v4 ===================== */
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:96px}
+body{background:#04050a}
+.aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.aurora i{position:absolute;width:55vmax;height:55vmax;border-radius:50%;filter:blur(90px);mix-blend-mode:screen;opacity:calc(.2 + var(--bass,0)*.35);animation:drift 24s ease-in-out infinite alternate}
+.aurora i:nth-child(1){background:var(--cp-accent);top:-22%;left:-18%}
+.aurora i:nth-child(2){background:var(--cp-blue);bottom:-28%;right:-18%;animation-delay:-9s}
+.aurora i:nth-child(3){background:var(--cp-red);top:28%;left:38%;animation-delay:-15s;opacity:.12}
+@keyframes drift{to{transform:translate(9vw,7vh) scale(1.2)}}
+[data-theme="light"] .aurora i{mix-blend-mode:multiply;opacity:.16}
+.grain{position:fixed;inset:-50px;z-index:9990;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain .9s steps(5) infinite}
+@keyframes grain{20%{transform:translate(-20px,10px)}40%{transform:translate(15px,-25px)}60%{transform:translate(-10px,-15px)}80%{transform:translate(25px,20px)}}
+.container-wrapper{display:block;padding:0;perspective:none}
+.page{position:relative;max-width:1100px;margin:0 auto;padding:104px 16px 56px;display:grid;gap:18px;perspective:1200px}
+.card{position:relative;padding:22px;text-align:left;border:1px solid color-mix(in srgb,var(--cp-accent) 35%,transparent);border-radius:4px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:radial-gradient(280px circle at var(--cx,50%) var(--cy,50%),color-mix(in srgb,var(--cp-accent) 11%,transparent),transparent 70%),linear-gradient(160deg,color-mix(in srgb,var(--cp-dark) 80%,transparent),color-mix(in srgb,var(--cp-black) 72%,transparent));transition:border-color .3s,box-shadow .3s}
+.card:hover{border-color:var(--cp-accent);box-shadow:0 0 28px var(--glow-accent)}
+.card::before,.card::after{content:'';position:absolute;width:16px;height:16px;border:2px solid var(--cp-accent);pointer-events:none}
+.card::before{top:-2px;left:-2px;border-right:0;border-bottom:0}
+.card::after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.card h2{display:flex;align-items:center;gap:10px;margin-bottom:16px;font:700 .8em Orbitron,sans-serif;letter-spacing:3px;color:var(--cp-accent)}
+.card h2::before{content:'';width:8px;height:8px;background:var(--cp-accent);box-shadow:0 0 10px var(--cp-accent);animation:fxBlink 1.4s step-end infinite}
+@keyframes fxBlink{50%{opacity:.15}}
+.fx-js .card.fx-reveal{transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1),filter .8s,border-color .3s,box-shadow .3s}
+.hero{text-align:center;padding:46px 22px 40px;box-shadow:0 0 calc(24px + var(--bass,0)*90px) var(--glow-accent);animation:fadeInUp 1s ease-out forwards}
+.hero .avatar{width:150px;height:150px;box-shadow:0 0 calc(40px + var(--bass,0)*70px) var(--cp-accent)}
+.hero .typewriter h1{font-size:clamp(2rem,9vw,3.6rem)}
+.hero .clock{margin-bottom:12px}
+.tag{font-size:.95em;margin-bottom:22px;opacity:.8}
+.cta{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.btn-link.ghost{background:transparent;color:var(--cp-accent);border:2px solid var(--cp-accent)}
+.btn-link.ghost:hover{background:var(--cp-red);border-color:var(--cp-red);color:#fff}
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.bento>*{grid-column:span 12;min-width:0}
+@media(min-width:860px){.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}}
+.card .xp-track{height:14px}
+.card .xp-fill{background:linear-gradient(90deg,var(--cp-blue),var(--cp-accent))}
+.card .rep-row{margin-top:14px;flex-wrap:wrap;gap:6px}
+.card .countdown-time{font-size:2em;color:var(--cp-accent);text-shadow:0 0 14px var(--glow-accent)}
+.card .terminal-box{margin:0;min-height:160px}
+.card .action-buttons{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+.card .action-btn{clip-path:none;border-radius:3px;padding:12px 6px;font-size:.7em}
+.card .timeline{margin:6px 0 0 6px}
+.timeline::before{display:none}
+.card .achievements{margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags span{padding:8px 14px;border:1px solid color-mix(in srgb,var(--cp-accent) 45%,transparent);font:700 .78em Orbitron,sans-serif;letter-spacing:2px;transition:.25s}
+.tags span:hover{background:var(--cp-accent);color:var(--cp-black);box-shadow:0 0 18px var(--glow-accent)}
+.projs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.proj{display:block;padding:18px;color:inherit;text-decoration:none;border:1px solid color-mix(in srgb,var(--cp-accent) 30%,transparent);background:color-mix(in srgb,var(--cp-black) 55%,transparent);transition:.3s}
+.proj:hover{border-color:var(--cp-accent);box-shadow:0 0 22px var(--glow-accent);background:color-mix(in srgb,var(--cp-accent) 9%,transparent)}
+.proj b{display:block;font:700 1em Orbitron,sans-serif;letter-spacing:2px;color:var(--cp-accent);margin-bottom:8px}
+.proj span{display:block;font-size:.95em;line-height:1.5;opacity:.85}
+.badge{display:inline-block;margin-top:12px;padding:3px 10px;font:700 .65em Orbitron,sans-serif;letter-spacing:2px;border:1px solid var(--cp-blue);color:var(--cp-blue)}
+.foot{text-align:center;font:500 .8em Orbitron,sans-serif;letter-spacing:2px;opacity:.7;line-height:2;margin-top:6px}
+#boot{position:fixed;inset:0;z-index:10050;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;font-family:Orbitron,sans-serif;color:var(--cp-accent);transition:opacity .7s,visibility .7s;animation:bootFail .5s 4.5s forwards}
+#boot.off{opacity:0;visibility:hidden}
+@keyframes bootFail{to{opacity:0;visibility:hidden}}
+#boot .bt{font-size:2em;font-weight:900;letter-spacing:8px;text-shadow:0 0 20px var(--glow-accent);animation:fxSplit 1.6s infinite}
+#boot .bl{min-height:90px;font-size:.75em;letter-spacing:2px;line-height:1.9;text-align:left}
+#boot .bb{width:min(320px,70vw);height:6px;border:1px solid var(--cp-accent)}
+#boot .bb i{display:block;height:100%;background:var(--cp-accent);box-shadow:0 0 12px var(--cp-accent);animation:bootBar 2.2s ease-out forwards}
+@keyframes bootBar{from{width:0}to{width:100%}}
+.snake-canvas{max-width:92vw;height:auto}
+#snakeModal{touch-action:none}
+@media(max-width:640px){.hero{padding:34px 14px}.card{padding:18px 14px}}
+</style>
 </head>
 <body class="">
-    <div class="crt-overlay"></div>
+<div class="crt-overlay"></div>
     <div class="screen-glitch" id="screenGlitch"></div>
     <div class="cursor" id="cursor"></div>
     <div class="parallax-bg" id="parallaxBg"></div>
@@ -171,7 +205,9 @@
     <div class="quest-hint" id="questHint">[QUEST: Find 5 hidden symbols]</div>
     <div class="combo-badge" id="comboBadge">COMBO x2!</div>
     
-    <!-- МОДАЛЬНЫЕ ОКНА -->
+    <div class="aurora"><i></i><i></i><i></i></div><div class="grain"></div>
+<div id="boot"><div class="bt">AZOITY//2077</div><div class="bl" id="bootLog"></div><div class="bb"><i></i></div></div>
+<!-- МОДАЛЬНЫЕ ОКНА -->
     <div class="modal-overlay" id="breachModal">
         <div class="modal-title">// BREACH PROTOCOL //</div>
         <div id="breachTimer" style="font-family: Orbitron; color: var(--cp-red); margin-bottom: 10px;">TIME: 30s</div>
@@ -262,71 +298,42 @@
         <div class="modal-title">// NIGHT CITY MAP //</div>
         <div class="map-container" id="mapContainer">
             <div class="map-region" style="top: 10%; left: 10%; width: 30%; height: 25%;" onclick="exploreMap('watson')">WATSON</div>
-            <div class="map-region" style="top: 10%; right: 10%; width: 30%; height: 25%;" onclick="exploredMap('westbrook')">WESTBROOK</div>
+            <div class="map-region" style="top: 10%; right: 10%; width: 30%; height: 25%;" onclick="exploreMap('westbrook')">WESTBROOK</div>
             <div class="map-region" style="bottom: 10%; left: 10%; width: 30%; height: 25%;" onclick="exploreMap('heywood')">HEYWOOD</div>
             <div class="map-region" style="bottom: 10%; right: 10%; width: 30%; height: 25%;" onclick="exploreMap('santo')">SANTO DOMINGO</div>
             <div class="map-region" style="top: 40%; left: 35%; width: 30%; height: 20%;" onclick="exploreMap('city')">CITY CENTER</div>
         </div>
         <button class="modal-close" onclick="closeMap()">CLOSE</button>
     </div>
-
     <nav>
         <div class="nav-logo">AZOITY//2077</div>
-        <div class="nav-links" id="navLinks"><a href="#bio">BIO</a><a href="#path">PATH</a><a href="#achievements">ACHIEVEMENTS</a></div>
+        <div class="nav-links" id="navLinks"><a href="#bio">BIO</a><a href="#stack">STACK</a><a href="#path">PATH</a><a href="#projects">PROJECTS</a><a href="#achievements">ACHIEVEMENTS</a></div>
         <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </nav>
-    <div class="container-wrapper">
-        <div class="container" id="tiltCard">
+    <div class="container-wrapper"><main class="page">
+        <section class="card hero" id="tiltCard"><span id="bio"></span>
             <div class="avatar-container">
                 <img src="images/avatar.jpg" alt="Azoity" class="avatar" id="mainAvatar" ondblclick="initBreach()">
                 <div class="avatar-frame" id="avatarFrame"></div>
             </div>
-            <div class="typewriter"><h1 class="glitch">AZOITY BIO</h1></div>
+            <div class="typewriter"><h1 class="glitch">AZOITY</h1></div>
             <div class="clock" id="clock">00:00:00</div>
-            <p>// WELCOME TO MY DIGITAL SPACE //</p>
-            
-            <div class="xp-bar-container">
+            <p class="tag">// WELCOME TO MY DIGITAL SPACE //</p>
+            <div class="cta">
+                <a href="https://t.me/Azoity" class="btn-link" target="_blank" rel="noopener">CONNECT // TELEGRAM</a>
+                <a href="https://github.com/Azoity-code" class="btn-link ghost" target="_blank" rel="noopener">GITHUB</a>
+            </div>
+        </section>
+        <div class="bento">
+            <section class="card s7"><h2>PLAYER.STATS</h2>
                 <div class="xp-label"><span id="levelText">LVL 1</span><span id="xpText">0 / 100 XP</span></div>
                 <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
-                <div class="rep-row">
-                    <div class="rep-item">NETRUNNERS: <span id="repNet">0</span></div>
-                    <div class="rep-item">FIXERS: <span id="repFix">0</span></div>
-                    <div class="rep-item">NOMADS: <span id="repNom">0</span></div>
-                </div>
+                <div class="rep-row"><div class="rep-item">NETRUNNERS: <span id="repNet">0</span></div><div class="rep-item">FIXERS: <span id="repFix">0</span></div><div class="rep-item">NOMADS: <span id="repNom">0</span></div></div>
                 <div class="visitor-counter">VISITORS TODAY: <span id="visitorCount">0</span></div>
-            </div>
-
-            <div class="daily-quests" id="dailyQuests">
-                <div class="daily-title">// DAILY QUESTS //</div>
-                <div id="questList"></div>
-            </div>
-
-            <div class="countdown-widget">
-                <div class="countdown-label">// C++ MASTERY COUNTDOWN //</div>
-                <div class="countdown-time" id="countdownTime">00d 00h 00m 00s</div>
-            </div>
-
-            <div class="terminal-box" id="terminalBox"><span id="terminalText"></span><span class="terminal-cursor"></span></div>
-            
-            <div class="action-buttons">
-                <button class="action-btn" onclick="openPuzzle()">DECRYPT</button>
-                <button class="action-btn" onclick="openGuestbook()">GUESTBOOK</button>
-                <button class="action-btn" onclick="openChatbot()">AI CHAT</button>
-                <button class="action-btn" onclick="initBreach()">BREACH</button>
-                <button class="action-btn" onclick="openAimGame()">AIM</button>
-                <button class="action-btn" onclick="openMemoryGame()">MEMORY</button>
-                <button class="action-btn" onclick="openTypingGame()">TYPING</button>
-                <button class="action-btn" onclick="openSnakeGame()">SNAKE</button>
-                <button class="action-btn" onclick="openDuel()">DUEL AI</button>
-                <button class="action-btn" onclick="openShop()">SHOP</button>
-                <button class="action-btn" onclick="openRadio()">RADIO</button>
-                <button class="action-btn" onclick="openDiary()">DIARY</button>
-                <button class="action-btn" onclick="openMap()">MAP</button>
-                <button class="action-btn" onclick="toggleCRT()">CRT FX</button>
-            </div>
-            
-            <a href="https://t.me/Azoity" class="btn-link" target="_blank">CONNECT // TELEGRAM</a>
-            <div class="player">
+            </section>
+            <section class="card s5"><h2>C++ MASTERY COUNTDOWN</h2><div class="countdown-time" id="countdownTime">00d 00h 00m 00s</div></section>
+            <section class="card s5" id="dailyQuests"><h2>DAILY QUESTS</h2><div id="questList"></div></section>
+            <section class="card s7"><h2>NOW PLAYING</h2>
                 <div class="track-name" id="trackName">SELECT TRACK ▶</div>
                 <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
                 <div class="time-display"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
@@ -336,23 +343,36 @@
                     <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
                 </div>
                 <div class="visualizer" id="visualizer"></div>
-            </div>
-            <div class="socials"><a href="https://github.com/Azoity-code">GITHUB</a></div>
-            <div class="timeline" id="path">
-                <div class="timeline-item"><div class="timeline-date">2024</div><div class="timeline-text">INITIATED PROGRAMMING SEQUENCE</div></div>
-                <div class="timeline-item"><div class="timeline-date">2025</div><div class="timeline-text">DEPLOYED FIRST TELEGRAM BOTS</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026</div><div class="timeline-text">LAUNCHED PERSONAL WEBSITE</div></div>
-                <div class="timeline-item"><div class="timeline-date">OBJECTIVE</div><div class="timeline-text" style="color: var(--cp-accent); font-weight: bold;">MASTER C++ LANGUAGE</div></div>
-            </div>
-            <div class="achievements" id="achievements"></div>
-            <div class="hidden-symbol" style="top: 10%; left: 5%;" onclick="findSymbol(1)">⚡</div>
-            <div class="hidden-symbol" style="top: 50%; right: 3%;" onclick="findSymbol(2)">💀</div>
-            <div class="hidden-symbol" style="bottom: 20%; left: 8%;" onclick="findSymbol(3)">🔥</div>
-            <div class="hidden-symbol" style="top: 30%; right: 10%;" onclick="findSymbol(4)">⚙️</div>
-            <div class="hidden-symbol" style="bottom: 40%; left: 15%;" onclick="findSymbol(5)">🎯</div>
+            </section>
+            <section class="card s6"><h2>TERMINAL</h2><div class="terminal-box" id="terminalBox"><span id="terminalText"></span><span class="terminal-cursor"></span></div></section>
+            <section class="card s6"><h2>ARCADE &amp; TOOLS</h2><div class="action-buttons">
+                <button class="action-btn" onclick="openAimGame()">🎯 AIM</button><button class="action-btn" onclick="openMemoryGame()">🧠 MEMORY</button><button class="action-btn" onclick="openTypingGame()">⌨ TYPING</button><button class="action-btn" onclick="openSnakeGame()">🐍 SNAKE</button><button class="action-btn" onclick="openDuel()">⚔ DUEL AI</button><button class="action-btn" onclick="initBreach()">💻 BREACH</button>
+                <button class="action-btn" onclick="openPuzzle()">🔐 DECRYPT</button><button class="action-btn" onclick="openChatbot()">🤖 AI CHAT</button><button class="action-btn" onclick="openGuestbook()">📝 GUESTBOOK</button><button class="action-btn" onclick="openShop()">🛒 SHOP</button><button class="action-btn" onclick="openRadio()">📻 RADIO</button><button class="action-btn" onclick="openDiary()">📖 DIARY</button><button class="action-btn" onclick="openMap()">🗺 MAP</button><button class="action-btn" onclick="toggleCRT()">📺 CRT FX</button>
+            </div></section>
+            <section class="card s6"><h2>SYSTEM.LOG</h2>
+                <div class="timeline" id="path">
+                    <div class="timeline-item"><div class="timeline-date">2024</div><div class="timeline-text">INITIATED PROGRAMMING SEQUENCE</div></div>
+                    <div class="timeline-item"><div class="timeline-date">2025</div><div class="timeline-text">DEPLOYED FIRST TELEGRAM BOTS</div></div>
+                    <div class="timeline-item"><div class="timeline-date">2026</div><div class="timeline-text">LAUNCHED PERSONAL WEBSITE</div></div>
+                    <div class="timeline-item"><div class="timeline-date">OBJECTIVE</div><div class="timeline-text" style="color:var(--cp-accent);font-weight:bold">MASTER C++ LANGUAGE</div></div>
+                </div>
+            </section>
+            <section class="card s6" id="stack"><h2>STACK</h2><div class="tags"><span>HTML / CSS / JS</span><span>TELEGRAM BOTS</span><span>C++ // LEARNING</span><span>TERMUX</span><span>VERCEL</span><span>GITHUB</span></div></section>
+            <section class="card" id="projects"><h2>PROJECTS</h2><div class="projs">
+                <a class="proj" href="https://github.com/Azoity-code" target="_blank" rel="noopener"><b>TELEGRAM BOTS</b><span>First bots deployed in 2025.</span><em class="badge">SHIPPED</em></a>
+                <a class="proj" href="https://github.com/Azoity-code" target="_blank" rel="noopener"><b>THIS SITE</b><span>Cyberpunk personal site with games, XP system and a music player. Built on a phone with Termux + Vercel.</span><em class="badge">ONLINE</em></a>
+                <a class="proj" href="https://github.com/Azoity-code" target="_blank" rel="noopener"><b>C++ QUEST</b><span>Current objective: master C++.</span><em class="badge">IN PROGRESS</em></a>
+            </div></section>
+            <section class="card"><h2>ACHIEVEMENTS</h2><div class="achievements" id="achievements"></div></section>
         </div>
-    </div>
-    <div class="controls"><button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
+        <footer class="foot">© 2026 AZOITY // BUILT ON A PHONE WITH TERMUX + VERCEL<br>NIGHT CITY · ALL SYSTEMS NOMINAL</footer>
+        <div class="hidden-symbol" style="top:10%;left:5%" onclick="findSymbol(1)">⚡</div>
+        <div class="hidden-symbol" style="top:50%;right:3%" onclick="findSymbol(2)">💀</div>
+        <div class="hidden-symbol" style="bottom:20%;left:8%" onclick="findSymbol(3)">🔥</div>
+        <div class="hidden-symbol" style="top:30%;right:10%" onclick="findSymbol(4)">⚙️</div>
+        <div class="hidden-symbol" style="bottom:40%;left:15%" onclick="findSymbol(5)">🎯</div>
+    </main></div>
+    <div class="controls"><button class="control-btn" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button><button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
 <script>
         document.documentElement.setAttribute('data-theme', 'dark');
         const bgGifs = ["https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyamV5cGtrOXUxMTBiaW5sZ2pwaDhua3Juc2U1aXRncm5rYmZodHc0YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4xKJUTzWPAVoY/giphy.gif", "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2ZmbzUwdGZnNWFzbXg5b2g0MnhyMjNwbW8zN3J2ZThoYjRvbnJxdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3qYZ2RnKW6veM/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyamFreDVyNXRhOGNudmdmeTBodHBhZG9rNXZ0dHMxMzk0eHhjNm85aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rPQaG7o8uqMzS/giphy.gif", "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyaG85M3ptdzV4d3phaGQyc2lmcnV2M2lwajJvbzI3eHo5ZGt1dzNlYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WQr5l1Ye0Pj5Zf40El/giphy.gif", "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyM3BwOGV1cXVkdXluZXR1N3Yxa2ttdHVyZ2t2ZHV1ZHlqM28wN255MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sNUWF7fAUP2q4/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyejlmb2V6cWU5bnlhZmE5czR5aHRkNmZmbzQ3bGhzZ2FxcTlvbnBnNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jt7bAtEijhurm/giphy.gif", "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycDRoYXE3emxvOGZxZTRpc2R6MzkzMHEwd2FlZ3hhZ29jOHA1bHZudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/D6cOhgDo73NcY/giphy.gif"];
@@ -418,7 +438,7 @@
             c.style.fontSize = (Math.random() * 10 + 10) + 'px'; document.body.appendChild(c);
             setTimeout(() => c.remove(), 5000);
         }
-        setInterval(createMatrixChar, 100);
+        
 
         // СЛУЧАЙНЫЕ ГЛИТЧИ
         setInterval(() => {
@@ -488,9 +508,8 @@
         audio.addEventListener('ended', nextTrack);
         progressContainer.addEventListener('click', (e) => { const rect = progressContainer.getBoundingClientRect(); audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration; });
         function formatTime(s) { const m = Math.floor(s / 60); return `${m}:${Math.floor(s % 60).toString().padStart(2, '0')}`; }
-        setInterval(() => { if(isPlaying && !audio.paused) vizBars.forEach(bar => bar.style.height = (Math.random() * 30 + 5) + 'px'); else vizBars.forEach(bar => bar.style.height = '5px'); }, 150);
+        
         loadTrack(0); isPlaying = false; playBtn.innerText = '▶';
-
         // ИНТЕРФЕЙС И КОМБО
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', e => { cursor.style.left = e.clientX - 10 + 'px'; cursor.style.top = e.clientY - 10 + 'px'; });
@@ -519,7 +538,7 @@
         function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString('ru-RU'); }
         setInterval(updateClock, 1000); updateClock();
         window.addEventListener('scroll', () => { document.getElementById('parallaxBg').style.transform = `translateY(${window.scrollY * 0.3}px)`; });
-        function toggleTheme() { const html = document.documentElement; const isDark = html.getAttribute('data-theme') === 'dark'; html.setAttribute('data-theme', isDark ? 'light' : 'dark'); const btn = document.getElementById('themeBtn'); btn.innerText = isDark ? '☀' : '🌙'; btn.style.borderColor = isDark ? 'var(--cp-blue)' : 'var(--cp-yellow)'; btn.style.color = isDark ? 'var(--cp-blue)' : 'var(--cp-yellow)'; unlock('theme'); }
+        function toggleTheme() { const html = document.documentElement; const isDark = html.getAttribute('data-theme') === 'dark'; html.setAttribute('data-theme', isDark ? 'light' : 'dark'); const btn = document.getElementById('themeBtn'); btn.innerText = isDark ? '☀' : '🌙'; btn.style.borderColor = isDark ? 'var(--cp-blue)' : 'var(--cp-accent)'; btn.style.color = isDark ? 'var(--cp-blue)' : 'var(--cp-accent)'; unlock('theme'); }
         function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); try { playSound('click'); } catch(e) {} }
         document.addEventListener('click', (e) => { const nav = document.getElementById('navLinks'); const burger = document.querySelector('.burger'); if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target) && !e.target.closest('.burger')) { nav.classList.remove('active'); } });
         document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('active'); }); });
@@ -529,7 +548,7 @@
         const dailyQuests = [
             { id: 'dq_listen', text: 'Listen to 2 tracks', check: () => playedTracks.size >= 2 },
             { id: 'dq_breach', text: 'Complete a Breach', check: () => unlocked.includes('breach_temp') },
-            { id: 'dq_scroll', text: 'Scroll the page', check: () => true } // Выполняется при скролле
+            { id: 'dq_scroll', text: 'Scroll the page', check: () => window.scrollY > 200 } // Выполняется при скролле
         ];
         function renderDailyQuests() {
             const list = document.getElementById('questList');
@@ -641,8 +660,8 @@
             area.innerHTML = '';
             const target = document.createElement('div');
             target.className = 'game-target';
-            target.style.left = Math.random() * 370 + 'px';
-            target.style.top = Math.random() * 270 + 'px';
+            target.style.left = Math.random() * (area.clientWidth - 30) + 'px';
+            target.style.top = Math.random() * (area.clientHeight - 30) + 'px';
             target.onclick = () => { aimScore++; document.getElementById('aimScore').innerText = aimScore; playSound('success'); spawnAimTarget(); };
             area.appendChild(target);
         }
@@ -701,7 +720,6 @@
             }
         }
         function closeMemoryGame() { document.getElementById('memoryGameModal').classList.remove('active'); }
-
         // SPEED TYPING GAME
         const typingWords = ['CYBERPUNK', 'NETRUNNER', 'MATRIX', 'HACKER', 'SYSTEM', 'PROTOCOL', 'BREACH', 'NEURAL', 'SYNTHETIC', 'QUANTUM'];
         let typingStartTime = 0, typingCorrect = 0;
@@ -913,7 +931,6 @@
             playSound('click');
         }
         function closeDiary() { document.getElementById('diaryModal').classList.remove('active'); }
-
         // КАРТА NIGHT CITY
         let exploredRegions = JSON.parse(localStorage.getItem('azoity_map')) || [];
         function openMap() { document.getElementById('mapModal').classList.add('active'); renderMap(); playSound('click'); }
@@ -987,6 +1004,307 @@
         let konamiIdx = 0;
         document.addEventListener('keydown', (e) => { if(e.key === konamiCode[konamiIdx]) { konamiIdx++; if(konamiIdx === konamiCode.length) { playSound('levelup'); showPopup({icon: '🔓', name: 'SECRET MODE ACTIVATED'}); document.documentElement.style.filter = 'hue-rotate(180deg) invert(1)'; konamiIdx = 0; } } else { konamiIdx = 0; } });
     </script>
+<script>
+/* ===== v4 details ===== */
+(() => {
+  const root = document.documentElement;
+  // приветствие в терминале
+  try {
+    const h = new Date().getHours();
+    const g = h < 5 ? 'NIGHT SHIFT' : h < 12 ? 'GOOD MORNING' : h < 18 ? 'GOOD AFTERNOON' : 'GOOD EVENING';
+    terminalLines.splice(1, 0, '> ' + g + ', NETRUNNER', '> UPLINK: ' + (navigator.onLine ? 'STABLE' : 'OFFLINE'));
+  } catch (e) {}
+  // boot-экран (один раз за сессию)
+  const boot = document.getElementById('boot');
+  if (boot) {
+    if (sessionStorage.getItem('azb')) boot.remove();
+    else {
+      sessionStorage.setItem('azb', '1');
+      const log = document.getElementById('bootLog');
+      ['INIT KERNEL...', 'MOUNTING /music [9 FILES]', 'LOADING NEURAL UI...', 'LINK ESTABLISHED'].forEach((t, i) => setTimeout(() => log.innerHTML += '> ' + t + '<br>', i * 450));
+      setTimeout(() => boot.classList.add('off'), 2300);
+      setTimeout(() => boot.remove(), 3100);
+    }
+  }
+  // подсветка карточек за курсором/пальцем
+  document.addEventListener('pointermove', e => {
+    const c = e.target.closest && e.target.closest('.card');
+    if (c) { const r = c.getBoundingClientRect(); c.style.setProperty('--cx', e.clientX - r.left + 'px'); c.style.setProperty('--cy', e.clientY - r.top + 'px'); }
+  }, { passive: true });
+  // настоящий аудио-визуализатор + пульс света от баса
+  let an = null, data = null, idle = false;
+  audio.addEventListener('play', () => {
+    try {
+      audioCtx.resume();
+      if (!an) {
+        const src = audioCtx.createMediaElementSource(audio);
+        an = audioCtx.createAnalyser(); an.fftSize = 64; an.smoothingTimeConstant = .8;
+        src.connect(an); an.connect(audioCtx.destination);
+        data = new Uint8Array(an.frequencyBinCount);
+      }
+    } catch (e) {}
+  });
+  const bars = document.querySelectorAll('.viz-bar');
+  (function viz() {
+    requestAnimationFrame(viz);
+    if (an && !audio.paused) {
+      idle = false; an.getByteFrequencyData(data);
+      bars.forEach((b, i) => b.style.height = (5 + data[i] / 255 * 38) + 'px');
+      root.style.setProperty('--bass', ((data[1] + data[2]) / 510).toFixed(2));
+    } else if (!idle) {
+      idle = true; bars.forEach(b => b.style.height = '5px'); root.style.setProperty('--bass', 0);
+    }
+  })();
+  // Enter отправляет формы, свайпы для змейки
+  const onEnter = (id, fn) => { const el = document.getElementById(id); el && el.addEventListener('keydown', e => { if (e.key === 'Enter') fn(); }); };
+  onEnter('chatInput', sendChat); onEnter('guestMsg', addGuestEntry); onEnter('puzzleAnswer', checkPuzzle);
+  let x0 = 0, y0 = 0;
+  const sm = document.getElementById('snakeModal');
+  sm.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  sm.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
+    if (Math.abs(dx) > Math.abs(dy)) { if (dx > 0 && snakeDir.x !== -1) snakeDir = { x: 1, y: 0 }; else if (dx < 0 && snakeDir.x !== 1) snakeDir = { x: -1, y: 0 }; }
+    else { if (dy > 0 && snakeDir.y !== -1) snakeDir = { x: 0, y: 1 }; else if (dy < 0 && snakeDir.y !== 1) snakeDir = { x: 0, y: -1 }; }
+  }, { passive: true });
+})();
+</script>
+<script>/* AZOITY // FX PACK — визуальные эффекты поверх твоего сайта. Подключается одной строкой в index.html */
+(() => {
+  'use strict';
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const touch = matchMedia('(pointer: coarse)').matches;
+  const root = document.documentElement;
+  root.classList.add('fx-js');
+  const accent = () => getComputedStyle(root).getPropertyValue('--cp-accent').trim() || '#fcee0a';
+  const mk = (tag, cls, parent, html) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html) e.innerHTML = html;
+    (parent || document.body).appendChild(e);
+    return e;
+  };
+
+  /* ---------- CSS ---------- */
+  const st = document.createElement('style');
+  st.textContent = `
+.matrix-char{display:none!important}
+body{padding-bottom:30px}
+.fx-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#fxRain{z-index:-1;opacity:.5}
+#fxSpark{z-index:9995}
+.fx-progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:10002;background:linear-gradient(90deg,var(--cp-blue),var(--cp-accent),var(--cp-red));box-shadow:0 0 12px var(--glow-accent)}
+.fx-ring{position:fixed;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border:1px solid var(--cp-accent);border-radius:50%;pointer-events:none;z-index:9999;opacity:.55;transition:width .25s,height .25s,margin .25s,opacity .25s,background .25s}
+.fx-ring.hot{width:70px;height:70px;margin:-35px 0 0 -35px;opacity:.95;background:color-mix(in srgb,var(--cp-accent) 12%,transparent)}
+.fx-spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,25%),color-mix(in srgb,var(--cp-accent) 14%,transparent),transparent 60%)}
+.fx-scan{position:absolute;inset:0;overflow:hidden;pointer-events:none}.fx-scan::after{content:'';position:absolute;left:0;right:0;height:120px;top:-120px;background:linear-gradient(transparent,color-mix(in srgb,var(--cp-blue) 16%,transparent),transparent);animation:fxScan 6s linear infinite}
+@keyframes fxScan{to{top:100%}}
+.fx-orbit{position:absolute;inset:-24px;border-radius:50%;pointer-events:none;animation:spinFrame 6s linear infinite reverse}
+.fx-orbit::before,.fx-orbit::after{content:'';position:absolute;left:calc(50% - 5px);width:10px;height:10px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.fx-orbit::before{top:-5px;background:var(--cp-blue);box-shadow:0 0 12px var(--cp-blue)}
+.fx-orbit::after{bottom:-5px;background:var(--cp-red);box-shadow:0 0 12px var(--cp-red)}
+.fx-live{display:inline-flex;align-items:center;gap:8px;font-family:Orbitron,sans-serif;font-size:.7em;letter-spacing:3px;color:var(--cp-accent);margin-bottom:14px}
+.fx-live i{width:8px;height:8px;border-radius:50%;background:#39ff14;box-shadow:0 0 10px #39ff14;animation:fxPulse 1.4s infinite}
+@keyframes fxPulse{50%{transform:scale(1.8);opacity:.3}}
+.fx-role{font-family:Orbitron,sans-serif;font-size:1.05em;letter-spacing:4px;color:var(--cp-blue);margin:-6px 0 22px;min-height:1.5em;text-shadow:0 0 12px rgba(0,240,255,.6)}
+.typewriter h1{animation:typing 3s steps(30) forwards,blink .7s step-end infinite,fxSplit 5s 4s infinite}
+@keyframes fxSplit{0%,91%,100%{text-shadow:0 0 20px var(--glow-accent),0 0 40px var(--glow-accent)}93%{text-shadow:-4px 0 var(--cp-red),4px 0 var(--cp-blue)}95%{text-shadow:4px 0 var(--cp-red),-4px 0 var(--cp-blue)}97%{text-shadow:-2px 0 var(--cp-blue),2px 0 var(--cp-red)}}
+.action-btn,.btn-link,.socials a{position:relative;overflow:hidden}
+.action-btn::after,.btn-link::after,.socials a::after{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);transition:left .6s}
+.action-btn:hover::after,.btn-link:hover::after,.socials a:hover::after{left:140%}
+.achievement.unlocked{animation:fxFloat 4s ease-in-out infinite}
+@keyframes fxFloat{50%{transform:scale(1.05) translateY(-4px)}}
+.fx-js .fx-reveal{opacity:0;transform:translateY(28px) scale(.98);filter:blur(4px);transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1),filter .8s}
+.fx-js .fx-reveal.in{opacity:1;transform:none;filter:none}
+.fx-ticker{position:fixed;left:0;right:0;bottom:0;height:28px;z-index:99;display:flex;align-items:center;background:color-mix(in srgb,var(--cp-black) 88%,transparent);border-top:1px solid var(--cp-accent);font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;color:var(--cp-accent);overflow:hidden;backdrop-filter:blur(6px)}
+.fx-stat{flex:none;height:100%;padding:0 12px;display:flex;align-items:center;gap:6px;white-space:nowrap;border-right:1px solid var(--cp-accent);background:color-mix(in srgb,var(--cp-black) 95%,transparent);position:relative;z-index:1}
+.fx-marq{flex:1;overflow:hidden;white-space:nowrap}
+.fx-marq span{display:inline-block;padding-left:100%;animation:fxMarq 50s linear infinite}
+@keyframes fxMarq{to{transform:translateX(-100%)}}
+.controls{bottom:44px!important}
+.quest-hint{bottom:100px!important}
+@media(max-width:600px){.typewriter h1{font-size:1.9em;letter-spacing:2px}.container{padding:40px 18px}.nav-logo{font-size:1.1em}.fx-role{font-size:.85em;letter-spacing:2px}}
+@media(prefers-reduced-motion:reduce){.fx-scan,.fx-orbit,.fx-marq span,.avatar,.achievement.unlocked{animation:none}.fx-js .fx-reveal{opacity:1;transform:none;filter:none}}`;
+  document.head.appendChild(st);
+  /* ---------- Карточка: фикс наклона + подсветка + скан-линия ---------- */
+  const card = document.getElementById('tiltCard');
+  if (card) {
+    // анимация fadeInUp (forwards) перекрывала inline-transform, из-за этого 3D-наклон не работал
+    card.addEventListener('animationend', e => { if (e.target === card) card.style.animation = 'none'; });
+    const spot = mk('div', 'fx-spot', card);
+    mk('div', 'fx-scan', card);
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      spot.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      spot.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+  }
+  const av = document.querySelector('.avatar-container');
+  if (av) mk('div', 'fx-orbit', av);
+
+  /* ---------- Бейдж ONLINE + меняющаяся роль со scramble-эффектом ---------- */
+  const tw = document.querySelector('.typewriter');
+  if (tw) {
+    const live = document.createElement('div');
+    live.className = 'fx-live';
+    live.innerHTML = '<i></i>ONLINE // NIGHT CITY';
+    tw.before(live);
+    const role = document.createElement('div');
+    role.className = 'fx-role';
+    tw.after(role);
+    const roles = ['PROGRAMMER', 'TELEGRAM BOT BUILDER', 'C++ APPRENTICE', 'NETRUNNER'];
+    const glyphs = '!<>-_/[]{}=+*^?#01';
+    let ri = 0;
+    const scramble = (text, done) => {
+      let f = 0; const total = 24;
+      (function tick() {
+        let out = '';
+        for (let i = 0; i < text.length; i++) {
+          out += (i < f * text.length / total || text[i] === ' ') ? text[i] : glyphs[Math.random() * glyphs.length | 0];
+        }
+        role.textContent = out;
+        if (f++ < total) setTimeout(tick, 35); else done();
+      })();
+    };
+    const cycle = () => scramble(roles[ri++ % roles.length], () => setTimeout(cycle, 2200));
+    setTimeout(cycle, 3200);
+  }
+
+  /* ---------- Скролл-прогресс и плавное появление блоков ---------- */
+  const bar = mk('div', 'fx-progress');
+  addEventListener('scroll', () => {
+    const h = root.scrollHeight - innerHeight;
+    bar.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
+  }, { passive: true });
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: .12 });
+    document.querySelectorAll('.bento > .card').forEach(el => { el.classList.add('fx-reveal'); io.observe(el); });
+    document.querySelectorAll('.timeline-item').forEach((el, i) => { el.classList.add('fx-reveal'); el.style.transitionDelay = i * .15 + 's'; io.observe(el); });
+  } else {
+    root.classList.remove('fx-js');
+  }
+
+  /* ---------- Нижняя HUD-лента: LIVE, FPS, время сессии + бегущая строка ---------- */
+  const tk = mk('div', 'fx-ticker');
+  const stat = mk('div', 'fx-stat', tk, '<span style="color:#39ff14">●</span> LIVE · <b id="fxFps">60</b> FPS · <b id="fxSes">0:00</b>');
+  const lines = ['NETRUNNER AZOITY ONLINE', 'C++ MASTERY: IN PROGRESS', '9 TRACKS LOADED INTO THE PLAYER', 'FIND 5 HIDDEN SYMBOLS FOR BONUS XP', 'DOUBLE-TAP THE AVATAR TO START A BREACH', 'TRY THE KONAMI CODE', 'EVERY CLICK = +1 XP'];
+  mk('div', 'fx-marq', tk, '<span>' + lines.join('   ◆   ') + '</span>');
+  const fpsEl = stat.querySelector('#fxFps'), sesEl = stat.querySelector('#fxSes');
+
+  /* ---------- Canvas: матричный дождь + искры ---------- */
+  let rain = null, spark = null, rc = null, sc = null, W = 0, H = 0, cols = 0, drops = [];
+  const fs = 16, dpr = Math.min(devicePixelRatio || 1, 2);
+  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+  const parts = [];
+  if (!RM) {
+    const cv = id => { const c = document.createElement('canvas'); c.id = id; c.className = 'fx-canvas'; document.body.appendChild(c); return c; };
+    rain = cv('fxRain'); spark = cv('fxSpark');
+    rc = rain.getContext('2d'); sc = spark.getContext('2d');
+    const resize = () => {
+      W = innerWidth; H = innerHeight;
+      for (const c of [rain, spark]) { c.width = W * dpr; c.height = H * dpr; c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0); }
+      cols = Math.ceil(W / fs);
+      drops = Array.from({ length: cols }, () => Math.random() * -60);
+    };
+    addEventListener('resize', resize); resize();
+  }
+  const emit = (x, y, n, spd, life) => {
+    if (!sc) return;
+    const c = accent();
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * 6.283, v = Math.random() * spd + spd * .3, l = life * (.6 + Math.random() * .6);
+      parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, l, m: l, c });
+    }
+    if (parts.length > 400) parts.splice(0, parts.length - 400);
+  };
+  let lx = 0, ly = 0;
+  addEventListener('pointermove', e => {
+    if (Math.hypot(e.clientX - lx, e.clientY - ly) > 14) { emit(e.clientX, e.clientY, 2, .8, 28); lx = e.clientX; ly = e.clientY; }
+  }, { passive: true });
+  addEventListener('pointerdown', e => emit(e.clientX, e.clientY, 22, 3.2, 40), { passive: true });
+
+  // салют при ачивках, левел-апах и победах
+  const _sp = window.showPopup;
+  if (typeof _sp === 'function') {
+    window.showPopup = function (d) {
+      _sp.apply(this, arguments);
+      const big = /LEVEL UP|UNLOCKED|SUCCESS|VANQUISHED|MASTER|FULLY|HIGH SCORE|DECRYPTED/i.test((d && d.name) || '');
+      emit(innerWidth - 90, 130, big ? 40 : 14, big ? 4.5 : 2.5, big ? 55 : 35);
+    };
+  }
+
+  /* ---------- Курсор-кольцо (только мышь) ---------- */
+  let ring = null, rx = 0, ry = 0, tx = 0, ty = 0;
+  if (!touch) {
+    ring = mk('div', 'fx-ring');
+    addEventListener('pointermove', e => {
+      tx = e.clientX; ty = e.clientY;
+      ring.classList.toggle('hot', !!(e.target.closest && e.target.closest('button,a,input,.shop-item,.map-region,.breach-cell,.hidden-symbol,.progress-container')));
+    }, { passive: true });
+  }
+
+  /* ---------- Гироскоп: на телефоне карточка наклоняется вместе с устройством ---------- */
+  let gx = 0, gy = 0, cx = 0, cy = 0;
+  if (touch && card && !RM) {
+    const on = e => {
+      if (e.gamma == null) return;
+      gy = Math.max(-1, Math.min(1, e.gamma / 30));
+      gx = Math.max(-1, Math.min(1, ((e.beta || 0) - 50) / 30));
+    };
+    const D = window.DeviceOrientationEvent;
+    if (D && typeof D.requestPermission === 'function') {
+      document.addEventListener('click', () => D.requestPermission().then(r => r === 'granted' && addEventListener('deviceorientation', on)).catch(() => {}), { once: true });
+    } else addEventListener('deviceorientation', on);
+  }
+
+  /* ---------- Главный цикл ---------- */
+  let frame = 0, col = accent(), fc = 0, ft = performance.now();
+  const t0 = ft;
+  const loop = t => {
+    requestAnimationFrame(loop);
+    frame++; fc++;
+    if (frame % 40 === 0) col = accent();
+    // дождь — 30 кадров/с, чтобы не греть телефон
+    if (rc && frame % 2 === 0) {
+      rc.globalCompositeOperation = 'destination-out';
+      rc.fillStyle = 'rgba(0,0,0,.12)'; rc.fillRect(0, 0, W, H);
+      rc.globalCompositeOperation = 'source-over';
+      rc.font = fs + 'px Orbitron, monospace'; rc.fillStyle = col;
+      for (let i = 0; i < cols; i++) {
+        const y = drops[i] * fs;
+        if (y > 0) { rc.globalAlpha = .45 + Math.random() * .55; rc.fillText(chars[Math.random() * chars.length | 0], i * fs, y); }
+        if (y > H && Math.random() > .975) drops[i] = 0;
+        drops[i] += 1;
+      }
+      rc.globalAlpha = 1;
+    }
+    // искры
+    if (sc) {
+      sc.clearRect(0, 0, W, H);
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.x += p.vx; p.y += p.vy; p.vy += .04; p.vx *= .985;
+        if (--p.l <= 0) { parts.splice(i, 1); continue; }
+        sc.globalAlpha = p.l / p.m; sc.fillStyle = p.c; sc.fillRect(p.x - 1.5, p.y - 1.5, 3, 3);
+      }
+      sc.globalAlpha = 1;
+    }
+    if (ring) { rx += (tx - rx) * .18; ry += (ty - ry) * .18; ring.style.transform = `translate(${rx}px,${ry}px)`; }
+    if (touch && card && (gx || gy)) {
+      cx += (gx - cx) * .08; cy += (gy - cy) * .08;
+      card.style.transform = `rotateY(${cy * 7}deg) rotateX(${-cx * 7}deg)`;
+    }
+    if (t - ft >= 1000) {
+      fpsEl.textContent = Math.round(fc * 1000 / (t - ft)); fc = 0; ft = t;
+      const s = Math.floor((t - t0) / 1000);
+      sesEl.textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    }
+  };
+  requestAnimationFrame(loop);
+})();
+</script>
 </body>
 </html>
 
