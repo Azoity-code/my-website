@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="description" content="Azoity — cyberpunk personal website: games, XP system, music player.">
-<meta property="og:title" content="Azoity // CYBERPUNK V6.0">
+<meta property="og:title" content="Azoity // CYBERPUNK V6.1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E⚡%3C/text%3E%3C/svg%3E">
-<title>Azoity // CYBERPUNK V6.0</title>
+<title>Azoity // CYBERPUNK V6.1</title>
 <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
         :root { --cp-accent: #fcee0a; --cp-red: #ff003c; --cp-blue: #00f0ff; --cp-black: #000; --cp-dark: #0a0a0a; --cp-gray: #1a1a1a; --cp-text: #fff; --glow-accent: rgba(252, 238, 10, 0.5); }
@@ -425,6 +425,43 @@ nav.sc{padding:8px 16px;box-shadow:0 10px 36px rgba(0,0,0,.45),inset 0 1px 0 rgb
 .dock a.on[href="#support"]{background:linear-gradient(135deg,rgba(255,55,95,.75),rgba(255,159,10,.75))}
 @media(max-width:768px){.controls{bottom:122px!important}.quest-hint{bottom:182px!important}}
 @media(prefers-reduced-motion:reduce){#support{animation:none}}
+
+/* ===================== v6.1 PERF + STORM + SOUNDCLOUD ===================== */
+.grain,body::before{display:none!important}
+body{background-attachment:scroll}
+.parallax-bg{filter:none;transition:none}
+.aurora i{filter:none;mix-blend-mode:normal;opacity:.55}
+.aurora i:nth-child(1){background:radial-gradient(circle,var(--w1,#5e5ce6),transparent 66%)}
+.aurora i:nth-child(2){background:radial-gradient(circle,var(--w2,#0a84ff),transparent 66%)}
+.aurora i:nth-child(3){background:radial-gradient(circle,var(--w3,#ff375f),transparent 66%);opacity:.4}
+.orb{filter:none!important;mix-blend-mode:normal!important;opacity:.4;-webkit-mask:radial-gradient(circle,#000,transparent 68%);mask:radial-gradient(circle,#000,transparent 68%)}
+.meteor{filter:none;box-shadow:0 0 6px #fff}
+.grid3d{background:none;animation:none;overflow:hidden}
+.grid3d .gi{position:absolute;left:0;right:0;top:-60px;bottom:0;background:repeating-linear-gradient(90deg,rgba(100,210,255,.6) 0 1px,transparent 1px 60px),repeating-linear-gradient(0deg,rgba(191,90,242,.6) 0 1px,transparent 1px 60px);animation:fxGridY 2.4s linear infinite}
+@keyframes fxGridY{to{transform:translateY(60px)}}
+.card,#support,.hero{backdrop-filter:none;-webkit-backdrop-filter:none}
+nav,.dock{backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%)}
+.fx-ticker{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(20,22,40,.72)}
+.modal-overlay{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.fx-js .fx-reveal{filter:none!important}
+.hero::before,#support::before,#support{animation:none}
+.hero{box-shadow:0 12px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.45)}
+.hero .avatar{box-shadow:0 0 50px var(--cp-accent)}
+.avatar-container::before{opacity:.5}
+.typewriter h1{filter:none;animation:typing 3s steps(30) forwards!important}
+.achievement.legendary{animation:none}
+@media(pointer:coarse){.page{perspective:none}}
+.lite .aurora i,.lite .orb,.lite .grid3d,.lite .sun,.lite .stars,.lite .meteor,.lite .fx-dia,.lite #fxRain,.lite #fxSpark,.lite .fx-ring,.lite .parallax-bg,.lite .orbit-text,.lite .avatar-container::before,.lite .scroll-hint{display:none!important}
+.lite nav,.lite .dock{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(24,26,48,.92)}
+#fxStorm{z-index:9994;display:none}
+#fxFlash{position:fixed;inset:0;pointer-events:none;z-index:9993;opacity:0;background:radial-gradient(circle at 50% 15%,#fff,#9ec5ff 55%,transparent 85%)}
+.control-btn.act{background:linear-gradient(135deg,#0a84ff,#bf5af2);color:#fff;box-shadow:0 0 18px rgba(10,132,255,.6)}
+.sc-box{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sc-box b{display:block;color:var(--tx)}.sc-box small{opacity:.7}
+.sc-cover{display:grid;place-items:center;width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#ff5500,#ff8800);font-size:34px;box-shadow:0 8px 22px rgba(255,85,0,.5),inset 0 1px 0 rgba(255,255,255,.5)}
+.sc-go{margin-left:auto;border-radius:999px!important;background:linear-gradient(135deg,#ff5500,#ff8800)!important;color:#fff!important;border:0!important;padding:14px 22px!important}
+.btn-link.sc{background:linear-gradient(135deg,#ff5500,#ff8800);box-shadow:0 8px 24px rgba(255,85,0,.5),inset 0 1px 0 rgba(255,255,255,.5)}
+.sc-box iframe{width:100%;height:300px;border:0;border-radius:18px}
 </style>
 <script>
 const AV_MONO="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fcee0a'/%3E%3Cstop offset='1' stop-color='%2300f0ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='160' height='160' fill='%23050505'/%3E%3Ctext x='80' y='110' font-size='88' font-family='sans-serif' font-weight='900' text-anchor='middle' fill='url(%23g)'%3EA%3C/text%3E%3C/svg%3E";
@@ -562,11 +599,12 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
             <div class="cta">
                 <a href="https://t.me/Azoity" class="btn-link" target="_blank" rel="noopener">CONNECT // TELEGRAM</a>
                 <a href="https://github.com/Azoity-code" class="btn-link ghost" target="_blank" rel="noopener">GITHUB</a>
+                <a class="btn-link sc" href="https://soundcloud.com/azoity" target="_blank" rel="noopener">☁ SOUNDCLOUD</a>
                 <a class="btn-link sup" id="heroSup" href="https://t.me/wallet" target="_blank" rel="noopener">💎 ПОДДЕРЖАТЬ // USDT</a>
             </div>
             <div class="chips"><span>⌨ CODER</span><span>🤖 BOT BUILDER</span><span>🎵 NIGHT CITY FM</span><span>⚡ C++ IN PROGRESS</span></div>
             <div class="scroll-hint" id="scrollHint">▼ SCROLL</div>
-            <div class="hud tl">SYS // ONLINE</div><div class="hud tr">V6.0</div><div class="hud bl" id="hudXY">X:000 Y:000</div><div class="hud br">V6.0 · AZOITY//2077</div>
+            <div class="hud tl">SYS // ONLINE</div><div class="hud tr">V6.1</div><div class="hud bl" id="hudXY">X:000 Y:000</div><div class="hud br">V6.1 · AZOITY//2077</div>
         </section>
         <div class="divider"></div>
         <div class="bento">
@@ -606,11 +644,15 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
             <section class="card s6" id="settings"><h2>SETTINGS</h2>
                 <div class="ios-row"><span>✨ Эффекты (дождь, искры)</span><label class="sw"><input type="checkbox" id="swFx" checked><i></i></label></div>
                 <div class="ios-row"><span>📳 Вибрация при нажатии</span><label class="sw"><input type="checkbox" id="swHap" checked><i></i></label></div>
+                <div class="ios-row"><span>⚡ Экономный режим (меньше эффектов)</span><label class="sw"><input type="checkbox" id="swLite"><i></i></label></div>
                 <div class="ios-row"><span>🎨 Обои</span><div class="walls"><b data-w="aurora"></b><b data-w="sunset"></b><b data-w="ocean"></b><b data-w="mono"></b></div></div>
             </section>
             <section class="card s6" id="share"><h2>SHARE</h2>
                 <p class="sup-note" style="margin-top:0">Понравился сайт? Поделись им с друзьями.</p>
                 <div class="sup-row"><button class="action-btn" id="shareBtn" type="button">📤 ПОДЕЛИТЬСЯ</button></div>
+            </section>
+            <section class="card" id="soundcloud"><h2>SOUNDCLOUD</h2>
+                <div class="sc-box" id="scBox"><div class="sc-cover">☁</div><div><b>Azoity on SoundCloud</b><small>Мои треки и миксы</small></div><button class="action-btn sc-go" id="scGo" type="button">▶ СЛУШАТЬ</button></div>
             </section>
             <section class="card" id="projects"><h2>PROJECTS</h2><div class="projs">
                 <a class="proj" href="https://github.com/Azoity-code" target="_blank" rel="noopener"><b>TELEGRAM BOTS</b><span>First bots deployed in 2025.</span><em class="badge">SHIPPED</em></a>
@@ -639,7 +681,7 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
     <div class="dock" id="dock">
         <a href="#bio"><i>🏠</i><span>Home</span></a><a href="#stack"><i>🧩</i><span>Stack</span></a><a href="#projects"><i>🚀</i><span>Work</span></a><a href="#achievements"><i>🏆</i><span>Awards</span></a><a href="#support"><i>💎</i><span>Support</span></a>
     </div>
-    <div class="controls"><button class="control-btn" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button><button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
+    <div class="controls"><button class="control-btn" id="stormBtn" type="button" title="Дождь и гроза">⛈</button><button class="control-btn" id="stormSnd" type="button" title="Звук грозы">🔇</button><button class="control-btn" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button><button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
 <script>
         document.documentElement.setAttribute('data-theme', 'dark');
         const bgGifs = ["https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyamV5cGtrOXUxMTBiaW5sZ2pwaDhua3Juc2U1aXRncm5rYmZodHc0YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4xKJUTzWPAVoY/giphy.gif", "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2ZmbzUwdGZnNWFzbXg5b2g0MnhyMjNwbW8zN3J2ZThoYjRvbnJxdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3qYZ2RnKW6veM/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyamFreDVyNXRhOGNudmdmeTBodHBhZG9rNXZ0dHMxMzk0eHhjNm85aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rPQaG7o8uqMzS/giphy.gif", "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyaG85M3ptdzV4d3phaGQyc2lmcnV2M2lwajJvbzI3eHo5ZGt1dzNlYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WQr5l1Ye0Pj5Zf40El/giphy.gif", "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyM3BwOGV1cXVkdXluZXR1N3Yxa2ttdHVyZ2t2ZHV1ZHlqM28wN255MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sNUWF7fAUP2q4/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyejlmb2V6cWU5bnlhZmE5czR5aHRkNmZmbzQ3bGhzZ2FxcTlvbnBnNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jt7bAtEijhurm/giphy.gif", "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycDRoYXE3emxvOGZxZTRpc2R6MzkzMHEwd2FlZ3hhZ29jOHA1bHZudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/D6cOhgDo73NcY/giphy.gif"];
@@ -1297,7 +1339,7 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
     }
   }
   // подсветка карточек за курсором/пальцем
-  document.addEventListener('pointermove', e => {
+  if (!matchMedia('(pointer: coarse)').matches) document.addEventListener('pointermove', e => {
     const c = e.target.closest && e.target.closest('.card');
     if (c) { const r = c.getBoundingClientRect(); c.style.setProperty('--cx', e.clientX - r.left + 'px'); c.style.setProperty('--cy', e.clientY - r.top + 'px'); }
   }, { passive: true });
@@ -1320,9 +1362,9 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
     if (an && !audio.paused) {
       idle = false; an.getByteFrequencyData(data);
       bars.forEach((b, i) => b.style.height = (5 + data[i] / 255 * 38) + 'px');
-      root.style.setProperty('--bass', ((data[1] + data[2]) / 510).toFixed(2));
+      (window._ac || (window._ac = document.querySelector('.avatar-container'))).style.transform = 'scale(' + (1 + (data[1] + data[2]) / 510 * .06).toFixed(3) + ')';
     } else if (!idle) {
-      idle = true; bars.forEach(b => b.style.height = '5px'); root.style.setProperty('--bass', 0);
+      idle = true; bars.forEach(b => b.style.height = '5px'); (window._ac || (window._ac = document.querySelector('.avatar-container'))).style.transform = '';
     }
   })();
   // Enter отправляет формы, свайпы для змейки
@@ -1466,7 +1508,7 @@ body{padding-bottom:30px}
 
   /* ---------- Canvas: матричный дождь + искры ---------- */
   let rain = null, spark = null, rc = null, sc = null, W = 0, H = 0, cols = 0, drops = [];
-  const fs = 16, dpr = Math.min(devicePixelRatio || 1, 2);
+  const fs = 16, dpr = 1;
   const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
   const parts = [];
   if (!RM) {
@@ -1519,7 +1561,7 @@ body{padding-bottom:30px}
 
   /* ---------- Гироскоп: на телефоне карточка наклоняется вместе с устройством ---------- */
   let gx = 0, gy = 0, cx = 0, cy = 0;
-  if (touch && card && !RM) {
+  if (false) {
     const on = e => {
       if (e.gamma == null) return;
       gy = Math.max(-1, Math.min(1, e.gamma / 30));
@@ -1554,7 +1596,7 @@ body{padding-bottom:30px}
       rc.globalAlpha = 1;
     }
     // искры
-    if (sc) {
+    if (sc && parts.length) {
       sc.clearRect(0, 0, W, H);
       for (let i = parts.length - 1; i >= 0; i--) {
         const p = parts[i];
@@ -1642,7 +1684,7 @@ body{padding-bottom:30px}
   hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); xy.textContent = 'X:' + p3(e.clientX - r.left) + ' Y:' + p3(e.clientY - r.top); }, { passive: true });
   addEventListener('scroll', () => { sh.style.opacity = scrollY > 80 ? 0 : ''; }, { passive: true });
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 6; i++) {
       const d = document.createElement('i'), z = 8 + Math.random() * 22;
       d.className = 'fx-dia';
       d.style.cssText = `left:${Math.random() * 100}vw;width:${z}px;height:${z}px;animation-duration:${14 + Math.random() * 18}s;animation-delay:${-Math.random() * 20}s`;
@@ -1737,7 +1779,7 @@ body{padding-bottom:30px}
   const rnd = (a, b) => a + Math.random() * (b - a);
   const cols = ['#5e5ce6', '#0a84ff', '#ff375f', '#bf5af2', '#30d158', '#ffd60a', '#64d2ff'];
   // боке-шары
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 4; i++) {
     const o = document.createElement('i'), z = rnd(120, 320);
     o.className = 'orb';
     o.style.cssText = `width:${z}px;height:${z}px;left:${rnd(-5, 95)}%;top:${rnd(-5, 95)}%;background:${cols[i % cols.length]};--dx:${rnd(-120, 120)}px;--dy:${rnd(-120, 120)}px;animation-duration:${rnd(18, 36)}s;animation-delay:${-rnd(0, 30)}s`;
@@ -1782,7 +1824,6 @@ body{padding-bottom:30px}
   // параллакс фона от курсора и наклона телефона
   const bgx = $('bgx'); let px = 0, py = 0, tx = 0, ty = 0;
   addEventListener('pointermove', e => { tx = e.clientX / innerWidth - .5; ty = e.clientY / innerHeight - .5; }, { passive: true });
-  addEventListener('deviceorientation', e => { if (e.gamma == null) return; tx = Math.max(-.5, Math.min(.5, e.gamma / 60)); ty = Math.max(-.5, Math.min(.5, ((e.beta || 0) - 45) / 90)); }, { passive: true });
   (function f() {
     requestAnimationFrame(f);
     if (root.classList.contains('fx-off')) return;
@@ -1798,6 +1839,85 @@ body{padding-bottom:30px}
   } catch (e) {}
   // страховка: если блоки по какой-то причине не проявились, показываем всё
   setTimeout(() => { if (!document.querySelector('.fx-reveal.in')) document.querySelectorAll('.fx-reveal').forEach(e => e.classList.add('in')); }, 3500);
+})();
+</script>
+<script>
+/* ===== v6.1 ===== */
+(() => {
+  const root = document.documentElement, $ = id => document.getElementById(id), rnd = (a, b) => a + Math.random() * (b - a);
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const st = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } };
+  const g = document.querySelector('.grid3d'); if (g) g.innerHTML = '<i class="gi"></i>';
+  // экономный режим: вручную или автоматически, если сайт тормозит
+  const lite = $('swLite');
+  const setLite = (on, save) => { root.classList.toggle('lite', on); lite.checked = on; if (save) st('az_lite', on ? '1' : '0'); };
+  setLite(st('az_lite') === '1');
+  lite.addEventListener('change', () => setLite(lite.checked, true));
+  let low = 0;
+  setTimeout(() => setInterval(() => {
+    if (root.classList.contains('lite') || root.classList.contains('fx-off') || document.hidden) { low = 0; return; }
+    const f = +$('fxFps').textContent; low = (f && f < 35) ? low + 1 : 0;
+    if (low >= 3) { setLite(true, true); window.azToast && azToast('Экономный режим включён', 'Сайт тормозил, лишние эффекты отключены. Вернуть можно в Settings.'); }
+  }, 1500), 7000);
+  // SoundCloud: плеер загружается только по нажатию, чтобы не тормозить сайт
+  $('scGo').addEventListener('click', () => {
+    $('scBox').innerHTML = '<iframe allow="autoplay" loading="lazy" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/azoity&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_reposts=false&visual=false"></iframe>';
+  });
+  // дождь, молнии и гром (звук синтезируется, файлы не нужны)
+  const cv = document.createElement('canvas'); cv.id = 'fxStorm'; cv.className = 'fx-canvas'; document.body.appendChild(cv);
+  const cx = cv.getContext('2d'), fl = document.createElement('div'); fl.id = 'fxFlash'; document.body.appendChild(fl);
+  let W = 0, H = 0, drops = [], on = false, snd = false, bolt = [], boltT = 0, raf = 0, lastT = 0, nextB = 0, ac, nb, rainG;
+  const rs = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; drops = Array.from({ length: Math.min(110, W / 4 | 0) }, () => ({ x: rnd(0, W), y: rnd(0, H), l: rnd(10, 22), v: rnd(11, 19) })); };
+  addEventListener('resize', rs); rs();
+  const audio = () => {
+    if (ac) return;
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    const len = ac.sampleRate * 2; nb = ac.createBuffer(1, len, ac.sampleRate);
+    const d = nb.getChannelData(0); for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const s = ac.createBufferSource(); s.buffer = nb; s.loop = true;
+    const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 900;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 7000;
+    rainG = ac.createGain(); rainG.gain.value = 0;
+    s.connect(hp); hp.connect(lp); lp.connect(rainG); rainG.connect(ac.destination); s.start();
+  };
+  const thunder = () => {
+    if (!ac || !snd || !on) return;
+    const t = ac.currentTime, s = ac.createBufferSource(); s.buffer = nb; s.loop = true;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(260, t); lp.frequency.exponentialRampToValueAtTime(60, t + 3.5);
+    const gn = ac.createGain(); gn.gain.setValueAtTime(0, t); gn.gain.linearRampToValueAtTime(.9, t + .08); gn.gain.exponentialRampToValueAtTime(.001, t + 4);
+    s.connect(lp); lp.connect(gn); gn.connect(ac.destination); s.start(); s.stop(t + 4.2);
+  };
+  const strike = () => {
+    let x = rnd(.15, .85) * W, y = 0; bolt = [[x, y]]; const end = H * rnd(.4, .7);
+    while (y < end) { x += rnd(-34, 34); y += rnd(16, 40); bolt.push([x, y]); }
+    boltT = 10;
+    if (!RM) fl.animate([{ opacity: 0 }, { opacity: .5 }, { opacity: .08 }, { opacity: .35 }, { opacity: 0 }], { duration: 650 });
+    if (snd) setTimeout(thunder, rnd(500, 2200));
+  };
+  const draw = t => {
+    raf = requestAnimationFrame(draw);
+    if (t - lastT < 33) return; lastT = t;
+    cx.clearRect(0, 0, W, H); cx.strokeStyle = 'rgba(180,210,255,.45)'; cx.lineWidth = 1; cx.beginPath();
+    for (const d of drops) { cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * .25, d.y + d.l); d.y += d.v; d.x -= d.v * .25; if (d.y > H || d.x < 0) { d.y = -20; d.x = rnd(0, W + 60); } }
+    cx.stroke();
+    if (boltT > 0) {
+      cx.save(); cx.globalAlpha = boltT / 10; cx.strokeStyle = '#eaf2ff'; cx.lineWidth = 2.4; cx.shadowColor = '#8ab4ff'; cx.shadowBlur = 16; cx.beginPath();
+      bolt.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1])); cx.stroke(); cx.restore(); boltT--;
+    }
+    if (t > nextB) { nextB = t + rnd(7000, 15000); strike(); }
+  };
+  const bs = $('stormBtn'), bn = $('stormSnd');
+  const apply = () => {
+    bs.classList.toggle('act', on); bn.classList.toggle('act', snd && on); bn.textContent = snd ? '🔊' : '🔇';
+    cv.style.display = on ? 'block' : 'none';
+    if (on && !raf) { lastT = 0; nextB = performance.now() + 3500; raf = requestAnimationFrame(draw); }
+    if (!on && raf) { cancelAnimationFrame(raf); raf = 0; cx.clearRect(0, 0, W, H); }
+    if (ac && rainG) rainG.gain.setTargetAtTime(on && snd ? .07 : 0, ac.currentTime, .4);
+    st('az_storm', on ? '1' : '0');
+  };
+  bs.addEventListener('click', () => { on = !on; apply(); });
+  bn.addEventListener('click', () => { snd = !snd; if (snd) { on = true; audio(); ac.resume(); } apply(); });
+  on = st('az_storm') === '1'; apply();
 })();
 </script>
 </body>
