@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="description" content="Azoity — cyberpunk personal website: games, XP system, music player.">
-<meta property="og:title" content="Azoity // CYBERPUNK V5.0">
+<meta property="og:title" content="Azoity // CYBERPUNK V5.1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E⚡%3C/text%3E%3C/svg%3E">
-<title>Azoity // CYBERPUNK V5.0</title>
+<title>Azoity // CYBERPUNK V5.1</title>
 <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
         :root { --cp-accent: #fcee0a; --cp-red: #ff003c; --cp-blue: #00f0ff; --cp-black: #000; --cp-dark: #0a0a0a; --cp-gray: #1a1a1a; --cp-text: #fff; --glow-accent: rgba(252, 238, 10, 0.5); }
@@ -352,6 +352,34 @@ nav{top:10px;left:10px;right:10px;border-radius:22px;border:1px solid var(--gl-b
 .fx-stat{background:none;border-right:1px solid var(--gl-b);color:var(--tx)}
 .controls{bottom:54px!important}
 .quest-hint{bottom:104px!important;color:var(--tx)}
+
+/* ===================== v5.1 ===================== */
+.aurora i:nth-child(1){background:var(--w1,#5e5ce6)}.aurora i:nth-child(2){background:var(--w2,#0a84ff)}.aurora i:nth-child(3){background:var(--w3,#ff375f)}
+.fx-off #fxRain,.fx-off #fxSpark,.fx-off .fx-dia,.fx-off .fx-ring{display:none}
+.usdt{display:inline-flex;align-items:center;gap:12px;margin-bottom:10px;text-align:left}
+.usdt-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#26a17b;color:#fff;font-size:26px;font-weight:800;box-shadow:0 0 22px rgba(38,161,123,.6),inset 0 1px 0 rgba(255,255,255,.5);animation:fxBeat 1.6s ease-in-out infinite}
+.usdt b{display:block;font-size:1.05em;color:var(--tx)}.usdt small{opacity:.7;font-size:.8em}
+.hero .clock{font-weight:200;font-size:3em;letter-spacing:-.02em!important;color:var(--tx);text-shadow:none;margin-bottom:0}
+.lockdate{font-weight:500;opacity:.8;margin-bottom:14px;text-transform:capitalize}
+.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);height:30px;min-width:96px;max-width:64%;padding:0 14px;border-radius:20px;background:#000;color:#fff;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;overflow:hidden;cursor:pointer;z-index:3;box-shadow:0 4px 14px rgba(0,0,0,.5);transition:height .45s cubic-bezier(.3,1.4,.5,1),min-width .45s cubic-bezier(.3,1.4,.5,1),border-radius .45s}
+.island.open{height:84px;min-width:240px;border-radius:28px;flex-wrap:wrap;justify-content:center;align-content:center;gap:4px}
+.isl-dot{width:8px;height:8px;border-radius:50%;background:#30d158;box-shadow:0 0 8px #30d158;flex:none}
+#islTxt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.isl-ctl{display:none;gap:22px;width:100%;justify-content:center}.island.open .isl-ctl{display:flex}
+.isl-ctl button{background:none;border:0;color:#fff;font-size:20px}
+.ios-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--gl-b);font-weight:500}
+.ios-row:last-child{border:0}
+.sw{position:relative;width:51px;height:31px;flex:none}
+.sw input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;z-index:2}
+.sw i{position:absolute;inset:0;border-radius:99px;background:rgba(120,120,128,.4);transition:.3s}
+.sw i::after{content:'';position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.35);transition:.3s cubic-bezier(.3,1.4,.5,1)}
+.sw input:checked+i{background:#30d158}.sw input:checked+i::after{transform:translateX(20px)}
+.walls{display:flex;gap:10px}
+.walls b{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.6);cursor:pointer;transition:transform .2s}
+.walls b:hover{transform:scale(1.15)}
+.walls b[data-w=aurora]{background:linear-gradient(135deg,#5e5ce6,#0a84ff)}.walls b[data-w=sunset]{background:linear-gradient(135deg,#ff375f,#ff9f0a)}.walls b[data-w=ocean]{background:linear-gradient(135deg,#30d158,#0a84ff)}.walls b[data-w=mono]{background:linear-gradient(135deg,#8e8e93,#3a3a3c)}
+.toast{position:fixed;top:-140px;left:50%;transform:translateX(-50%);width:min(92vw,420px);padding:14px 18px;border-radius:22px;border:1px solid var(--gl-b);background:rgba(30,32,44,.66);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);color:#fff;z-index:10020;box-shadow:0 12px 40px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:3px;transition:top .5s cubic-bezier(.3,1.3,.5,1)}
+.toast.show{top:84px}.toast b{font-size:.95em}.toast span{font-size:.85em;opacity:.8}
 </style>
 <script>
 const AV_MONO="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fcee0a'/%3E%3Cstop offset='1' stop-color='%2300f0ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='160' height='160' fill='%23050505'/%3E%3Ctext x='80' y='110' font-size='88' font-family='sans-serif' font-weight='900' text-anchor='middle' fill='url(%23g)'%3EA%3C/text%3E%3C/svg%3E";
@@ -476,6 +504,7 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
     </nav>
     <div class="container-wrapper"><main class="page">
         <section class="card hero" id="tiltCard"><span id="bio"></span>
+            <div class="island" id="island"><span class="isl-dot"></span><span id="islTxt">AZOITY</span><div class="isl-ctl"><button type="button" onclick="prevTrack()">⏮</button><button type="button" id="islPlay" onclick="togglePlay()">▶</button><button type="button" onclick="nextTrack()">⏭</button></div></div>
             <div class="avatar-container">
                 <img src="images/avatar.jpg" alt="Azoity" class="avatar" id="mainAvatar" ondblclick="initBreach()" data-try="avatar.jpg,images/avatar.png,images/avatar.jpeg,images/avatar.webp,avatar.png" onerror="avFall(this)">
                 <div class="avatar-frame" id="avatarFrame"></div>
@@ -487,11 +516,11 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
             <div class="cta">
                 <a href="https://t.me/Azoity" class="btn-link" target="_blank" rel="noopener">CONNECT // TELEGRAM</a>
                 <a href="https://github.com/Azoity-code" class="btn-link ghost" target="_blank" rel="noopener">GITHUB</a>
-                <a class="btn-link sup" id="heroSup" href="ton://transfer/UQDBJzgWiUikmf6MBufcF1CjSAc55LPi4Fq5Z03NnHUtcwJ7">💎 ПОДДЕРЖАТЬ АВТОРА</a>
+                <a class="btn-link sup" id="heroSup" href="https://t.me/wallet" target="_blank" rel="noopener">💎 ПОДДЕРЖАТЬ // USDT</a>
             </div>
             <div class="chips"><span>⌨ CODER</span><span>🤖 BOT BUILDER</span><span>🎵 NIGHT CITY FM</span><span>⚡ C++ IN PROGRESS</span></div>
             <div class="scroll-hint" id="scrollHint">▼ SCROLL</div>
-            <div class="hud tl">SYS // ONLINE</div><div class="hud tr">V5.0</div><div class="hud bl" id="hudXY">X:000 Y:000</div><div class="hud br">AZOITY//2077</div>
+            <div class="hud tl">SYS // ONLINE</div><div class="hud tr">V5.1</div><div class="hud bl" id="hudXY">X:000 Y:000</div><div class="hud br">V5.1 · AZOITY//2077</div>
         </section>
         <div class="divider"></div>
         <div class="bento">
@@ -528,6 +557,15 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
                 </div>
             </section>
             <section class="card s6" id="stack"><h2>STACK</h2><div class="tags"><span>HTML / CSS / JS</span><span>TELEGRAM BOTS</span><span>C++ // LEARNING</span><span>GITHUB</span></div></section>
+            <section class="card s6" id="settings"><h2>SETTINGS</h2>
+                <div class="ios-row"><span>✨ Эффекты (дождь, искры)</span><label class="sw"><input type="checkbox" id="swFx" checked><i></i></label></div>
+                <div class="ios-row"><span>📳 Вибрация при нажатии</span><label class="sw"><input type="checkbox" id="swHap" checked><i></i></label></div>
+                <div class="ios-row"><span>🎨 Обои</span><div class="walls"><b data-w="aurora"></b><b data-w="sunset"></b><b data-w="ocean"></b><b data-w="mono"></b></div></div>
+            </section>
+            <section class="card s6" id="share"><h2>SHARE</h2>
+                <p class="sup-note" style="margin-top:0">Понравился сайт? Поделись им с друзьями.</p>
+                <div class="sup-row"><button class="action-btn" id="shareBtn" type="button">📤 ПОДЕЛИТЬСЯ</button></div>
+            </section>
             <section class="card" id="projects"><h2>PROJECTS</h2><div class="projs">
                 <a class="proj" href="https://github.com/Azoity-code" target="_blank" rel="noopener"><b>TELEGRAM BOTS</b><span>First bots deployed in 2025.</span><em class="badge">SHIPPED</em></a>
                 <a class="proj" href="https://github.com/Azoity-code" target="_blank" rel="noopener"><b>THIS SITE</b><span>Cyberpunk personal site with games, XP system and a music player.</span><em class="badge">ONLINE</em></a>
@@ -535,13 +573,13 @@ function avFall(i){const q=(i.dataset.try||"").split(",").filter(Boolean);if(q.l
             </div></section>
             <section class="card"><h2>ACHIEVEMENTS</h2><div class="achievements" id="achievements"></div></section>
             <section class="card" id="support"><h2>SUPPORT THE AUTHOR</h2>
-                <div class="sup-gem">💎</div>
-                <p class="sup-note">Нравится сайт? Можно поддержать автора · сеть TON · принимаю GRAM</p>
-                <code class="sup-addr" id="tonAddr" title="Tap to copy">UQDBJzgWiUikmf6MBufcF1CjSAc55LPi4Fq5Z03NnHUtcwJ7</code>
+                <div class="usdt"><span class="usdt-ic">₮</span><div><b>Tether USDt</b><small>TRON · TRC-20</small></div></div>
+                <p class="sup-note">Нравится сайт? Можно поддержать автора. Отправляй только USDT в сети TRON (TRC-20): в другой сети деньги потеряются.</p>
+                <code class="sup-addr" id="walletAddr" title="Tap to copy">TYm8bwu1uwh3YKTj79hQXipED4EtPLXfGq</code>
                 <div class="sup-row">
-                    <a class="btn-link" id="supBtn" href="ton://transfer/UQDBJzgWiUikmf6MBufcF1CjSAc55LPi4Fq5Z03NnHUtcwJ7">💙 SUPPORT // WALLET</a>
+                    <a class="btn-link sup" id="supBtn" href="https://t.me/wallet" target="_blank" rel="noopener">💎 ОТКРЫТЬ TELEGRAM WALLET</a>
                     <button class="action-btn" id="copyAddr" type="button">📋 COPY ADDRESS</button>
-                    <a class="btn-link ghost" href="https://t.me/wallet" target="_blank" rel="noopener">✈ TELEGRAM WALLET</a>
+                    <a class="btn-link ghost" href="https://tronscan.org/#/address/TYm8bwu1uwh3YKTj79hQXipED4EtPLXfGq" target="_blank" rel="noopener">🔍 TRONSCAN</a>
                 </div>
             </section>
         </div>
@@ -1372,7 +1410,7 @@ body{padding-bottom:30px}
   /* ---------- Нижняя HUD-лента: LIVE, FPS, время сессии + бегущая строка ---------- */
   const tk = mk('div', 'fx-ticker');
   const stat = mk('div', 'fx-stat', tk, '<span style="color:#39ff14">●</span> LIVE · <b id="fxFps">60</b> FPS · <b id="fxSes">0:00</b>');
-  const lines = ['NETRUNNER AZOITY ONLINE', 'C++ MASTERY: IN PROGRESS', '9 TRACKS LOADED INTO THE PLAYER', 'FIND 5 HIDDEN SYMBOLS FOR BONUS XP', 'DOUBLE-TAP THE AVATAR TO START A BREACH', 'TRY THE KONAMI CODE', 'EVERY CLICK = +1 XP', 'LIKE THE SITE? SUPPORT THE AUTHOR // TON · GRAM'];
+  const lines = ['NETRUNNER AZOITY ONLINE', 'C++ MASTERY: IN PROGRESS', '9 TRACKS LOADED INTO THE PLAYER', 'FIND 5 HIDDEN SYMBOLS FOR BONUS XP', 'DOUBLE-TAP THE AVATAR TO START A BREACH', 'TRY THE KONAMI CODE', 'EVERY CLICK = +1 XP', 'LIKE THE SITE? SUPPORT THE AUTHOR // USDT · TRC-20'];
   mk('div', 'fx-marq', tk, '<span>' + lines.join('   ◆   ') + '</span>');
   const fpsEl = stat.querySelector('#fxFps'), sesEl = stat.querySelector('#fxSes');
 
@@ -1448,6 +1486,7 @@ body{padding-bottom:30px}
   const t0 = ft;
   const loop = t => {
     requestAnimationFrame(loop);
+    if (root.classList.contains('fx-off')) return;
     frame++; fc++;
     if (frame % 40 === 0) col = accent();
     // дождь — 30 кадров/с, чтобы не греть телефон
@@ -1492,7 +1531,7 @@ body{padding-bottom:30px}
 <script>
 /* ===== v4.1 ===== */
 (() => {
-  const addrEl = document.getElementById('tonAddr');
+  const addrEl = document.getElementById('walletAddr');
   const copy = async t => {
     try { await navigator.clipboard.writeText(t); }
     catch (e) { const a = document.createElement('textarea'); a.value = t; a.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); } catch (_) {} a.remove(); }
@@ -1578,10 +1617,66 @@ body{padding-bottom:30px}
   tr.textContent = '▂▄▆█ ' + net + ' 🔋';
   if (navigator.getBattery) navigator.getBattery().then(b => { const u = () => tr.textContent = '▂▄▆█ ' + net + ' ' + Math.round(b.level * 100) + '% 🔋'; u(); b.onlevelchange = u; }).catch(() => {});
   // тактильный отклик (вибрация) как у iPhone
-  document.addEventListener('pointerdown', e => { if (navigator.vibrate && e.target.closest && e.target.closest('.btn-link,.action-btn,.ctrl-btn,.control-btn,.nav-sup,.nav-links a')) navigator.vibrate(8); }, { passive: true });
+  document.addEventListener('pointerdown', e => { if (navigator.vibrate && !window.hapOff && e.target.closest && e.target.closest('.btn-link,.action-btn,.ctrl-btn,.control-btn,.nav-sup,.nav-links a')) navigator.vibrate(8); }, { passive: true });
   // вспышка искр на кнопке поддержки в главном блоке
   const hs = document.getElementById('heroSup');
   hs.addEventListener('click', () => { const r = hs.getBoundingClientRect(); window.fxBurst && fxBurst(r.left + r.width / 2, r.top + r.height / 2, 40, 4.5, 55); });
+})();
+</script>
+<script>
+/* ===== v5.1 ===== */
+(() => {
+  const root = document.documentElement, $ = id => document.getElementById(id);
+  const ADDR = $('walletAddr').textContent.trim();
+  const copyText = async t => { try { await navigator.clipboard.writeText(t); } catch (e) { const a = document.createElement('textarea'); a.value = t; a.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); } catch (_) {} a.remove(); } };
+  // баннер как уведомление iOS
+  let tt;
+  const toast = (title, msg) => {
+    let el = $('toast'); if (!el) { el = document.createElement('div'); el.id = 'toast'; el.className = 'toast'; document.body.appendChild(el); }
+    el.innerHTML = '<b>' + title + '</b><span>' + msg + '</span>'; el.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('show'), 3800);
+  };
+  // Dynamic Island: название трека, управление плеером, короткие сообщения
+  const isl = $('island'), itx = $('islTxt'), tn = $('trackName'), pb = $('islPlay');
+  const base = () => (!audio.paused && tn.textContent.trim() && !/SELECT/.test(tn.textContent)) ? '♪ ' + tn.textContent.trim() : 'AZOITY';
+  const setBase = () => { itx.textContent = base(); };
+  let itm; const islMsg = t => { itx.textContent = t; clearTimeout(itm); itm = setTimeout(setBase, 2200); };
+  isl.addEventListener('click', e => {
+    if (e.target.closest('.isl-ctl button')) return;
+    isl.classList.toggle('open'); clearTimeout(isl._t);
+    if (isl.classList.contains('open')) isl._t = setTimeout(() => isl.classList.remove('open'), 5000);
+  });
+  const sync = () => { pb.textContent = audio.paused ? '▶' : '⏸'; setBase(); };
+  ['play', 'pause', 'ended'].forEach(ev => audio.addEventListener(ev, sync));
+  new MutationObserver(setBase).observe(tn, { childList: true, characterData: true, subtree: true });
+  setBase();
+  // поддержка: копируем адрес и открываем Telegram Wallet
+  const donate = el => {
+    copyText(ADDR); toast('Адрес скопирован', 'Вставь в Wallet → Отправить → USDT, сеть TRON (TRC-20)'); islMsg('COPIED ✓');
+    if (window.fxBurst) { const r = el.getBoundingClientRect(); fxBurst(r.left + r.width / 2, r.top + r.height / 2, 40, 4.5, 55); }
+  };
+  ['heroSup', 'supBtn'].forEach(id => $(id).addEventListener('click', e => donate(e.currentTarget)));
+  $('copyAddr').addEventListener('click', () => { toast('Адрес скопирован', 'USDT · TRON (TRC-20)'); islMsg('COPIED ✓'); });
+  // дата как на экране блокировки
+  const ld = document.createElement('div'); ld.className = 'lockdate'; $('clock').after(ld);
+  const dt = () => ld.textContent = new Date().toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+  dt(); setInterval(dt, 600000);
+  // настройки: переключатели в стиле iOS и обои
+  const W = { aurora: ['#5e5ce6', '#0a84ff', '#ff375f'], sunset: ['#ff375f', '#ff9f0a', '#bf5af2'], ocean: ['#30d158', '#0a84ff', '#64d2ff'], mono: ['#8e8e93', '#636366', '#aeaeb2'] };
+  const st = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+  const wall = n => { const c = W[n] || W.aurora; ['--w1', '--w2', '--w3'].forEach((v, i) => root.style.setProperty(v, c[i])); st.set('az_wall', n); };
+  wall(st.get('az_wall') || 'aurora');
+  document.querySelectorAll('.walls b').forEach(b => b.addEventListener('click', () => wall(b.dataset.w)));
+  const fx = $('swFx'), hap = $('swHap');
+  fx.checked = st.get('az_fx') !== '0'; hap.checked = st.get('az_hap') !== '0';
+  const apply = () => { root.classList.toggle('fx-off', !fx.checked); window.hapOff = !hap.checked; };
+  fx.addEventListener('change', () => { st.set('az_fx', fx.checked ? '1' : '0'); apply(); });
+  hap.addEventListener('change', () => { st.set('az_hap', hap.checked ? '1' : '0'); apply(); });
+  apply();
+  // поделиться сайтом
+  $('shareBtn').addEventListener('click', async () => {
+    const d = { title: document.title, text: 'Azoity // cyberpunk site', url: location.href };
+    if (navigator.share) { try { await navigator.share(d); } catch (e) {} } else { await copyText(d.url); toast('Ссылка скопирована', d.url); }
+  });
 })();
 </script>
 </body>
